@@ -28,14 +28,12 @@ interface ResumeModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultLang?: Language;
-  profilePhoto?: string;
 }
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({
   isOpen,
   onClose,
   defaultLang = 'fa',
-  profilePhoto,
 }) => {
   const [modalLang, setModalLang] = useState<Language>(defaultLang);
   const [copiedText, setCopiedText] = useState(false);
@@ -216,7 +214,7 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
             {/* Official Photo */}
             <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-xl overflow-hidden border-2 border-slate-300 shadow-sm shrink-0 bg-slate-100">
               <img
-                src={profilePhoto || personalInfo.contact.photoUrl}
+                src={personalInfo.contact.photoUrl}
                 alt={personalInfo.name[modalLang]}
                 className="w-full h-full object-cover object-top"
                 referrerPolicy="no-referrer"

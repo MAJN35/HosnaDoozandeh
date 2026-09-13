@@ -8,14 +8,12 @@ interface NavbarProps {
   lang: Language;
   onToggleLang: () => void;
   onOpenResumeModal: () => void;
-  profilePhoto?: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   lang,
   onToggleLang,
   onOpenResumeModal,
-  profilePhoto,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isFa = lang === 'fa';
@@ -37,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <a href="#about" className="flex items-center gap-3.5 group">
           <div className="w-11 h-11 rounded-2xl overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_3px_6px_rgba(0,0,0,0.15)] border border-slate-200 transition-transform group-hover:scale-105 shrink-0 bg-slate-100">
             <img
-              src={profilePhoto || personalInfo.contact.photoUrl}
+              src={personalInfo.contact.photoUrl}
               alt={personalInfo.name[lang]}
               className="w-full h-full object-cover object-top"
               referrerPolicy="no-referrer"

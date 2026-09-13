@@ -5,7 +5,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Language } from './types';
-import { personalInfo } from './data/cvData';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
@@ -19,22 +18,6 @@ import { ResumeModal } from './components/ResumeModal';
 export default function App() {
   const [lang, setLang] = useState<Language>('fa');
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
-  const [profilePhoto, setProfilePhoto] = useState<string>(() => {
-    try {
-      return localStorage.getItem('hosna_profile_photo') || personalInfo.contact.photoUrl;
-    } catch {
-      return personalInfo.contact.photoUrl;
-    }
-  });
-
-  const handlePhotoChange = (newPhoto: string) => {
-    setProfilePhoto(newPhoto);
-    try {
-      localStorage.setItem('hosna_profile_photo', newPhoto);
-    } catch (err) {
-      console.warn('Could not save photo to localStorage', err);
-    }
-  };
 
   useEffect(() => {
     // Synchronize HTML direction and language
@@ -58,7 +41,6 @@ export default function App() {
         lang={lang}
         onToggleLang={toggleLanguage}
         onOpenResumeModal={() => setIsResumeModalOpen(true)}
-        profilePhoto={profilePhoto}
       />
 
       {/* Main Content Area */}
@@ -67,8 +49,6 @@ export default function App() {
         <Hero
           lang={lang}
           onOpenResumeModal={() => setIsResumeModalOpen(true)}
-          profilePhoto={profilePhoto}
-          onPhotoChange={handlePhotoChange}
         />
 
         {/* Executive Experience & Organizational Roles */}
@@ -91,7 +71,6 @@ export default function App() {
       <Footer
         lang={lang}
         onOpenResumeModal={() => setIsResumeModalOpen(true)}
-        profilePhoto={profilePhoto}
       />
 
       {/* Printable / Downloadable Resume Modal */}
@@ -99,7 +78,6 @@ export default function App() {
         isOpen={isResumeModalOpen}
         onClose={() => setIsResumeModalOpen(false)}
         defaultLang={lang}
-        profilePhoto={profilePhoto}
       />
 
     </div>

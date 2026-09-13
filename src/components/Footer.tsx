@@ -7,14 +7,9 @@ import { ArrowUp, Mail, FileDown, MapPin } from 'lucide-react';
 interface FooterProps {
   lang: Language;
   onOpenResumeModal: () => void;
-  profilePhoto?: string;
 }
 
-export const Footer: React.FC<FooterProps> = ({
-  lang,
-  onOpenResumeModal,
-  profilePhoto,
-}) => {
+export const Footer: React.FC<FooterProps> = ({ lang, onOpenResumeModal }) => {
   const isFa = lang === 'fa';
 
   const scrollToTop = () => {
@@ -31,7 +26,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="flex items-center gap-3.5">
             <div className="w-11 h-11 rounded-xl overflow-hidden border border-slate-200 shadow-xs shrink-0">
               <img
-                src={profilePhoto || personalInfo.contact.photoUrl}
+                src={personalInfo.contact.photoUrl}
                 alt={personalInfo.name[lang]}
                 className="w-full h-full object-cover object-top"
                 referrerPolicy="no-referrer"
