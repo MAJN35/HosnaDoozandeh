@@ -35,7 +35,7 @@ export const personalInfo = {
       fa: '۱۳۶۰',
       en: '1981',
     },
-    photoUrl: '/profile.jpg',
+    photoUrl: './profile.jpg',
   },
   keyMetrics: [
     {

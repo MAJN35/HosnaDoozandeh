@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Language } from '../types';
 import { personalInfo } from '../data/cvData';
 import { SkeuButton } from './SkeuButton';
@@ -11,15 +11,38 @@ import {
   Building2,
   ChevronDown,
   CheckCircle,
+  Camera,
+  Upload,
 } from 'lucide-react';
 
 interface HeroProps {
   lang: Language;
   onOpenResumeModal: () => void;
+  profilePhoto?: string;
+  onPhotoChange?: (newPhoto: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ lang, onOpenResumeModal }) => {
+export const Hero: React.FC<HeroProps> = ({
+  lang,
+  onOpenResumeModal,
+  profilePhoto,
+  onPhotoChange,
+}) => {
   const isFa = lang === 'fa';
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onPhotoChange) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          onPhotoChange(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <section id="about" className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden border-b border-slate-200/60 bg-linear-to-b from-white via-slate-50/50 to-[#F8F9FA]">
@@ -126,13 +149,23 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenResumeModal }) => {
             {/* Skeuomorphic Portrait Frame */}
             <div className="relative p-2.5 sm:p-3 rounded-3xl bg-linear-to-b from-white via-slate-100 to-slate-200/90 shadow-[inset_0_1px_0_#FFFFFF,0_10px_28px_rgba(15,23,42,0.12)] border border-slate-300/80">
               
-              <div className="w-64 sm:w-72 aspect-3/4 rounded-2xl overflow-hidden relative shadow-inner border border-slate-200 bg-slate-100">
+              <div className="w-64 sm:w-72 aspect-3/4 rounded-2xl overflow-hidden relative shadow-inner border border-slate-200 bg-slate-100 group">
                 <img
-                  src={personalInfo.contact.photoUrl}
+                  src={profilePhoto || personalInfo.contact.photoUrl}
                   alt={personalInfo.name[lang]}
                   className="w-full h-full object-cover object-top"
                   referrerPolicy="no-referrer"
                   loading="eager"
+                />
+
+                {/* Hidden File Input */}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  className="hidden"
+                  id="profile-photo-file-input"
                 />
                 
                 {/* Subtle bottom gradient overlay for readability */}
@@ -145,6 +178,17 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenResumeModal }) => {
                     {personalInfo.title[lang]}
                   </p>
                 </div>
+
+                {/* Upload overlay button on hover/tap */}
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="absolute top-3 left-3 p-2 rounded-xl bg-black/60 hover:bg-black/80 text-white backdrop-blur-xs transition-opacity opacity-80 hover:opacity-100 cursor-pointer shadow-md"
+                  title={isFa ? 'انتخاب و بارگذاری عکس جدید' : 'Upload & Change Photo'}
+                  aria-label={isFa ? 'بارگذاری عکس' : 'Upload photo'}
+                  id="hero-change-photo-btn"
+                >
+                  <Camera className="w-4 h-4" />
+                </button>
               </div>
 
               {/* Decorative side badge */}
@@ -154,8 +198,20 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenResumeModal }) => {
               </div>
             </div>
 
+            {/* Change photo button below frame */}
+            <div className="mt-4 flex items-center gap-2">
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="skeu-button-secondary text-xs px-3.5 py-1.5 rounded-xl text-slate-700 flex items-center gap-1.5 cursor-pointer"
+                id="hero-select-photo-btn"
+              >
+                <Upload className="w-3.5 h-3.5 text-blue-600" />
+                <span>{isFa ? 'بارگذاری عکس شخصی دلخواه' : 'Upload Attached Photo'}</span>
+              </button>
+            </div>
+
             {/* Quick credentials caption */}
-            <div className="mt-6 text-center">
+            <div className="mt-4 text-center">
               <p className="text-xs text-slate-500 font-medium flex items-center justify-center gap-1.5">
                 <BookOpen className="w-3.5 h-3.5 text-blue-600" />
                 <span>
