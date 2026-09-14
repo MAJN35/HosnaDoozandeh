@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Language } from '../types';
-import { personalInfo } from '../data/cvData';
+import { useSiteContent } from '../context/ContentContext';
 import { Mail, MapPin, Globe, Send, CheckCircle2, Copy, Check } from 'lucide-react';
 
 interface ContactSectionProps {
@@ -8,7 +9,9 @@ interface ContactSectionProps {
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
+  const { content } = useSiteContent();
   const isFa = lang === 'fa';
+  const contact = content.contact;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -21,9 +24,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText(personalInfo.contact.email);
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
+    if (contact?.email) {
+      navigator.clipboard.writeText(contact.email);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,36 +43,45 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-      
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      id="contact"
+      className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto"
+    >
       {/* Large Floating Contact Panel */}
       <div className="neu-panel p-8 sm:p-12 lg:p-16">
-        
         {/* Header Content */}
         <div className="max-w-2xl mx-auto text-center mb-12 sm:mb-16 space-y-3">
           <div className="neu-pill px-4 py-1.5 rounded-full inline-flex items-center gap-2 text-xs font-normal text-[#71839A]">
             <span className="w-2 h-2 rounded-full bg-[#8FA8C8]" />
-            <span>{isFa ? 'ارتباط مستقیم' : 'Direct Communication'}</span>
+            <span>{contact?.badge?.[lang] || (isFa ? 'ارتباط مستقیم' : 'Direct Communication')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-[#243B5D] tracking-tight">
-            {isFa ? 'در ارتباط باشیم' : 'Let’s Connect'}
+            {contact?.heading?.[lang] || (isFa ? 'در ارتباط باشیم' : 'Let’s Connect')}
           </h2>
 
           <p className="text-sm sm:text-base font-light text-[#71839A] leading-relaxed">
-            {isFa
-              ? 'برای گفت‌وگو درباره آموزش، مدیریت مدرسه و آینده نسل جدید، خوشحال می‌شوم در ارتباط باشیم.'
-              : 'For conversations regarding education, school leadership, and nurturing the next generation, I would be glad to connect.'}
+            {contact?.subheading?.[lang] ||
+              (isFa
+                ? 'برای گفت‌وگو درباره آموزش، مدیریت مدرسه و آینده نسل جدید، خوشحال می‌شوم در ارتباط باشیم.'
+                : 'For conversations regarding education, school leadership, and nurturing the next generation, I would be glad to connect.')}
           </p>
         </div>
 
         {/* Contact Grid: Form + Info Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
-          
           {/* Recessed Neumorphic Form Controls (7 cols) */}
           <div className="lg:col-span-7">
             {status === 'success' ? (
-              <div className="neu-card p-8 sm:p-10 text-center flex flex-col items-center justify-center space-y-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="neu-card p-8 sm:p-10 text-center flex flex-col items-center justify-center space-y-4"
+              >
                 <div className="w-14 h-14 rounded-full neu-button flex items-center justify-center text-emerald-600">
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
@@ -85,11 +99,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                 >
                   {isFa ? 'ارسال پیام جدید' : 'Send Another Message'}
                 </button>
-              </div>
+              </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  
                   {/* Name Input */}
                   <div className="space-y-1.5">
                     <label className="text-xs font-light text-[#71839A] block">
@@ -120,7 +133,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                       className="w-full px-4 py-3 rounded-2xl neu-recessed text-sm font-light placeholder:text-[#71839A]/40 transition-all duration-200"
                     />
                   </div>
-
                 </div>
 
                 {/* Subject / Topic Input */}
@@ -162,7 +174,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
 
                 {/* Raised Physical Submit Button */}
                 <div className="pt-2">
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={status === 'submitting'}
                     className="neu-button-primary px-8 py-3.5 rounded-full text-sm font-light inline-flex items-center gap-2 cursor-pointer shadow-md"
@@ -173,16 +187,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                         ? isFa ? 'در حال ثبت...' : 'Sending...'
                         : isFa ? 'ارسال پیام' : 'Send Message'}
                     </span>
-                  </button>
+                  </motion.button>
                 </div>
-
               </form>
             )}
           </div>
 
           {/* Contact Direct Cards (5 cols) */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-5">
-            
             {/* Email Card */}
             <div className="neu-card p-6 flex items-start justify-between group">
               <div className="flex items-start gap-4">
@@ -194,11 +206,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                     {isFa ? 'پست الکترونیکی رسمی' : 'Official Email'}
                   </div>
                   <a
-                    href={`mailto:${personalInfo.contact.email}`}
+                    href={`mailto:${contact?.email || 'doozandehhosna@gmail.com'}`}
                     className="text-sm font-normal text-[#243B5D] hover:underline font-mono mt-0.5 block"
                     dir="ltr"
                   >
-                    {personalInfo.contact.email}
+                    {contact?.email || 'doozandehhosna@gmail.com'}
                   </a>
                 </div>
               </div>
@@ -223,13 +235,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                   {isFa ? 'وب‌سایت اختصاصی' : 'Official Domain'}
                 </div>
                 <a
-                  href={personalInfo.contact.websiteUrl}
+                  href={contact?.websiteUrl || `https://${contact?.website || 'douzandeh.ir'}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm font-normal text-[#243B5D] hover:underline font-mono mt-0.5 block"
                   dir="ltr"
                 >
-                  {personalInfo.contact.website}
+                  {contact?.website || 'douzandeh.ir'}
                 </a>
               </div>
             </div>
@@ -244,24 +256,23 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                   {isFa ? 'محل استقرار و فعالیت' : 'Office Location'}
                 </div>
                 <div className="text-sm font-normal text-[#243B5D] mt-0.5">
-                  {isFa ? 'تهران، منطقه ۵ • مجتمع مدارس هما' : 'Tehran, District 5 • Homa Schools Complex'}
+                  {contact?.location?.[lang] ||
+                    (isFa ? 'تهران، منطقه ۵ • مجتمع مدارس هما' : 'Tehran, District 5 • Homa Schools Complex')}
                 </div>
               </div>
             </div>
 
             {/* Human Leadership Note */}
             <div className="neu-panel-soft p-5 text-xs font-light text-[#71839A] leading-relaxed">
-              {isFa
-                ? 'پاسخگویی به مکاتبات آموزشی و درخواست‌های هماهنگی جلسات در روزهای کاری صورت می‌پذیرد.'
-                : 'Educational correspondence and meeting appointments are addressed during working days.'}
+              {contact?.officeHoursNote?.[lang] ||
+                contact?.officeHoursNote?.fa ||
+                (isFa
+                  ? 'پاسخگویی به مکاتبات آموزشی و درخواست‌های هماهنگی جلسات در روزهای کاری صورت می‌پذیرد.'
+                  : 'Educational correspondence and meeting appointments are addressed during working days.')}
             </div>
-
           </div>
-
         </div>
-
       </div>
-
-    </section>
+    </motion.section>
   );
 };
