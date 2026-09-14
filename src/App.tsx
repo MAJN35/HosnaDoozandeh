@@ -7,10 +7,11 @@ import React, { useState, useEffect } from 'react';
 import { Language } from './types';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { PhilosophySection } from './components/PhilosophySection';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
-import { ProjectsSection } from './components/ProjectsSection';
-import { SkillsSection } from './components/SkillsSection';
-import { ResearchAndEducation } from './components/ResearchAndEducation';
+import { AchievementsSection } from './components/AchievementsSection';
+import { GallerySection } from './components/GallerySection';
+import { TestimonialsSection } from './components/TestimonialsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { ResumeModal } from './components/ResumeModal';
@@ -25,8 +26,8 @@ export default function App() {
     document.documentElement.lang = lang;
     document.title =
       lang === 'fa'
-        ? 'حسنا دوزنده - پورتفولیو و رزومه حرفه‌ای'
-        : 'Hosna Doozandeh - Professional Portfolio & CV';
+        ? 'حسنا دوزنده - مدیر دبیرستان دخترانه هما | وب‌سایت رسمی'
+        : 'Hosna Doozandeh - Principal, Homa Girls’ High School | Official Website';
   }, [lang]);
 
   const toggleLanguage = () => {
@@ -34,46 +35,51 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8F9FA] text-slate-900 selection:bg-blue-100 selection:text-blue-900 transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#E8F0F8] text-[#243B5D] selection:bg-[#D5E3F0] selection:text-[#1B3252] transition-colors duration-300">
       
-      {/* Top Sticky Header */}
+      {/* Floating Soft Neumorphic Navigation Bar */}
       <Navbar
         lang={lang}
         onToggleLang={toggleLanguage}
         onOpenResumeModal={() => setIsResumeModalOpen(true)}
       />
 
-      {/* Main Content Area */}
+      {/* Main Structural Flow */}
       <main className="flex-1">
-        {/* Hero Section */}
+        
+        {/* Floating Hero Panel with Concentric Portrait Dial & Statistic Cards */}
         <Hero
           lang={lang}
           onOpenResumeModal={() => setIsResumeModalOpen(true)}
         />
 
-        {/* Executive Experience & Organizational Roles */}
+        {/* Leadership Philosophy (4 Large Raised Control Cards) */}
+        <PhilosophySection lang={lang} />
+
+        {/* Professional Journey (Physical Interface Timeline) */}
         <ExperienceTimeline lang={lang} />
 
-        {/* Professional Projects & Strategic Initiatives */}
-        <ProjectsSection lang={lang} />
+        {/* Achievements (Soft Bento-style Surfaces) */}
+        <AchievementsSection lang={lang} />
 
-        {/* Technical Skills & Competencies */}
-        <SkillsSection lang={lang} />
+        {/* Gallery & Activities (Asymmetric Editorial Layout) */}
+        <GallerySection lang={lang} />
 
-        {/* Research Publication & Academic Education */}
-        <ResearchAndEducation lang={lang} />
+        {/* Testimonials (Translucent Floating Quotes) */}
+        <TestimonialsSection lang={lang} />
 
-        {/* Contact Form & Social Profiles */}
+        {/* Contact Panel (Recessed Neumorphic Controls & Raised Button) */}
         <ContactSection lang={lang} />
+
       </main>
 
-      {/* Footer */}
+      {/* Soft Neumorphic Footer */}
       <Footer
         lang={lang}
         onOpenResumeModal={() => setIsResumeModalOpen(true)}
       />
 
-      {/* Printable / Downloadable Resume Modal */}
+      {/* Official Resume Sheet Modal */}
       <ResumeModal
         isOpen={isResumeModalOpen}
         onClose={() => setIsResumeModalOpen(false)}

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Language } from '../types';
 import { personalInfo } from '../data/cvData';
-import { SkeuButton } from './SkeuButton';
-import { ArrowUp, Mail, FileDown, MapPin } from 'lucide-react';
+import { ArrowUp, Mail, FileDown, Globe, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   lang: Language;
@@ -17,86 +16,77 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenResumeModal }) => {
   };
 
   return (
-    <footer className="bg-white border-t border-slate-200 py-12 text-slate-600 text-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      {/* Floating Soft Neumorphic Bar */}
+      <div className="neu-panel-soft p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-100">
-          
-          {/* Brand Info with Profile Avatar */}
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl overflow-hidden border border-slate-200 shadow-xs shrink-0">
-              <img
-                src={personalInfo.contact.photoUrl}
-                alt={personalInfo.name[lang]}
-                className="w-full h-full object-cover object-top"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <div>
-              <p className="font-bold text-slate-900 text-base">
+        {/* Brand Details */}
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-full overflow-hidden neu-circle-node p-0.5 shrink-0">
+            <img
+              src={personalInfo.contact.photoUrl}
+              alt={personalInfo.name[lang]}
+              className="w-full h-full object-cover rounded-full object-top"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-light text-base text-[#243B5D]">
                 {personalInfo.name[lang]}
-              </p>
-              <p className="text-xs text-slate-500">
-                {personalInfo.title[lang]}
-              </p>
+              </span>
+              <span className="text-[11px] font-light text-[#71839A] px-2 py-0.5 rounded-full neu-pill">
+                {isFa ? 'مدیر دبیرستان دخترانه' : 'High School Principal'}
+              </span>
             </div>
-          </div>
-
-          {/* Skeuomorphic Actions */}
-          <div className="flex flex-wrap items-center gap-3">
-            <SkeuButton
-              variant="secondary"
-              size="sm"
-              icon={<FileDown className="w-4 h-4" />}
-              onClick={onOpenResumeModal}
-              id="footer-download-cv-btn"
-            >
-              {isFa ? 'دانلود رزومه' : 'Download CV'}
-            </SkeuButton>
-
-            <a
-              href={`mailto:${personalInfo.contact.email}`}
-              className="skeu-button-secondary p-2.5 rounded-xl text-blue-600 hover:text-blue-800 flex items-center gap-1.5 text-xs font-semibold"
-              aria-label="Email"
-              title="Email"
-              id="footer-email-link"
-            >
-              <Mail className="w-4 h-4" />
-              <span className="hidden sm:inline">{personalInfo.contact.email}</span>
-            </a>
-
-            <button
-              onClick={scrollToTop}
-              className="skeu-button-secondary p-2.5 rounded-xl text-slate-600 hover:text-slate-950 cursor-pointer"
-              aria-label="Scroll to top"
-              title={isFa ? 'بازگشت به بالا' : 'Back to top'}
-              id="footer-scroll-top-btn"
-            >
-              <ArrowUp className="w-4 h-4" />
-            </button>
-          </div>
-
-        </div>
-
-        {/* Sub-footer Copyright */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-          <p>
-            {isFa
-              ? 'تمامی حقوق برای حسنا دوزنده محفوظ است.'
-              : 'All rights reserved © Hosna Doozandeh.'}
-          </p>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-slate-400" />
-              <span>{personalInfo.contact.location[lang]}</span>
-            </span>
-            <span>•</span>
-            <a href={`mailto:${personalInfo.contact.email}`} className="hover:text-blue-600 transition-colors">
-              {personalInfo.contact.email}
-            </a>
+            <p className="text-xs font-light text-[#71839A] mt-0.5">
+              {isFa ? 'مجتمع مدارس هما • آموزش و پرورش منطقه ۵ تهران' : 'Homa Schools • District 5 Tehran'}
+            </p>
           </div>
         </div>
 
+        {/* Action Controls: Resume Modal, Email & Back to top */}
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={onOpenResumeModal}
+            className="neu-button px-4 py-2 rounded-full text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+            id="footer-resume-btn"
+          >
+            <FileDown className="w-3.5 h-3.5 text-[#71839A]" />
+            <span>{isFa ? 'رزومه رسمی' : 'Official CV'}</span>
+          </button>
+
+          <a
+            href={`mailto:${personalInfo.contact.email}`}
+            className="neu-button p-2.5 rounded-full text-[#71839A] hover:text-[#243B5D] cursor-pointer"
+            aria-label="Email"
+          >
+            <Mail className="w-4 h-4" />
+          </a>
+
+          <button
+            onClick={scrollToTop}
+            className="neu-button p-2.5 rounded-full text-[#71839A] hover:text-[#243B5D] cursor-pointer"
+            aria-label={isFa ? 'بازگشت به ابتدای صفحه' : 'Back to top'}
+            title={isFa ? 'بازگشت به بالا' : 'Back to top'}
+          >
+            <ArrowUp className="w-4 h-4" />
+          </button>
+        </div>
+
+      </div>
+
+      {/* Domain & Copyright Subtitle */}
+      <div className="mt-6 text-center text-xs font-light text-[#71839A] flex flex-col sm:flex-row items-center justify-center gap-2">
+        <span>
+          {isFa
+            ? 'تمامی حقوق محفوظ است © ۱۴۰۴ حسنا دوزنده'
+            : 'All rights reserved © 2026 Hosna Doozandeh'}
+        </span>
+        <span className="hidden sm:inline text-[#8FA8C8]">•</span>
+        <span className="font-mono text-[11px]">{personalInfo.contact.website}</span>
       </div>
     </footer>
   );

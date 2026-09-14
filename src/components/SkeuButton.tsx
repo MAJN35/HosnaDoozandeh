@@ -28,23 +28,23 @@ export const SkeuButton: React.FC<SkeuButtonProps> = ({
   ...rest
 }) => {
   const sizeClasses = {
-    sm: 'px-3 py-1.5 text-xs font-semibold rounded-lg gap-1.5',
-    md: 'px-4 py-2 text-sm font-semibold rounded-xl gap-2',
-    lg: 'px-6 py-3 text-base font-bold rounded-xl gap-2.5',
+    sm: 'px-3.5 py-1.5 text-xs font-medium rounded-full gap-1.5',
+    md: 'px-5 py-2.5 text-sm font-medium rounded-full gap-2',
+    lg: 'px-7 py-3.5 text-base font-medium rounded-full gap-2.5',
   }[size];
 
   const variantClasses = {
-    primary: 'skeu-button-primary text-white',
-    secondary: 'skeu-button-secondary text-slate-800 hover:text-slate-950',
-    dark: 'skeu-button-dark text-white',
-    accent: 'skeu-button-primary bg-gradient-to-b from-indigo-600 via-blue-700 to-blue-900 text-white',
+    primary: 'neu-button-primary',
+    secondary: 'neu-button',
+    dark: 'neu-button-primary',
+    accent: 'neu-button text-[#243B5D]',
   }[variant];
 
   const baseClasses = `
     inline-flex items-center justify-center cursor-pointer select-none
-    focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
-    disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none
-    tracking-tight transition-all duration-150 whitespace-nowrap
+    focus:outline-none focus:ring-2 focus:ring-[#8FA8C8]/40 focus:ring-offset-1
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none
+    tracking-normal transition-all duration-200 whitespace-nowrap
     ${sizeClasses}
     ${variantClasses}
     ${className}

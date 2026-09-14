@@ -8,6 +8,8 @@ import {
   certifications,
   academicPublication,
   extracurricularActivities,
+  managerialAchievements,
+  languageSkills,
 } from '../data/cvData';
 import { SkeuButton } from './SkeuButton';
 import {
@@ -22,6 +24,8 @@ import {
   CheckCircle,
   Copy,
   Check,
+  School,
+  Sparkles,
 } from 'lucide-react';
 
 interface ResumeModalProps {
@@ -53,13 +57,14 @@ ${personalInfo.subtitle[modalLang]}
 
 ## Contact Information
 - Email: ${personalInfo.contact.email}
+- Website: ${personalInfo.contact.website}
 - Location: ${personalInfo.contact.location[modalLang]}
 - Birth Year: ${personalInfo.contact.birthYear[modalLang]}
 
 ## Executive Summary
 ${personalInfo.bio[modalLang]}
 
-## Work Experience
+## Managerial & Career History
 ${experiences
   .map(
     (e) => `### ${e.role[modalLang]} - ${e.organization[modalLang]} (${e.period[modalLang]})
@@ -69,25 +74,37 @@ ${e.duties[modalLang].map((d) => `- ${d}`).join('\n')}`
   )
   .join('\n\n')}
 
-## Education
+## Key Managerial Achievements
+${managerialAchievements
+  .map((a) => `- **${a.title[modalLang]}**: ${a.description[modalLang]}`)
+  .join('\n')}
+
+## Academic Education
 ${educationList
   .map(
     (edu) => `- **${edu.degree[modalLang]}** | ${edu.institution[modalLang]} (${edu.period[modalLang]})`
   )
   .join('\n')}
 
-## Certifications
+## Peer-Reviewed Publication
+- **${academicPublication.title[modalLang]}**, ${academicPublication.authors[modalLang]}, ${academicPublication.journal[modalLang]}, ${academicPublication.details[modalLang]}.
+
+## Specialized Professional Courses
 ${certifications
   .map(
     (c) => `- **${c.title[modalLang]}** - ${c.issuer[modalLang]}`
   )
   .join('\n')}
 
-## Academic Publication
-- **${academicPublication.title[modalLang]}**, ${academicPublication.authors[modalLang]}, ${academicPublication.journal[modalLang]}, ${academicPublication.details[modalLang]}.
-
-## Core Skills
+## Skills & Competencies
 ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
+
+## Languages
+- Persian (Native)
+- English: Upper-Intermediate
+
+## Social Responsibility
+- ${extracurricularActivities.map((e) => `${e.title[modalLang]}: ${e.description[modalLang]}`).join('\n')}
 `;
   };
 
@@ -114,34 +131,34 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto print:p-0 print:bg-white print:static">
       
       {/* Modal Dialog Card */}
       <div
-        className="relative w-full max-w-5xl my-auto bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]"
+        className="relative w-full max-w-5xl my-auto bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] print:max-h-none print:shadow-none print:border-none print:rounded-none"
         dir={isFa ? 'rtl' : 'ltr'}
       >
         
         {/* Modal Toolbar (No-Print) */}
-        <div className="no-print px-5 sm:px-7 py-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
+        <div className="no-print px-5 sm:px-7 py-3.5 bg-[#EDF4FA] border-b border-white/60 flex flex-wrap items-center justify-between gap-3 shrink-0">
           
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              {isFa ? 'پیش‌نمایش سند رزومه' : 'Official CV Document'}
+            <span className="text-xs font-light text-[#71839A]">
+              {isFa ? 'پیش‌نمایش سند رسمی رزومه' : 'Official CV Document Preview'}
             </span>
-            <div className="flex items-center rounded-lg bg-slate-200/80 p-0.5 text-xs font-bold">
+            <div className="flex items-center rounded-full bg-[#E5EEF7] p-1 text-xs">
               <button
                 onClick={() => setModalLang('fa')}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
-                  isFa ? 'bg-white shadow-xs text-blue-700' : 'text-slate-600'
+                className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
+                  isFa ? 'neu-button text-[#243B5D] font-normal' : 'text-[#71839A] font-light'
                 }`}
               >
-                فارسی (اصلی)
+                فارسی
               </button>
               <button
                 onClick={() => setModalLang('en')}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
-                  !isFa ? 'bg-white shadow-xs text-blue-700' : 'text-slate-600'
+                className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
+                  !isFa ? 'neu-button text-[#243B5D] font-normal' : 'text-[#71839A] font-light'
                 }`}
               >
                 English
@@ -151,42 +168,52 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            {/* Print / Save PDF Button */}
-            <SkeuButton
-              variant="primary"
-              size="sm"
-              icon={<Printer className="w-3.5 h-3.5" />}
-              onClick={handlePrint}
-              id="modal-print-cv-btn"
-            >
-              {isFa ? 'چاپ یا ذخیره PDF' : 'Print / Save PDF'}
-            </SkeuButton>
-
-            {/* Download Text / Markdown */}
-            <SkeuButton
-              variant="secondary"
-              size="sm"
-              icon={<FileDown className="w-3.5 h-3.5" />}
-              onClick={handleDownloadMarkdown}
-              id="modal-download-md-btn"
-            >
-              {isFa ? 'دانلود متن (MD)' : 'Download .MD'}
-            </SkeuButton>
-
             {/* Copy Markdown */}
             <button
               onClick={handleCopyText}
-              className="skeu-button-secondary p-1.5 rounded-xl text-slate-700 cursor-pointer hidden sm:flex"
-              title={isFa ? 'کپی متن کامل' : 'Copy Full Text'}
+              className="neu-button px-3 py-1.5 rounded-full text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+              title={isFa ? 'کپی متن کامل رزومه' : 'Copy Plain Text'}
+              id="modal-copy-cv-btn"
             >
-              {copiedText ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+              {copiedText ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>{isFa ? 'کپی شد!' : 'Copied!'}</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-[#71839A]" />
+                  <span className="hidden sm:inline">{isFa ? 'کپی متن' : 'Copy'}</span>
+                </>
+              )}
+            </button>
+
+            {/* Download Markdown */}
+            <button
+              onClick={handleDownloadMarkdown}
+              className="neu-button px-3 py-1.5 rounded-full text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+              title={isFa ? 'دانلود فایل متنی' : 'Download Markdown'}
+              id="modal-download-md-btn"
+            >
+              <FileDown className="w-3.5 h-3.5 text-[#71839A]" />
+              <span className="hidden sm:inline">MD</span>
+            </button>
+
+            {/* Print Button */}
+            <button
+              onClick={handlePrint}
+              className="neu-button-primary px-4 py-1.5 rounded-full text-xs font-light flex items-center gap-1.5 cursor-pointer shadow-xs"
+              id="modal-print-cv-btn"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>{isFa ? 'چاپ / PDF' : 'Print / PDF'}</span>
             </button>
 
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="skeu-button-secondary p-1.5 rounded-xl text-slate-500 hover:text-slate-900 cursor-pointer"
-              aria-label="Close modal"
+              className="neu-button p-1.5 rounded-full text-[#71839A] hover:text-[#243B5D] transition-colors cursor-pointer"
+              aria-label="Close"
               id="modal-close-btn"
             >
               <X className="w-4 h-4" />
@@ -194,25 +221,32 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
           </div>
         </div>
 
-        {/* Printable Document Body */}
-        <div className="p-6 sm:p-10 overflow-y-auto print-container bg-white text-slate-900 text-sm">
+        {/* Printable Document View */}
+        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-white print:p-0 print:overflow-visible text-slate-800">
           
           {/* Header Bar matching original CV */}
-          <div className="pb-6 border-b-2 border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="pb-6 border-b-2 border-slate-900 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h1 className="text-3xl font-black text-slate-900 tracking-tight">
                 {personalInfo.name[modalLang]}
               </h1>
-              <p className="text-base font-bold text-blue-800 mt-1">
-                {personalInfo.title[modalLang]}
-              </p>
-              <p className="text-xs text-slate-600 mt-0.5">
+              
+              <div className="flex flex-wrap items-center gap-2 mt-1.5 text-sm font-bold">
+                <span className="text-blue-900 bg-blue-50 px-2.5 py-0.5 rounded border border-blue-200">
+                  {personalInfo.role[modalLang]}
+                </span>
+                <span className="text-slate-700">
+                  {isFa ? 'روان‌شناس (سنجش و اندازه‌گیری)' : 'Psychometrics & Educational Measurement'}
+                </span>
+              </div>
+
+              <p className="text-xs text-slate-600 mt-1 font-medium">
                 {personalInfo.subtitle[modalLang]}
               </p>
             </div>
 
             {/* Official Photo */}
-            <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-xl overflow-hidden border-2 border-slate-300 shadow-sm shrink-0 bg-slate-100">
+            <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-xl overflow-hidden border-2 border-slate-300 shadow-2xs shrink-0 bg-slate-100">
               <img
                 src={personalInfo.contact.photoUrl}
                 alt={personalInfo.name[modalLang]}
@@ -225,12 +259,12 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
           {/* Main 2-Column Grid exactly representing the CV */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pt-6">
             
-            {/* Right Column in Persian (8 cols): Executive Summary, Experience, Responsibilities, Achievements, Publications */}
+            {/* Right Column in Persian (8 cols): Summary, Experience, Achievements, Publication */}
             <div className="md:col-span-8 space-y-6">
               
               {/* Executive Summary */}
               <div>
-                <h2 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-2 border-b border-slate-300 flex items-center gap-1.5">
+                <h2 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-2 border-b border-slate-300 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-blue-700" />
                   <span>{isFa ? 'خلاصه رزومه' : 'Executive Summary'}</span>
                 </h2>
@@ -241,28 +275,31 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
 
               {/* Work Experience */}
               <div>
-                <h2 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-3 border-b border-slate-300 flex items-center gap-1.5">
+                <h2 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-3 border-b border-slate-300 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-blue-700" />
-                  <span>{isFa ? 'سوابق مدیریتی و شغلی' : 'Executive Experience'}</span>
+                  <span>{isFa ? 'سوابق مدیریتی و شغلی' : 'Managerial & Career History'}</span>
                 </h2>
                 <div className="space-y-4">
                   {experiences.map((exp) => (
-                    <div key={exp.id} className="relative ps-3 border-s-2 border-slate-200">
+                    <div key={exp.id} className="relative ps-3 border-s-2 border-slate-300">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-slate-900 text-sm">
+                        <span className="font-black text-slate-900 text-sm">
                           {exp.role[modalLang]}
                         </span>
-                        <span className="font-mono font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded">
+                        <span className="font-mono font-bold text-blue-900 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
                           {exp.period[modalLang]}
                         </span>
                       </div>
-                      <p className="text-xs font-semibold text-slate-600 mt-0.5">
+                      <p className="text-xs font-bold text-slate-600 mt-0.5">
                         {exp.organization[modalLang]}
+                      </p>
+                      <p className="text-xs text-slate-600 mt-1 leading-snug">
+                        {exp.description[modalLang]}
                       </p>
                       <ul className="mt-1.5 space-y-1">
                         {exp.duties[modalLang].map((duty, dIdx) => (
                           <li key={dIdx} className="text-xs text-slate-700 flex items-start gap-1.5">
-                            <span className="text-blue-600 mt-0.5">•</span>
+                            <span className="text-blue-600 mt-0.5 font-bold">•</span>
                             <span>{duty}</span>
                           </li>
                         ))}
@@ -272,49 +309,38 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
                 </div>
               </div>
 
-              {/* Key Achievements */}
+              {/* Key Management Achievements */}
               <div>
-                <h2 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-2.5 border-b border-slate-300 flex items-center gap-1.5">
+                <h2 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-2.5 border-b border-slate-300 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-blue-700" />
-                  <span>{isFa ? 'دستاوردهای مدیریتی' : 'Key Management Achievements'}</span>
+                  <span>{isFa ? 'دستاوردهای مدیریتی' : 'Managerial Achievements'}</span>
                 </h2>
                 <ul className="space-y-1.5 text-xs text-slate-700">
-                  <li className="flex items-start gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{isFa ? 'رشد مستمر و پایدار آمار جذب و ثبت‌نام دانش‌آموزان در دوره‌های مدیریتی متوالی' : 'Sustained enrollment growth across multiple consecutive academic cycles'}</span>
-                  </li>
-                  <li className="flex items-start gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{isFa ? 'تحقق شاخص رضایت‌مندی بالای ۸۰ درصدی اولیا و مراجع نظارتی از استانداردهای آموزشی و انضباط سازمانی' : 'Realized >80% satisfaction ratings from parents and inspectorate boards'}</span>
-                  </li>
-                  <li className="flex items-start gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{isFa ? 'گزینش، استقرار و ارتقای شایستگی‌های حرفه‌ای نیروهای نخبه آموزشی و اداری' : 'Recruitment and pedagogical competency elevation of elite faculty'}</span>
-                  </li>
-                  <li className="flex items-start gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{isFa ? 'طراحی و استقرار برنامه عملیاتی سالانه (Operational Plan) و نظام ارزیابی ورودی استاندارد' : 'Formulation of standard annual Operational Plan (OP) and entry psychometric battery'}</span>
-                  </li>
-                  <li className="flex items-start gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{isFa ? 'ارتقای رتبه ارزیابی عملکرد مدرسه در سطح منطقه با پیاده‌سازی رویکرد بهبود مستمر فرآیندها' : 'Regional school ranking promotion through continuous process improvement'}</span>
-                  </li>
+                  {managerialAchievements.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-slate-900">{item.title[modalLang]}</span>
+                        <span className="text-slate-600 block mt-0.5">{item.description[modalLang]}</span>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
               {/* Research Paper */}
-              <div className="page-break-avoid">
-                <h2 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-2 border-b border-slate-300 flex items-center gap-1.5">
+              <div className="break-inside-avoid">
+                <h2 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-2 border-b border-slate-300 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-blue-700" />
-                  <span>{isFa ? 'مقاله علمی پژوهشی' : 'Scientific Research Paper'}</span>
+                  <span>{isFa ? 'مقاله علمی پژوهشی' : 'Peer-Reviewed Publication'}</span>
                 </h2>
                 <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
-                  <p className="font-bold text-slate-900">
+                  <p className="font-black text-slate-900">
                     {academicPublication.title[modalLang]}
                   </p>
                   <p className="text-slate-600 mt-1">
                     {academicPublication.authors[modalLang]} —{' '}
-                    <span className="font-semibold text-blue-800">
+                    <span className="font-bold text-blue-800">
                       {academicPublication.journal[modalLang]}
                     </span>
                     ، {academicPublication.details[modalLang]}
@@ -329,7 +355,7 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
               
               {/* Contact Info Card */}
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
-                <h3 className="font-bold text-slate-900 pb-1 border-b border-slate-200 flex items-center gap-1.5">
+                <h3 className="font-black text-slate-900 pb-1 border-b border-slate-200 flex items-center gap-1.5">
                   <Mail className="w-3.5 h-3.5 text-blue-600" />
                   <span>{isFa ? 'اطلاعات تماس و هویت' : 'Contact & Profile'}</span>
                 </h3>
@@ -338,18 +364,22 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
                   <span className="break-all">{personalInfo.contact.email}</span>
                 </p>
                 <p className="flex items-center gap-2 text-slate-700">
+                  <Globe className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="font-mono">{personalInfo.contact.website}</span>
+                </p>
+                <p className="flex items-center gap-2 text-slate-700">
                   <MapPin className="w-3.5 h-3.5 text-slate-400" />
                   <span>{personalInfo.contact.location[modalLang]}</span>
                 </p>
                 <p className="flex items-center gap-2 text-slate-700">
                   <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                  <span>{isFa ? 'سال تولد: ۱۳۶۰' : 'Birth Year: 1981'}</span>
+                  <span>{isFa ? `سال تولد: ${personalInfo.contact.birthYear[modalLang]}` : `Birth Year: ${personalInfo.contact.birthYear[modalLang]}`}</span>
                 </p>
               </div>
 
               {/* Skills and Competencies */}
               <div>
-                <h3 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-2.5 border-b border-slate-300">
+                <h3 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-2.5 border-b border-slate-300">
                   {isFa ? 'مهارت‌ها و توانمندی‌ها' : 'Skills & Competencies'}
                 </h3>
                 <ul className="space-y-1.5 text-xs text-slate-700">
@@ -364,15 +394,15 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
 
               {/* Education */}
               <div>
-                <h3 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-2 border-b border-slate-300">
-                  {isFa ? 'تحصیلات' : 'Education'}
+                <h3 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-2 border-b border-slate-300">
+                  {isFa ? 'تحصیلات' : 'Academic Education'}
                 </h3>
                 <div className="space-y-3">
                   {educationList.map((edu, idx) => (
                     <div key={idx} className="text-xs">
-                      <div className="flex items-center justify-between font-bold text-slate-900">
+                      <div className="flex items-center justify-between font-black text-slate-900">
                         <span>{edu.degree[modalLang]}</span>
-                        <span className="font-mono text-slate-400 font-normal">{edu.period[modalLang]}</span>
+                        <span className="font-mono text-slate-500 font-normal">{edu.period[modalLang]}</span>
                       </div>
                       <p className="text-slate-600 mt-0.5">{edu.institution[modalLang]}</p>
                     </div>
@@ -382,14 +412,14 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
 
               {/* Certifications */}
               <div>
-                <h3 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-2 border-b border-slate-300">
+                <h3 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-2 border-b border-slate-300">
                   {isFa ? 'دوره‌های تکمیلی آموزشی' : 'Advanced Training'}
                 </h3>
                 <div className="space-y-2 text-xs">
                   {certifications.map((c, idx) => (
-                    <div key={idx} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                    <div key={idx} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
                       <p className="font-bold text-slate-900">{c.title[modalLang]}</p>
-                      <p className="text-blue-700 font-medium text-[11px] mt-0.5">{c.issuer[modalLang]}</p>
+                      <p className="text-blue-800 font-medium text-[11px] mt-0.5">{c.issuer[modalLang]}</p>
                     </div>
                   ))}
                 </div>
@@ -397,18 +427,23 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
 
               {/* Languages */}
               <div>
-                <h3 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-1.5 border-b border-slate-300">
+                <h3 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-1.5 border-b border-slate-300">
                   {isFa ? 'زبان‌های خارجی' : 'Languages'}
                 </h3>
-                <p className="text-xs font-bold text-slate-800">
-                  {isFa ? 'زبان انگلیسی: متوسط به بالا (Upper-Intermediate)' : 'English: Upper-Intermediate'}
-                </p>
+                <div className="space-y-1 text-xs">
+                  <p className="font-bold text-slate-800">
+                    {isFa ? 'زبان فارسی: مادری / مسلط' : 'Persian: Native'}
+                  </p>
+                  <p className="font-bold text-slate-800">
+                    {isFa ? 'زبان انگلیسی: متوسط به بالا (Upper-Intermediate)' : 'English: Upper-Intermediate'}
+                  </p>
+                </div>
               </div>
 
-              {/* Extracurricular */}
+              {/* Extracurricular / CSR */}
               <div>
-                <h3 className="text-xs font-black uppercase tracking-wider text-blue-900 pb-1.5 mb-2 border-b border-slate-300">
-                  {isFa ? 'فعالیت‌های تکمیلی' : 'Extracurricular'}
+                <h3 className="text-xs font-black uppercase tracking-wider text-blue-950 pb-1.5 mb-2 border-b border-slate-300">
+                  {isFa ? 'فعالیت‌های تکمیلی' : 'Complementary Activities'}
                 </h3>
                 <div className="space-y-2 text-xs text-slate-700">
                   {extracurricularActivities.map((act, idx) => (
@@ -417,7 +452,7 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
                         <span className="font-bold text-slate-900">{act.title[modalLang]}</span>
                         <span className="text-[11px] font-mono text-slate-400">{act.period[modalLang]}</span>
                       </div>
-                      <span className="text-slate-500 text-[11px] leading-tight block mt-0.5">{act.description[modalLang]}</span>
+                      <span className="text-slate-600 text-[11px] leading-tight block mt-0.5">{act.description[modalLang]}</span>
                     </div>
                   ))}
                 </div>
@@ -428,8 +463,8 @@ ${skillsList.map((s) => `- ${s.name[modalLang]}`).join('\n')}
           </div>
 
           {/* Footer note matching original CV */}
-          <div className="mt-8 pt-4 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-400">
-            <span>{isFa ? 'رزومه حرفه‌ای آموزشی و مدیریتی' : 'Professional Educational & Executive Portfolio'}</span>
+          <div className="mt-8 pt-4 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+            <span>{isFa ? 'رزومه رسمی راهبری آموزشی و مدیریتی • مجتمع مدارس هما' : 'Official Educational Leadership & Governance CV'}</span>
             <span>{isFa ? 'صفحه ۱ از ۱' : 'Page 1 of 1'}</span>
           </div>
 

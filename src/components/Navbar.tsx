@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Language } from '../types';
 import { personalInfo } from '../data/cvData';
-import { SkeuButton } from './SkeuButton';
-import { FileDown, Globe, Menu, X, Mail } from 'lucide-react';
+import { FileDown, Globe, Menu, X, Sparkles } from 'lucide-react';
 
 interface NavbarProps {
   lang: Language;
@@ -19,147 +18,130 @@ export const Navbar: React.FC<NavbarProps> = ({
   const isFa = lang === 'fa';
 
   const navLinks = [
-    { href: '#about', label: { fa: 'درباره من', en: 'About' } },
-    { href: '#experience', label: { fa: 'سوابق مدیریتی', en: 'Experience' } },
-    { href: '#projects', label: { fa: 'پروژه‌ها و دستاوردها', en: 'Projects' } },
-    { href: '#skills', label: { fa: 'مهارت‌ها و شایستگی‌ها', en: 'Skills' } },
-    { href: '#research', label: { fa: 'تحصیلات و مقالات', en: 'Research & Education' } },
-    { href: '#contact', label: { fa: 'تماس و ارتباط', en: 'Contact' } },
+    { href: '#about', label: { fa: 'درباره من', en: 'About Me' } },
+    { href: '#journey', label: { fa: 'مسیر حرفه‌ای', en: 'Professional Journey' } },
+    { href: '#philosophy', label: { fa: 'فلسفه آموزشی', en: 'Leadership Philosophy' } },
+    { href: '#achievements', label: { fa: 'دستاوردها', en: 'Achievements' } },
+    { href: '#gallery', label: { fa: 'فعالیت‌ها', en: 'Activities' } },
+    { href: '#contact', label: { fa: 'تماس', en: 'Contact' } },
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header className="fixed top-4 inset-x-3 sm:inset-x-6 max-w-6xl mx-auto z-50">
+      {/* Floating Soft Physical Bar */}
+      <div className="bg-[#EDF4FA]/92 backdrop-blur-xl border border-white/80 rounded-full px-4 sm:px-6 py-2.5 sm:py-3 shadow-[-8px_-8px_20px_rgba(255,255,255,0.95),8px_10px_24px_rgba(175,195,222,0.38),inset_0_1px_1px_rgba(255,255,255,0.95)] flex items-center justify-between transition-all duration-300">
         
-        {/* Name & Title Brand */}
-        <a href="#about" className="flex items-center gap-3.5 group">
-          <div className="w-11 h-11 rounded-2xl overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_3px_6px_rgba(0,0,0,0.15)] border border-slate-200 transition-transform group-hover:scale-105 shrink-0 bg-slate-100">
+        {/* Name / Brand Identity */}
+        <a href="#about" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-full overflow-hidden neu-circle-node p-0.5 shrink-0 transition-transform group-hover:scale-105">
             <img
               src={personalInfo.contact.photoUrl}
               alt={personalInfo.name[lang]}
-              className="w-full h-full object-cover object-top"
-              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover rounded-full object-top"
+              onError={(e) => {
+                // graceful fallback if photo fails
+                (e.target as HTMLElement).style.display = 'none';
+              }}
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-base sm:text-lg text-slate-900 tracking-tight leading-tight">
-              {personalInfo.name[lang]}
-            </span>
-            <span className="text-xs text-slate-500 font-medium line-clamp-1 max-w-[220px] sm:max-w-xs">
-              {personalInfo.title[lang]}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-light text-base sm:text-lg text-[#243B5D] tracking-tight">
+                {personalInfo.name[lang]}
+              </span>
+              <span className="hidden md:inline-block text-[11px] text-[#71839A] font-light px-2 py-0.5 rounded-full neu-pill">
+                {isFa ? 'مدیر دبیرستان دخترانه' : 'High School Principal'}
+              </span>
+            </div>
           </div>
         </a>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-600">
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="hover:text-blue-600 transition-colors py-1"
+              className="px-3.5 py-1.5 rounded-full text-xs font-normal text-[#71839A] hover:text-[#243B5D] hover:bg-[#E5EEF7]/70 transition-all duration-200"
             >
               {link.label[lang]}
             </a>
           ))}
         </nav>
 
-        {/* Action Controls: Language Toggle & Skeuomorphic Resume Button */}
-        <div className="hidden sm:flex items-center gap-3">
-          {/* Skeuomorphic Language Switcher */}
+        {/* Action Buttons: Language Switch & Official Resume Modal */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* Language Toggle */}
           <button
             onClick={onToggleLang}
-            id="lang-toggle-btn"
-            className="skeu-button-secondary px-3 py-1.5 text-xs font-bold rounded-xl flex items-center gap-2 text-slate-700 cursor-pointer"
-            title={isFa ? 'تغییر زبان به انگلیسی' : 'Switch language to Persian'}
+            className="neu-button px-3 py-1.5 rounded-full text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+            aria-label="Toggle Language"
+            id="nav-lang-toggle-btn"
           >
-            <Globe className="w-3.5 h-3.5 text-blue-600" />
-            <span>{isFa ? 'EN (English)' : 'فارسی (FA)'}</span>
+            <Globe className="w-3.5 h-3.5 text-[#71839A]" />
+            <span className="text-[11px]">{isFa ? 'EN' : 'فا'}</span>
           </button>
 
-          {/* Skeuomorphic Download Resume Button */}
-          <SkeuButton
-            variant="primary"
-            size="sm"
-            icon={<FileDown className="w-4 h-4" />}
+          {/* Official Resume Preview Button */}
+          <button
             onClick={onOpenResumeModal}
-            id="nav-download-resume-btn"
+            className="neu-button-primary px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-light flex items-center gap-1.5 cursor-pointer shadow-xs"
+            id="nav-resume-btn"
           >
-            {isFa ? 'دانلود رزومه' : 'Download CV'}
-          </SkeuButton>
-
-          {/* Quick Contact Icon Button */}
-          <SkeuButton
-            variant="dark"
-            size="sm"
-            asLink
-            href="#contact"
-            icon={<Mail className="w-4 h-4" />}
-            id="nav-contact-btn"
-          >
-            {isFa ? 'تماس' : 'Contact'}
-          </SkeuButton>
-        </div>
-
-        {/* Mobile Hamburger Button */}
-        <div className="flex sm:hidden items-center gap-2">
-          <button
-            onClick={onToggleLang}
-            className="skeu-button-secondary p-2 rounded-xl text-slate-700"
-            aria-label="Toggle language"
-          >
-            <span className="text-xs font-bold">{isFa ? 'EN' : 'فا'}</span>
+            <FileDown className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">{isFa ? 'رزومه رسمی' : 'Official CV'}</span>
           </button>
 
+          {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="skeu-button-secondary p-2 rounded-xl text-slate-700"
-            aria-label="Open menu"
-            id="mobile-menu-toggle"
+            className="lg:hidden neu-button p-2 rounded-full text-[#243B5D] flex items-center justify-center cursor-pointer"
+            aria-label="Open Navigation Menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer Navigation (Soft Neumorphic Panel) */}
       {mobileMenuOpen && (
-        <div className="sm:hidden bg-white border-b border-slate-200 px-5 py-4 space-y-3 shadow-lg">
-          <div className="flex flex-col space-y-2 pb-3 border-b border-slate-100">
+        <div className="lg:hidden mt-2 p-5 bg-[#EDF4FA]/96 backdrop-blur-2xl border border-white/80 rounded-[32px] shadow-[-8px_-8px_20px_rgba(255,255,255,0.95),8px_10px_24px_rgba(175,195,222,0.4)] animate-in fade-in slide-in-from-top-3 duration-200">
+          <div className="flex flex-col gap-1.5">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-slate-700 hover:text-blue-600 font-semibold text-sm py-1.5"
+                className="px-4 py-2.5 rounded-2xl text-sm font-normal text-[#243B5D] hover:bg-[#E5EEF7] transition-colors flex items-center justify-between"
               >
-                {link.label[lang]}
+                <span>{link.label[lang]}</span>
+                <span className="text-xs text-[#71839A]">←</span>
               </a>
             ))}
           </div>
-          <div className="flex flex-col gap-2.5 pt-1">
-            <SkeuButton
-              variant="primary"
-              size="md"
-              icon={<FileDown className="w-4 h-4" />}
+
+          <div className="mt-4 pt-4 border-t border-white/60 flex items-center justify-between gap-3">
+            <button
               onClick={() => {
+                onToggleLang();
                 setMobileMenuOpen(false);
-                onOpenResumeModal();
               }}
-              className="w-full justify-center"
+              className="neu-button flex-1 py-2 rounded-full text-xs font-normal text-[#243B5D] flex items-center justify-center gap-1.5"
             >
-              {isFa ? 'مشاهده و دانلود رزومه' : 'View & Download CV'}
-            </SkeuButton>
-            <SkeuButton
-              variant="secondary"
-              size="md"
-              asLink
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full justify-center"
+              <Globe className="w-3.5 h-3.5 text-[#71839A]" />
+              <span>{isFa ? 'English Version' : 'نسخه فارسی'}</span>
+            </button>
+
+            <button
+              onClick={() => {
+                onOpenResumeModal();
+                setMobileMenuOpen(false);
+              }}
+              className="neu-button-primary flex-1 py-2 rounded-full text-xs font-light flex items-center justify-center gap-1.5"
             >
-              {isFa ? 'فرم تماس و پیام' : 'Contact Form'}
-            </SkeuButton>
+              <FileDown className="w-3.5 h-3.5" />
+              <span>{isFa ? 'دریافت رزومه' : 'Official CV'}</span>
+            </button>
           </div>
         </div>
       )}

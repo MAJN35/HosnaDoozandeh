@@ -6,6 +6,8 @@ import {
   CertificateItem,
   PublicationItem,
   ExtracurricularItem,
+  ManagerialAchievement,
+  LeadershipPillar,
 } from '../types';
 
 export const personalInfo = {
@@ -13,23 +15,29 @@ export const personalInfo = {
     fa: 'حسنا دوزنده',
     en: 'Hosna Doozandeh',
   },
+  role: {
+    fa: 'مدیر دبیرستان دخترانه هما (دوره دوم)',
+    en: 'Principal, Homa Girls’ High School (Period 2)',
+  },
   title: {
-    fa: 'عضو هیئت مدیره، مؤسس مدارس دخترانه و متخصص روان‌سنجی',
-    en: 'Board Member, School Founder & Senior Psychometrics Specialist',
+    fa: 'مدیر دبیرستان و روان‌شناس (سنجش و اندازه‌گیری)',
+    en: 'High School Principal & Psychometrics Specialist',
   },
   subtitle: {
-    fa: 'مدیر ارشد امور آموزشی و نماینده حقوقی مؤسسه فرهنگی و آموزشی هما | آموزش و پرورش منطقه ۵ تهران',
-    en: 'Senior Educational Executive & Legal Representative, Homa Educational Institute | Tehran District 5',
+    fa: 'مجتمع مدارس هما | آموزش و پرورش منطقه ۵ تهران',
+    en: 'Homa Schools Complex | Tehran District 5 Education Administration',
   },
   bio: {
-    fa: 'مدیر ارشد مؤسسه آموزشی فرهنگی هما و مؤسس مدارس دخترانه، متخصص روان‌سنجی با بیش از یک دهه سابقه درخشان در سازماندهی و راهبری مدارس هما در مقاطع ابتدایی و متوسطه. دارای کارشناسی ارشد روان‌سنجی و کارشناسی مدیریت آموزشی، با شایستگی‌های اثبات‌شده در تدوین و استقرار برنامه‌های راهبردی، بهینه‌سازی فرآیندهای مدرسه، ارزیابی عملکرد سازمانی و پایش شاخص‌های کلیدی عملکرد (KPI). متبحر در هدایت تیم‌های آموزشی، مدیریت بحران‌های سازمانی، بهبود مستمر استانداردهای یادگیری و ایجاد هم‌افزایی پایدار میان اولیا، کادر آموزشی و مراجع ذی‌ربط.',
-    en: 'Senior Educational Executive at Homa Cultural & Educational Institute and Founder of Homa Girls’ Schools. With over a decade of dedicated leadership across primary and secondary school tiers, holding an M.Sc. in Psychometrics and a B.A. in Educational Management. Proven track record in orchestrating strategic plans, designing and monitoring institutional Key Performance Indicators (KPIs), leading high-performing pedagogical teams, managing crisis contingencies, and standardizing learning outcomes while establishing trust and synergy among parents, regulatory bodies, and staff.',
+    fa: 'دارای موافقت اصولی تأسیس مدرسه از وزارت آموزش‌وپرورش، موسس حقوقی مدارس دخترانه هما و مدیر دبیرستان دخترانه هما، با بیش از یک دهه سابقه درخشان در سازماندهی و راهبری مدارس هما در مقاطع ابتدایی و متوسطه. دارای کارشناسی ارشد روان‌شناسی (روانسنج) و کارشناسی مدیریت آموزشی و برنامه‌ریزی، با شایستگی‌های اثبات‌شده در تدوین و استقرار برنامه‌های راهبردی، بهینه‌سازی فرآیندهای مدرسه، ارزیابی عملکرد سازمانی و پایش شاخص‌های کلیدی عملکرد (KPI). متبحر در هدایت تیم‌های آموزشی، مدیریت بحران‌های سازمانی، بهبود مستمر استانداردهای یادگیری و ایجاد هم‌افزایی پایدار میان اولیا، کادر آموزشی و مراجع ذی‌ربط.',
+    en: 'Holding an official Statutory School Founding Charter from the Ministry of Education, legal founder of Homa Girls’ Schools and Principal of Homa Girls’ High School, with over a decade of distinguished leadership in structuring and governing Homa schools across primary and secondary tiers. Holding an M.Sc. in Psychology (Psychometrician) and a B.A. in Educational Management & Planning, with proven competencies in formulating strategic operational plans, optimizing school workflows, organizational performance evaluation, and monitoring Key Performance Indicators (KPIs). Highly skilled in leading pedagogical teams, crisis resolution, continuous learning standard optimization, and establishing lasting trust and synergy among parents, academic staff, and supervisory bodies.',
   },
   contact: {
     email: 'doozandehhosna@gmail.com',
+    website: 'douzandeh.ir',
+    websiteUrl: 'https://douzandeh.ir',
     location: {
       fa: 'تهران، منطقه ۵',
-      en: 'Tehran, District 5, Iran',
+      en: 'Tehran, District 5',
     },
     birthYear: {
       fa: '۱۳۶۰',
@@ -39,423 +47,171 @@ export const personalInfo = {
   },
   keyMetrics: [
     {
-      value: '10+',
-      label: { fa: 'سال سابقه راهبری آموزشی', en: 'Years Executive Leadership' },
+      value: '۱۰+',
+      label: { fa: 'سال سابقه راهبری در مجتمع مدارس هما', en: 'Years Leading Homa Educational Complex' },
     },
     {
-      value: '3',
-      label: { fa: 'مقطع تحصیلی تأسیس شده', en: 'School Campuses Founded' },
+      value: '۳',
+      label: { fa: 'مقطع تحصیلی تأسیس‌شده دخترانه هما', en: 'Girls’ School Campuses Founded' },
     },
     {
-      value: '80%+',
-      label: { fa: 'شاخص رضایت‌مندی اولیا و مراجع', en: 'Stakeholder Satisfaction Rate' },
+      value: '۸۰٪+',
+      label: { fa: 'شاخص رضایت‌مندی اولیا و مراجع نظارتی', en: 'Parent & Inspectorate Satisfaction' },
     },
     {
-      value: '1',
-      label: { fa: 'مقاله علمی پژوهشی چاپ‌شده', en: 'Peer-Reviewed Research Paper' },
+      value: '۱',
+      label: { fa: 'مقاله علمی پژوهشی در فصلنامه روان‌سنجی', en: 'Peer-Reviewed Psychometric Paper' },
     },
   ],
 };
 
-export const professionalProjects: Project[] = [
+export const highSchoolPillars: LeadershipPillar[] = [
   {
-    id: 'homa-girls-schools-founding',
+    id: 'academic-rigor-konkur',
     title: {
-      fa: 'تأسیس و توسعه زنجیره مدارس دخترانه هما (دبستان، متوسطه اول و دوم)',
-      en: 'Founding & Multi-Tier Expansion of Homa Girls’ Schools',
+      fa: 'راهبری جامع آموزشی و کنکور سراسری',
+      en: 'Academic Rigor & College Prep Governance',
     },
-    category: 'leadership',
-    categoryLabel: {
-      fa: 'توسعه و راهبری سازمانی',
-      en: 'Institutional Leadership',
+    subtitle: {
+      fa: 'آمادگی تحصیلی دوره دوم متوسطه',
+      en: 'Senior High School Academic Pacing',
     },
-    organization: {
-      fa: 'مؤسسه فرهنگی و آموزشی هما (وابسته به صندوق بازنشستگی)',
-      en: 'Homa Educational & Cultural Institute',
+    description: {
+      fa: 'طراحی نظام‌مند تقویم آموزشی، انتخاب اساتید برجسته کنکور و هدایت تحصیلی هدفمند دانش‌آموزان دختر برای کسب رتبه‌های برتر آزمون سراسری و امتحانات نهایی.',
+      en: 'Curating structured curricula, elite faculty recruitment, and strategic academic counseling ensuring girls’ mastery in national entrance exams and diploma finals.',
     },
-    period: {
-      fa: '۱۴۰۱ تاکنون',
-      en: '2022 - Present',
-    },
-    summary: {
-      fa: 'طراحی، اخذ موافقت اصولی، راه‌اندازی و نظارت حقوقی و آموزشی بر تأسیس مدارس دخترانه هما در هر سه مقطع ابتدایی، متوسطه دوره اول و متوسطه دوره دوم.',
-      en: 'Conception, regulatory licensing, architectural setup, and academic oversight for launching Homa Girls’ schools across elementary, junior, and senior secondary tiers.',
-    },
-    keyAchievements: {
-      fa: [
-        'اخذ موافقت اصولی و کلیه مجوزهای رسمی آموزش و پرورش به عنوان مؤسس و نماینده حقوقی',
-        'تکمیل ظرفیت ثبت‌نام در سال‌های نخست با جذب خانواده‌های متقاضی کیفیت‌محور',
-        'ایجاد زیرساخت‌های فیزیکی، اداری و استانداردهای یکپارچه آموزشی و تربیتی',
-      ],
-      en: [
-        'Secured comprehensive statutory accreditations and operating licenses from the Ministry of Education as legal representative',
-        'Achieved full student enrollment capacity within initial opening cohorts',
-        'Established unified multi-tier operational standards and collaborative faculty frameworks',
-      ],
-    },
-    skillsUsed: ['برنامه‌ریزی راهبردی', 'نظارت حقوقی', 'مدیریت سرمایه انسانی', 'مدیریت منابع'],
-    featured: true,
+    iconName: 'GraduationCap',
   },
   {
-    id: 'operational-plan-and-entrance-system',
+    id: 'psychometrics-mental-health',
     title: {
-      fa: 'طراحی و استقرار سند برنامه عملیاتی سالانه (OP) و نظام ارزیابی ورودی استاندارد',
-      en: 'Standardized Annual Operational Plan (OP) & Entrance Assessment Battery',
+      fa: 'سنجش روان‌سنجی و ارتقای سلامت روان (PMHQ)',
+      en: 'Psychometrics & Positive Mental Health (PMHQ)',
     },
-    category: 'psychometrics',
-    categoryLabel: {
-      fa: 'روان‌سنجی و برنامه‌ریزی',
-      en: 'Psychometrics & Planning',
+    subtitle: {
+      fa: 'روان‌شناسی تخصصی سنجش و اندازه‌گیری',
+      en: 'Scientific Assessment & Diagnostics',
     },
-    organization: {
-      fa: 'مجتمع مدارس هما',
-      en: 'Homa Schools Complex',
+    description: {
+      fa: 'به‌کارگیری ابزارهای روان‌سنجی استاندارد جهت شناسایی نقاط قوت شناختی، مدیریت اضطراب امتحان و پایش بهزیستی روان‌شناختی دانش‌آموزان در دوران بلوغ و کنکور.',
+      en: 'Deploying standardized psychometric diagnostics to identify cognitive strengths, mitigate test anxiety, and enhance adolescent psychological well-being.',
     },
-    period: {
-      fa: '۱۳۹۹ - ۱۴۰۴',
-      en: '2020 - 2025',
-    },
-    summary: {
-      fa: 'تدوین مدل هدف‌گذاری سالانه مبتنی بر خروجی‌های یادگیری و پیاده‌سازی آزمون‌های تشخیصی و روان‌سنجی ورودی دانش‌آموزان جهت شناسایی استعدادها و سبک‌های یادگیری.',
-      en: 'Formulation of an outcome-based annual operational plan alongside an objective psychological and diagnostic intake assessment battery for incoming cohorts.',
-    },
-    keyAchievements: {
-      fa: [
-        'طراحی چک‌لیست‌ها و ابزارهای روان‌سنجی ارزیابی شناختی و رفتاری دانش‌آموزان در بدو ورود',
-        'تدوین ماتریس همسوسازی اهداف آموزشی با شاخص‌های کلیدی عملکرد (KPI)',
-        'افزایش انطباق برنامه‌های درسی معلمان با تفاوت‌های فردی دانش‌آموزان',
-      ],
-      en: [
-        'Designed psychometric intake diagnostic tools mapping cognitive styles and behavioral readiness',
-        'Engineered an alignment matrix synchronizing curriculum pacing with measurable KPIs',
-        'Boosted individual student pedagogical support and teacher differentiation precision',
-      ],
-    },
-    skillsUsed: ['طراحی KPI', 'روان‌سنجی', 'سند عملیاتی OP', 'سنجش شناختی'],
-    featured: true,
+    iconName: 'Activity',
   },
   {
-    id: 'district-rank-optimization',
+    id: 'life-skills-ethics',
     title: {
-      fa: 'ارتقای رتبه ارزیابی عملکرد مدرسه در سطح منطقه با پیاده‌سازی رویکرد بهبود مستمر',
-      en: 'District Quality Performance Uplift via Continuous Process Optimization',
+      fa: 'پرورش هویت، اخلاق حرفه‌ای و توانمندسازی دختران',
+      en: 'Identity, Ethical Leadership & Girls’ Empowerment',
     },
-    category: 'leadership',
-    categoryLabel: {
-      fa: 'بهینه‌سازی فرآیندها',
-      en: 'Quality & Process Optimization',
+    subtitle: {
+      fa: 'تربیت نسل کارآفرین و خودباور',
+      en: 'Holistic Character & Self-Efficacy',
     },
-    organization: {
-      fa: 'آموزش و پرورش منطقه ۵ تهران - مجتمع هما',
-      en: 'Tehran District 5 Education Administration',
+    description: {
+      fa: 'آموزش فنون مذاکره، مدیریت استرس، کارگروهی و تصمیم‌گیری راهبردی برای آماده‌سازی دختران به عنوان رهبران و متخصصان فردای جامعه.',
+      en: 'Fostering negotiation prowess, emotional resilience, collaborative teamwork, and ethical leadership to shape confident future women professionals.',
     },
-    period: {
-      fa: '۱۳۹۹ - ۱۴۰۴',
-      en: '2020 - 2025',
-    },
-    summary: {
-      fa: 'بازنگری و مهندسی مجدد فرآیندهای اداری، آموزشی و ارزیابی مدرسه بر اساس چک‌لیست‌های نظارتی و بازرسی‌های منطقه‌ای آموزش و پرورش.',
-      en: 'Systematic re-engineering of administrative workflows, pedagogical evaluations, and governance records based on district supervisory standards.',
-    },
-    keyAchievements: {
-      fa: [
-        'کسب رتبه ممتاز در بازرسی‌های دوره‌ای آموزش و پرورش منطقه ۵ تهران',
-        'ثبت شاخص رضایت‌مندی بالای ۸۰ درصدی اولیا و مراجع نظارتی از انضباط و کیفیت مدرسه',
-        'کاهش چالش‌های اداری و تسهیل پاسخگویی سریع به مراجع ذی‌ربط و خانواده‌ها',
-      ],
-      en: [
-        'Attained top-tier tier appraisal in Tehran District 5 comprehensive school audits',
-        'Maintained sustained >80% satisfaction index among parents and supervisory boards',
-        'Drastically minimized administrative latency and elevated institutional accountability',
-      ],
-    },
-    skillsUsed: ['بهبود مستمر فرآیندها', 'پایش انضباطی', 'ارزیابی منطقه ۵', 'تضمین کیفیت'],
-    featured: true,
+    iconName: 'ShieldCheck',
   },
   {
-    id: 'ai-in-education-learning-analytics',
+    id: 'stakeholder-parent-synergy',
     title: {
-      fa: 'پیاده‌سازی کاربردهای هوش مصنوعی و تحلیل داده‌های یادگیری در پایش تحصیلی',
-      en: 'AI in Education & Learning Analytics Integration Project',
+      fa: 'هم‌افزایی پایدار مدرسه، اولیا و مراجع منطقه ۵',
+      en: 'Strategic School-Parent Synergy & District Compliance',
     },
-    category: 'ai_data',
-    categoryLabel: {
-      fa: 'هوش مصنوعی و داده‌های یادگیری',
-      en: 'AI & Learning Analytics',
+    subtitle: {
+      fa: 'شفافیت و ارتباط اثربخش با ذینفعان',
+      en: 'Trust, Transparency & Accountability',
     },
-    organization: {
-      fa: 'پروژه مشترک پژوهشی و اجرایی هما (دارای گواهینامه بین‌المللی Learnarnuse)',
-      en: 'Homa Innovation Labs (Certified by Learnarnuse Int’l)',
+    description: {
+      fa: 'ارتباط مستمر و اقناعی با انجمن اولیا و مربیان، شفافیت سازمانی و رعایت دقیق اسناد بالادستی و ضوابط نظارتی آموزش و پرورش منطقه ۵ تهران با شاخص رضایت >۸۰٪.',
+      en: 'Open, transparent engagement with parent bodies and strict compliance with Ministry directives, sustaining >80% documented stakeholder trust.',
     },
-    period: {
-      fa: '۱۴۰۲ - ۱۴۰۴',
-      en: '2023 - 2025',
-    },
-    summary: {
-      fa: 'به‌کارگیری الگوهای تحلیلی هوش مصنوعی جهت پایش روند پیشرفت تحصیلی دانش‌آموزان، پیش‌بینی نقاط افت درسی و ارائه بازخورد زودهنگام به دبیران و مشاوران.',
-      en: 'Applied predictive machine learning insights and learning data analytics to monitor academic trajectories, anticipate drop-offs, and recommend targeted counseling.',
-    },
-    keyAchievements: {
-      fa: [
-        'دریافت گواهینامه معتبر بین‌المللی از مؤسسه Learnarnuse در حوزه هوش مصنوعی در آموزش',
-        'پیاده‌سازی داشبوردهای تحلیلی نمرات و شاخص‌های رفتاری دانش‌آموزان',
-        'ارائه پیشنهادات تطبیقی تدریس به کادر معلمان بر اساس داده‌های عملکردی کلاسی',
-      ],
-      en: [
-        'Awarded international credential in AI in Education from Learnarnuse Institute',
-        'Implemented analytical dashboards visualizing student learning progressions and behavioral metrics',
-        'Formulated adaptive instructional guidelines for teaching staff informed by classroom data',
-      ],
-    },
-    skillsUsed: ['هوش مصنوعی در آموزش', 'تحلیل داده‌های یادگیری', 'داشبورد مدیریتی', 'پیش‌بینی عملکرد'],
-    featured: false,
-  },
-  {
-    id: 'student-life-skills-workshops',
-    title: {
-      fa: 'طراحی و اجرای کارگاه‌های رشد فردی و مهارت‌های زندگی دانش‌آموزی',
-      en: 'Youth Personal Growth & Life Skills Workshop Series',
-    },
-    category: 'social',
-    categoryLabel: {
-      fa: 'رشد فردی و مهارت‌های زندگی',
-      en: 'Youth Development',
-    },
-    organization: {
-      fa: 'مراکز آموزشی و پرورشی تهران',
-      en: 'Tehran Educational & Youth Centers',
-    },
-    period: {
-      fa: '۱۳۸۵ تا ۱۳۹۰',
-      en: '2006 - 2011',
-    },
-    summary: {
-      fa: 'تدوین سرفصل‌های تربیتی، هدایت دوره‌های توانمندسازی رفتاری و ارتقای شایستگی‌های ارتباطی و شناختی دانش‌آموزان در سنین حساس نوجوانی.',
-      en: 'Curriculum development and clinical facilitator leadership for student behavioral empowerment, interpersonal communication, and emotional resilience.',
-    },
-    keyAchievements: {
-      fa: [
-        'برگزاری کارگاه‌های مهارتی برای صدها دانش‌آموز در حوزه‌های حل مسئله، مدیریت خشم و ابراز وجود',
-        'ارائه بازخورد روان‌شناختی منظم به اولیا جهت ارتقای سبک فرزندپروری',
-        'ایجاد بانک ابزارهای فعالیت‌محور کارگاهی برای مربیان پرورشی',
-      ],
-      en: [
-        'Conducted developmental workshops for hundreds of adolescents in assertiveness, conflict resolution, and self-efficacy',
-        'Delivered structured feedback reports to parents for parenting style enhancement',
-        'Created a reproducible repository of experiential activity toolkits for school counselors',
-      ],
-    },
-    skillsUsed: ['مهارت‌های زندگی', 'تسهیلگری کارگاه', 'ارتباط با اولیا', 'توانمندسازی شناختی'],
-    featured: false,
-  },
-  {
-    id: 'at-risk-children-psychometric-assessment',
-    title: {
-      fa: 'سنجش روان‌شناختی و توانمندسازی کودکان در معرض آسیب (مسئولیت اجتماعی تخصصی)',
-      en: 'Psychometric Assessment & Support for At-Risk Children (CSR)',
-    },
-    category: 'social',
-    categoryLabel: {
-      fa: 'مسئولیت اجتماعی تخصصی',
-      en: 'Clinical CSR & Outreach',
-    },
-    organization: {
-      fa: 'پروژه‌های خدمات اجتماعی و کلینیکی تخصصی',
-      en: 'Specialized Child Welfare & Clinical Initiatives',
-    },
-    period: {
-      fa: 'فعالیت مستمر تخصصی',
-      en: 'Ongoing Specialized Practice',
-    },
-    summary: {
-      fa: 'اجرای آزمون‌های هنجارشده روان‌سنجی، ارزیابی وضعیت شناختی و پیاده‌سازی پروتکل‌های حمایتی، انطباقی و توانبخشی روانی برای کودکان در شرایط پرخطر.',
-      en: 'Administration of standardized norm-referenced psychometric batteries, cognitive evaluation, and execution of adaptive rehabilitation protocols for vulnerable youth.',
-    },
-    keyAchievements: {
-      fa: [
-        'اجرای آزمون‌های تشخیصی هوش، توجه، اضطراب و سازگاری اجتماعی',
-        'تدوین برنامه‌های مداخله‌ای فردی (IEP) متناسب با ظرفیت‌های روان‌شناختی هر کودک',
-        'همکاری با روان‌شناسان بالینی و مددکاران جهت پیگیری مداخلات توانبخشی',
-      ],
-      en: [
-        'Administered standardized diagnostic batteries evaluating IQ, attention, anxiety, and social adaptation',
-        'Formulated Individualized Intervention Plans (IEPs) calibrated to cognitive profiles',
-        'Collaborated with clinical psychologists and social workers to maintain restorative progress',
-      ],
-    },
-    skillsUsed: ['روان‌سنجی بالینی', 'آزمون‌های هنجارشده', 'توانبخشی روانی', 'مسئولیت اجتماعی'],
-    featured: false,
-  },
-  {
-    id: 'pmhq-research-publication',
-    title: {
-      fa: 'مقاله علمی پژوهشی: بررسی ویژگی‌های روان‌سنجی پرسشنامه سلامت روان مثبت (PMHQ)',
-      en: 'Academic Paper: Psychometric Properties of Positive Mental Health Questionnaire (PMHQ)',
-    },
-    category: 'psychometrics',
-    categoryLabel: {
-      fa: 'پژوهش علمی روان‌سنجی',
-      en: 'Peer-Reviewed Research',
-    },
-    organization: {
-      fa: 'فصلنامه علمی-پژوهشی روان‌سنجی',
-      en: 'Journal of Psychometrics',
-    },
-    period: {
-      fa: 'تابستان ۱۴۰۴ (دوره ۱۴، شماره ۵۳)',
-      en: 'Summer 2025 (Vol. 14, Issue 53)',
-    },
-    summary: {
-      fa: 'بررسی ویژگی‌های روان‌سنجی پرسشنامه سلامت روان مثبت (PMHQ) و رابطه آن با بهزیستی روان‌شناختی در جامعه ایرانی، منتشرشده در فصلنامه علمی-پژوهشی روان‌سنجی، صفحات ۱۶ تا ۲۹.',
-      en: 'Rigorous empirical investigation validating the construct validity, factor structure, reliability, and correlation with psychological well-being of PMHQ within the Iranian population.',
-    },
-    keyAchievements: {
-      fa: [
-        'انتشار مقاله در فصلنامه معتبر علمی-پژوهشی روان‌سنجی با داوری دقیق تخصصی',
-        'اعتبارسنجی ابزار تشخیصی سلامت روان برای استفاده در نهادهای پژوهشی و آموزشی کشور',
-        'تحلیل آماری پیشرفته عاملی و سنجش همبستگی با شاخص‌های بهزیستی روان‌شناختی',
-      ],
-      en: [
-        'Published in the peer-reviewed Journal of Psychometrics with blind academic review',
-        'Standardized a psychometric instrument for positive mental health assessment across educational institutions',
-        'Conducted confirmatory factor analysis and psychological well-being regression modeling',
-      ],
-    },
-    skillsUsed: ['تحلیل آماری', 'اعتبارسنجی ابزار روان‌سنجی', 'روش تحقیق علمی', 'آمار عاملی'],
-    featured: true,
+    iconName: 'Users',
   },
 ];
 
-export const skillsList: SkillItem[] = [
+export const managerialAchievements: ManagerialAchievement[] = [
   {
-    name: {
-      fa: 'برنامه‌ریزی راهبردی و تدوین سند عملیاتی آموزشی (OP)',
-      en: 'Strategic Planning & Educational Operational Plan (OP)',
+    id: 'enrollment-growth',
+    title: {
+      fa: 'رشد مستمر و پایدار آمار جذب و ثبت‌نام دانش‌آموزان',
+      en: 'Continuous & Sustainable Student Enrollment Growth',
     },
-    category: 'leadership',
-    level: 95,
     description: {
-      fa: 'تسلط کامل بر تدوین چشم‌انداز، بودجه‌بندی سالانه و برنامه‌ریزی عملیاتی مجتمع‌های آموزشی چندمقطعی',
-      en: 'End-to-end expertise in academic operational planning, multi-campus governance, and fiscal alignment',
+      fa: 'دستیابی به حداکثر ظرفیت پذیرش دانش‌آموزی در دوره‌های متوالی مدیریتی و ایجاد تقاضای پایدار خانواده‌های نخبه و متقاضی کیفیت.',
+      en: 'Achieved full enrollment quotas across consecutive managerial tenures, cultivating high demand among quality-oriented families.',
     },
-    tags: ['سند تحول', 'برنامه عملیاتی', 'هدف‌گذاری SMART'],
+    metric: 'رشد پایدار',
+    badge: {
+      fa: 'توسعه سازمانی',
+      en: 'Institutional Scale',
+    },
   },
   {
-    name: {
-      fa: 'روان‌سنجی و ارزیابی ابزارهای تشخیصی و تربیتی',
-      en: 'Psychometrics & Diagnostic Educational Instruments',
+    id: 'satisfaction-index',
+    title: {
+      fa: 'تحقق شاخص رضایت‌مندی بالای ۸۰ درصدی اولیا و مراجع نظارتی',
+      en: 'Attainment of >80% Stakeholder & Regulatory Satisfaction',
     },
-    category: 'psychometrics',
-    level: 98,
     description: {
-      fa: 'تخصص در ساخت، هنجاریابی، اعتبارسنجی و اجرای آزمون‌های شناختی، رفتاری و سلامت روان',
-      en: 'Mastery in test construction, norming, validation (PMHQ), and cognitive/behavioral diagnostic testing',
+      fa: 'ثبت بالاترین نمرات ارزیابی در نظرسنجی‌های دوره‌ای اولیا و گزارش‌های بازرسی اداره آموزش و پرورش منطقه ۵ از استانداردهای آموزشی و تربیتی.',
+      en: 'Recorded premier evaluation scores in periodic parent audits and District 5 supervisory reviews regarding pedagogical quality and ethics.',
     },
-    tags: ['هنجاریابی', 'PMHQ', 'آزمون‌های استاندارد', 'اعتبار و روایی'],
+    metric: '۸۰٪+',
+    badge: {
+      fa: 'تضمین کیفیت',
+      en: 'Quality Assurance',
+    },
   },
   {
-    name: {
-      fa: 'طراحی و پایش شاخص‌های کلیدی عملکرد (KPI)',
-      en: 'Design & Monitoring of Key Performance Indicators (KPIs)',
+    id: 'elite-faculty-recruitment',
+    title: {
+      fa: 'گزینش، استقرار و ارتقای شایستگی‌های حرفه‌ای کادر نخبه',
+      en: 'Recruiting, Onboarding & Professional Growth of Elite Faculty',
     },
-    category: 'analytics',
-    level: 92,
     description: {
-      fa: 'پیاده‌سازی نظام سنجش کمّی و کیفی عملکرد معلمان، رضایت اولیا و رشد تحصیلی دانش‌آموزان',
-      en: 'Quantitative and qualitative performance architecture tracking teacher fidelity, satisfaction, and growth',
+      fa: 'استقرار کادر آموزشی و اداری مجرب، استقرار انضباط سازمانی مبتنی بر احترام متقابل و اجرای برنامه‌های مستمر توانمندسازی معلمان.',
+      en: 'Established high-performing instructional and administrative teams, instilled organizational discipline, and enacted continuous teacher development.',
     },
-    tags: ['KPI سازمانی', 'داشبورد عملکرد', 'مدیریت داده‌محور'],
+    metric: 'کادر نخبه',
+    badge: {
+      fa: 'سرمایه انسانی',
+      en: 'Human Capital',
+    },
   },
   {
-    name: {
-      fa: 'مدیریت و توانمندسازی سرمایه‌های انسانی',
-      en: 'Human Capital Leadership & Talent Development',
+    id: 'annual-operational-plan',
+    title: {
+      fa: 'طراحی و استقرار برنامه عملیاتی سالانه (OP) و نظام ارزیابی ورودی',
+      en: 'Design & Deployment of Annual Operational Plan (OP) & Intake Battery',
     },
-    category: 'leadership',
-    level: 94,
     description: {
-      fa: 'گزینش، استقرار و ارتقای شایستگی‌های حرفه‌ای کادر نخبه آموزشی و کادر اداری مدارس',
-      en: 'Recruiting, mentoring, and retaining top-tier teaching faculty and school administrative personnel',
+      fa: 'پیاده‌سازی سند عملیاتی مدون مبتنی بر اهداف SMART، ماتریس پایش شاخص‌های عملکردی و آزمون‌های هنجارشده روان‌سنجی در بدو ورود دانش‌آموزان.',
+      en: 'Institutionalized an outcome-based operational plan with SMART goals, KPI tracking dashboards, and standardized intake diagnostic assessments.',
     },
-    tags: ['گزینش کادر نخبه', 'توانمندسازی معلمان', 'ارزیابی ۳۶۰ درجه'],
+    metric: 'سند OP',
+    badge: {
+      fa: 'برنامه‌ریزی راهبردی',
+      en: 'Strategic Planning',
+    },
   },
   {
-    name: {
-      fa: 'کاربردهای هوش مصنوعی در آموزش و تحلیل داده‌های یادگیری',
-      en: 'AI in Education & Learning Analytics (Learnarnuse Certified)',
+    id: 'district-ranking-elevation',
+    title: {
+      fa: 'ارتقای رتبه ارزیابی عملکرد مدرسه در سطح آموزش و پرورش منطقه',
+      en: 'Elevation of School Performance Ranking Across District Inspectorates',
     },
-    category: 'edtech',
-    level: 88,
     description: {
-      fa: 'به‌کارگیری ابزارهای نوین هوش مصنوعی و داده‌کاوی در پایش افت تحصیلی و یادگیری انطباقی',
-      en: 'Application of predictive AI models and data analytics to optimize personalized student learning paths',
+      fa: 'کسب رتبه‌های برتر منطقه‌ای در ارزیابی‌های جامع سالانه آموزش و پرورش با استقرار رویکرد بهبود مستمر فرآیندها و استانداردهای اعتباربخشی.',
+      en: 'Attained distinguished rankings in district-wide comprehensive audits through the execution of continuous quality improvement processes.',
     },
-    tags: ['AI در آموزش', 'تحلیل داده‌های یادگیری', 'Learnarnuse', 'پیش‌بینی تحصیلی'],
-  },
-  {
-    name: {
-      fa: 'حل مسئله سازمانی، تصمیم‌گیری و مدیریت بحران',
-      en: 'Organizational Problem Solving & Crisis Management',
+    metric: 'رتبه برتر',
+    badge: {
+      fa: 'منطقه ۵ تهران',
+      en: 'District 5 Tehran',
     },
-    category: 'leadership',
-    level: 96,
-    description: {
-      fa: 'مهارت عالی در مدیریت شرایط غیرمنتظره، تعارضات بین‌فردی و تصمیم‌گیری راهبردی تحت فشار',
-      en: 'Proven resilience in mitigating operational contingencies, dispute resolution, and emergency school governance',
-    },
-    tags: ['مدیریت بحران', 'تصمیم‌گیری تحت فشار', 'حل تعارض'],
-  },
-  {
-    name: {
-      fa: 'راهبری یکپارچه مجتمع‌های آموزشی چندمقطعی',
-      en: 'Unified Leadership of Multi-Tier Educational Campuses',
-    },
-    category: 'leadership',
-    level: 93,
-    description: {
-      fa: 'هماهنگی زنجیره‌ای مقاطع دبستان، دوره اول و دوره دوم متوسطه جهت استمرار کیفیت و متدولوژی',
-      en: 'Synchronizing primary and secondary divisions to ensure curricular continuity and operational harmony',
-    },
-    tags: ['مدارس دخترانه و پسرانه', 'تداوم یادگیری', 'مدیریت مجتمع'],
-  },
-  {
-    name: {
-      fa: 'توسعه سازمانی و نظارت بر امور حقوقی مدارس',
-      en: 'Institutional Development & Legal Regulatory Compliance',
-    },
-    category: 'leadership',
-    level: 91,
-    description: {
-      fa: 'نمایندگی حقوقی مؤسسه، اخذ مجوزها، تسلط بر اسناد بالادستی و ضوابط آموزش و پرورش',
-      en: 'Full statutory representation, school charter compliance, and navigation of Ministry directives',
-    },
-    tags: ['نمایندگی حقوقی', 'موافقت اصولی', 'اسناد بالادستی'],
-  },
-  {
-    name: {
-      fa: 'مذاکره اثربخش و مدیریت ارتباط با ذینفعان و اولیا',
-      en: 'Stakeholder Engagement & Parent Relationship Management',
-    },
-    category: 'leadership',
-    level: 95,
-    description: {
-      fa: 'ارتباط همدلانه و سازنده با اولیای دانش‌آموزان، هیئت‌مدیره و بازرسان منطقه‌ای با شاخص رضایت >۸۰٪',
-      en: 'Empathetic diplomacy maintaining >80% satisfaction rates across parent communities and school boards',
-    },
-    tags: ['رضایت اولیا', 'مذاکره اقناعی', 'ارتباطات سازمانی'],
-  },
-  {
-    name: {
-      fa: 'بهینه‌سازی و بهبود مستمر فرآیندهای آموزشی',
-      en: 'Educational Process Optimization & Continuous Improvement',
-    },
-    category: 'analytics',
-    level: 92,
-    description: {
-      fa: 'بازمهندسی روندهای کلاسی، امتحانات، مشاوره تحصیلی و گزارش‌دهی دوره‌ای به منظور کاهش اتلاف منابع',
-      en: 'Re-engineering instructional rhythms, examination workflows, and counseling pipelines',
-    },
-    tags: ['بهبود مستمر', 'کایزن آموزشی', 'ارزیابی کیفیت'],
   },
 ];
 
@@ -463,7 +219,7 @@ export const experiences: ExperienceItem[] = [
   {
     id: 'director-girls-high-school',
     role: {
-      fa: 'مدیر دوره دوم متوسطه',
+      fa: 'مدیر دوره دوم',
       en: 'Director of Senior Secondary School (Period 2)',
     },
     organization: {
@@ -478,29 +234,31 @@ export const experiences: ExperienceItem[] = [
     type: 'management',
     description: {
       fa: 'هدایت و راهبری کلیه امور آموزشی، تربیتی، پرورشی و کنکور در مقطع حساس دوره دوم متوسطه دخترانه هما.',
-      en: 'Leading comprehensive academic, counseling, and college preparation operations for senior high school students.',
+      en: 'Leading comprehensive academic, pedagogical, counseling, and national university entrance exam operations for senior high school students.',
     },
     duties: {
       fa: [
         'برنامه‌ریزی راهبردی تحصیلی و هدایت تحصیلی پیشرفته برای کنکور سراسری و امتحانات نهایی',
         'نظارت مستمر بر عملکرد دبیران تخصصی و ارزیابی خروجی‌های یادگیری دانش‌آموزان',
         'ارتقای شاخص‌های انضباطی، بهداشت روان و آمادگی روانی دانش‌آموزان برای ورود به دانشگاه',
+        'ارتباط منظم و مشاوره‌ای با خانواده‌ها جهت همسوسازی روند آموزشی با شرایط داوطلبان',
       ],
       en: [
         'Formulating comprehensive academic schedules and high-stakes national exam preparation pathways',
         'Monitoring specialized faculty teaching methods and evaluating student mastery milestones',
         'Fostering psychological readiness, study habits, and emotional resilience for higher education',
+        'Maintaining regular consultations with families to synchronize academic progress with student needs',
       ],
     },
   },
   {
     id: 'founder-girls-schools',
     role: {
-      fa: 'مؤسس و نماینده حقوقی مدارس دخترانه هما',
+      fa: 'موسس مدارس دخترانه',
       en: 'Founder & Legal Representative, Homa Girls’ Schools',
     },
     organization: {
-      fa: 'مؤسسه فرهنگی و آموزشی هما',
+      fa: 'مؤسسه فرهنگی آموزشی هما',
       en: 'Homa Cultural & Educational Institute',
     },
     period: {
@@ -510,31 +268,33 @@ export const experiences: ExperienceItem[] = [
     isCurrent: true,
     type: 'founding',
     description: {
-      fa: 'تأسیس زنجیره مدارس دخترانه هما در مقاطع دبستان، دوره اول و دوره دوم دبیرستان به همراه نمایندگی رسمی حقوقی.',
-      en: 'Founding and legally incorporating the full continuum of Homa Girls’ campuses (Elementary, Junior High, Senior High).',
+      fa: 'موسس مدارس دخترانه هما در مقاطع دبستان و دوره اول و دوم دبیرستان، و نماینده حقوقی موسسه در مراجع آموزش و پرورش.',
+      en: 'Founder of Homa Girls’ Schools across Elementary, Junior High, and Senior High tiers, and statutory Legal Representative of the institute.',
     },
     duties: {
       fa: [
-        'دریافت موافقت اصولی و مجوزهای رسمی تأسیس از مراجع آموزش و پرورش کشور',
-        'برنامه‌ریزی معماری فضاها، تجهیز زیرساخت‌های آزمایشگاهی، فناوری و رفاهی مدارس',
-        'ساماندهی چارت سازمانی و تدوین آئین‌نامه‌های اختصاصی رفتاری و آموزشی مدارس دخترانه',
+        'اخذ موافقت اصولی و کلیه مجوزهای رسمی تأسیس از وزارت آموزش و پرورش',
+        'برنامه‌ریزی معماری فضاها، تجهیز آزمایشگاه‌ها، کتابخانه‌ها و زیرساخت‌های فناوری',
+        'ساماندهی ساختار اداری و تدوین آئین‌نامه‌های انضباطی و آموزشی منطبق با اسناد بالادستی',
+        'توسعه یکپارچه هویت برند آموزشی هما در مقاطع سه‌گانه دخترانه',
       ],
       en: [
-        'Procured statutory charters, facility accreditations, and regulatory permissions',
+        'Procured statutory charters, facility accreditations, and regulatory permissions from the Ministry of Education',
         'Oversaw campus architectural layout, laboratory installations, and tech infrastructure',
-        'Architected organizational hierarchies and custom student behavioral codes',
+        'Architected administrative structures and student behavioral codes aligned with regulatory directives',
+        'Expanded unified institutional branding across all three girls’ school tiers',
       ],
     },
   },
   {
     id: 'board-member-deputy-ceo',
     role: {
-      fa: 'عضو هیئت مدیره و قائم مقام مدیرعامل',
-      en: 'Board Member & Deputy Chief Executive Officer',
+      fa: 'عضو هیئت مدیره موظف و قائم مقام مدیر عامل',
+      en: 'Full-Time Executive Board Member & Deputy CEO',
     },
     organization: {
-      fa: 'مؤسسه آموزشی فرهنگی هما (وابسته به صندوق بازنشستگی هما)',
-      en: 'Homa Educational & Cultural Institute (Retirement Fund Subsidiary)',
+      fa: 'مؤسسه آموزش فرهنگی هما',
+      en: 'Homa Educational & Cultural Institute',
     },
     period: {
       fa: '۱۴۰۰ تاکنون',
@@ -543,19 +303,21 @@ export const experiences: ExperienceItem[] = [
     isCurrent: true,
     type: 'executive',
     description: {
-      fa: 'عضو موظف هیئت مدیره و هدایت‌کننده سیاست‌های کلان سازمانی، توسعه پایدار و نظارت بر کلیه شعب مجتمع مدارس هما.',
-      en: 'Full-time executive board member formulating institutional governance, financial sustainability, and multi-campus oversight.',
+      fa: 'عضو هیئت مدیره موظف و قائم‌مقام مدیرعامل در تدوین خط‌مشی‌های کلان، مدیریت بحران‌های سازمانی و نظارت عالیه بر مجتمع مدارس هما.',
+      en: 'Full-time executive board member and Deputy CEO directing macro governance, crisis mediation, and top-level supervision of Homa school branches.',
     },
     duties: {
       fa: [
         'مشارکت در تصمیم‌گیری‌های کلان بودجه‌ای، سرمایه‌گذاری توسعه‌ای و تراز مالی مؤسسه',
         'پایش کلان شاخص‌های رضایت اولیا، بازدهی آموزشی و انطباق با قوانین اداری',
-        'مذاکره و ارتباط راهبردی با مدیران ارشد صندوق بازنشستگی هما و وزارت آموزش و پرورش',
+        'مذاکره و ارتباط راهبردی با مدیران ارشد صندوق بازنشستگی و اداره آموزش و پرورش منطقه ۵',
+        'بهینه‌سازی مستمر فرآیندهای زنجیره‌ای مدارس مجتمع هما',
       ],
       en: [
         'Participating in executive capital allocation, campus investments, and annual fiscal budgets',
         'Auditing institutional stakeholder satisfaction and national regulatory compliance',
-        'Conducting high-level negotiations with fund trustees and educational authorities',
+        'Conducting high-level strategic negotiations with trustees and educational authorities',
+        'Continuously optimizing cross-campus operational workflows across all Homa schools',
       ],
     },
   },
@@ -576,19 +338,21 @@ export const experiences: ExperienceItem[] = [
     isCurrent: false,
     type: 'management',
     description: {
-      fa: 'راهبری ۵ ساله دبستان پسرانه هما، ارتقای چشمگیر رتبه در منطقه ۵ و تحقق شاخص رضایت‌مندی بالای ۸۰٪.',
-      en: 'Five-year tenure as Elementary Principal, driving unprecedented enrollment growth and District 5 quality ranking.',
+      fa: 'راهبری ۵ ساله دبستان پسرانه هما، ارتقای رتبه در ارزیابی‌های منطقه ۵ و تحقق شاخص رضایت بالای ۸۰ درصدی اولیا.',
+      en: 'Five-year tenure as Elementary School Principal, driving sustained enrollment growth, premier District 5 quality rankings, and >80% satisfaction.',
     },
     duties: {
       fa: [
         'رشد مستمر و پایدار آمار جذب و ثبت‌نام دانش‌آموزان در دوره‌های مدیریتی متوالی',
         'تحقق شاخص رضایت‌مندی بالای ۸۰ درصدی اولیا و مراجع نظارتی از استانداردهای آموزشی',
-        'پیاده‌سازی برنامه عملیاتی سالانه (Operational Plan) و نظام ارزیابی ورودی استاندارد',
+        'طراحی و استقرار برنامه عملیاتی سالانه (Operational Plan) و نظام ارزیابی ورودی استاندارد',
+        'گزینش و توانمندسازی کادر آموزشی معلمان پایه و استقرار انضباط سازمانی',
       ],
       en: [
         'Led consecutive years of enrollment expansion and student retention rates',
         'Earned verified >80% parent and regulatory satisfaction ratings',
-        'Instituted standard entry diagnostic protocols and comprehensive operational planning',
+        'Instituted standardized intake diagnostic batteries and comprehensive annual operational plans',
+        'Recruited and empowered grade-level elementary teachers while elevating school discipline',
       ],
     },
   },
@@ -609,19 +373,19 @@ export const experiences: ExperienceItem[] = [
     isCurrent: false,
     type: 'management',
     description: {
-      fa: 'مدیریت هماهنگی‌های اجرایی داخلی مدرسه، مشاوره به اولیا و طراحی برنامه‌های مداخله تحصیلی.',
-      en: 'Directing school day-to-day internal administration, parent counseling, and student intervention programs.',
+      fa: 'مدیریت اجرایی داخلی مدرسه، مشاوره تحصیلی و رفتاری به خانواده‌ها و پیاده‌سازی آزمون‌های تشخیصی شناختی.',
+      en: 'Directing internal school operations, delivering cognitive and behavioral consultations to families, and implementing diagnostic intake batteries.',
     },
     duties: {
       fa: [
-        'ساماندهی فرآیندهای ثبت‌نام، بایگانی تحصیلی و ارتباطات اداری درون‌مدرسه‌ای',
-        'ارائه مشاوره‌های تخصصی روان‌سنجی و تشخیصی به دانش‌آموزان دارای اختلالات یادگیری جزئی',
-        'هماهنگی میان معلمان مقطع جهت یکدست‌سازی شیوه‌های تدریس و ارزیابی توصیفی',
+        'ساماندهی فرآیندهای ثبت‌نام، بایگانی تحصیلی و امور انضباطی مدرسه',
+        'ارائه مشاوره‌های تخصصی روان‌سنجی به دانش‌آموزان و اولیا',
+        'هماهنگی جلسات گروه‌های آموزشی معلمان جهت همسوسازی رویکردهای تدریس',
       ],
       en: [
-        'Structured administrative admissions pipelines and institutional student records',
-        'Delivered psychometric evaluations for students requiring learning accommodations',
-        'Aligned grade-level teaching teams with modern formative assessment methodologies',
+        'Structured admissions workflows, academic archives, and school administrative routines',
+        'Delivered psychometric evaluations and counseling for students and parents',
+        'Facilitated faculty collaborative meetings to harmonize pedagogical approaches',
       ],
     },
   },
@@ -634,53 +398,81 @@ export const educationList: EducationItem[] = [
       en: 'Master of Science (M.Sc.) in Psychometrics',
     },
     institution: {
-      fa: 'دانشگاه آزاد اسلامی، واحد تهران مرکزی',
+      fa: 'دانشگاه آزاد اسلامی، واحد تهران مرکز',
       en: 'Islamic Azad University, Central Tehran Branch',
     },
     period: {
-      fa: '۱۳۹۲ - ۱۳۹۴',
+      fa: '۱۳۹۲ – ۱۳۹۴',
       en: '2013 - 2015',
     },
     field: {
-      fa: 'اندازه‌گیری و سنجش ویژگی‌های شناختی، شخصیتی و ابزارهای تشخیصی',
-      en: 'Psychometric Measurement, Quantitative Diagnostics & Tool Validation',
+      fa: 'روان‌شناسی سنجش و اندازه‌گیری، ساخت و اعتبارسنجی آزمون‌ها',
+      en: 'Psychometrics, Measurement & Evaluation, Test Construction & Validation',
     },
     highlights: {
       fa: [
         'پایان‌نامه تخصصی در حوزه ساختار عاملی و اعتبارسنجی ابزارهای سلامت روان',
-        'تسلط بر مدل‌سازی معادلات ساختاری (SEM)، تحلیل عاملی اکتشافی و تاییدی',
+        'تسلط بر مدل‌سازی معادلات ساختاری (SEM) و تحلیل عاملی اکتشافی و تاییدی',
       ],
       en: [
-        'Specialized thesis on factor structures and validity of mental health instruments',
+        'Specialized research on factor structures and validity of positive mental health instruments',
         'Proficiency in structural equation modeling (SEM) and factor analysis',
       ],
     },
   },
   {
     degree: {
-      fa: 'کارشناسی مدیریت (حوزه آموزش)',
-      en: 'Bachelor of Arts (B.A.) in Educational Management',
+      fa: 'کارشناسی مدیریت برنامه‌ریزی آموزشی',
+      en: 'Bachelor of Arts (B.A.) in Educational Planning & Management',
     },
     institution: {
-      fa: 'دانشگاه آزاد اسلامی',
-      en: 'Islamic Azad University',
+      fa: 'دانشگاه آزاد اسلامی، واحد تهران مرکز',
+      en: 'Islamic Azad University, Central Tehran Branch',
     },
     period: {
-      fa: '۱۳۸۵ - ۱۳۸۹',
-      en: '2006 - 2010',
+      fa: '۱۳۸۷ – ۱۳۸۹',
+      en: '2008 - 2010',
     },
     field: {
-      fa: 'مدیریت و برنامه‌ریزی سازمان‌های آموزشی و اصول نظارت سازمانی',
-      en: 'Educational Systems Management, Institutional Leadership & Supervision',
+      fa: 'برنامه‌ریزی آموزشی، نظارت سازمانی، مدیریت منابع انسانی مدارس',
+      en: 'Educational Systems Planning, School Governance & Human Resources',
     },
     highlights: {
       fa: [
-        'مبانی بودجه‌بندی آموزشی، منابع انسانی و طراحی سازمان‌های یادگیرنده',
-        'مطالعه سیستم‌های مدیریت نوین مدارس و سنجش بازدهی آموزشی',
+        'مبانی تدوین سند برنامه عملیاتی سالانه (OP) و ارزیابی کیفیت در مدارس',
+        'روش‌های نوین سازماندهی و مدیریت مؤسسات آموزشی',
       ],
       en: [
-        'Principles of school budgeting, human resources, and learning organization design',
-        'Contemporary school leadership frameworks and educational productivity audit',
+        'Principles of school operational planning and educational quality assurance',
+        'Modern school organization and institutional human capital management',
+      ],
+    },
+  },
+  {
+    degree: {
+      fa: 'کاردانی علوم تربیتی',
+      en: 'Associate Degree (A.A.) in Educational Sciences',
+    },
+    institution: {
+      fa: 'دانشگاه آزاد اسلامی، واحد تهران مرکز',
+      en: 'Islamic Azad University, Central Tehran Branch',
+    },
+    period: {
+      fa: '۱۳۸۵ – ۱۳۸۷',
+      en: '2006 - 2008',
+    },
+    field: {
+      fa: 'مبانی روان‌شناسی رشد، روش‌ها و فنون تدریس، اصول تعلیم و تربیت',
+      en: 'Developmental Psychology, Instructional Methodologies & Child Pedagogy',
+    },
+    highlights: {
+      fa: [
+        'روان‌شناسی رشد کودک و نوجوان و روش‌های تدریس تعاملی',
+        'مبانی سنجش و ارزشیابی پیشرفت تحصیلی',
+      ],
+      en: [
+        'Child and adolescent developmental psychology and interactive pedagogy',
+        'Foundations of academic progress assessment and classroom evaluation',
       ],
     },
   },
@@ -689,39 +481,244 @@ export const educationList: EducationItem[] = [
 export const certifications: CertificateItem[] = [
   {
     title: {
-      fa: 'کاربردهای هوش مصنوعی در آموزش و تحلیل داده‌های یادگیری',
-      en: 'Applications of AI in Education & Learning Data Analytics',
-    },
-    issuer: {
-      fa: 'مؤسسه بین‌المللی Learnarnuse (دارای گواهینامه معتبر)',
-      en: 'Learnarnuse International Institute (Accredited Certificate)',
-    },
-    credentialType: {
-      fa: 'گواهی‌نامه بین‌المللی معتبر',
-      en: 'International Professional Credential',
-    },
-    focus: {
-      fa: 'تحلیل داده‌های یادگیری دانش‌آموزان، یادگیری انطباقی و ابزارهای هوشمند پایش تحصیلی',
-      en: 'Predictive educational modeling, learning analytics, and adaptive AI instructional design',
-    },
-  },
-  {
-    title: {
       fa: 'اصول پیشرفته مدیریت و راهبری مدارس آینده',
       en: 'Advanced Principles of Management & Leadership in Schools of Tomorrow',
     },
     issuer: {
-      fa: 'مؤسسه پژوهشی مدارس فردا (دارای گواهینامه معتبر)',
-      en: 'Future Schools Research Institute (Accredited Certificate)',
+      fa: 'مؤسسه پژوهشی مدارس فردا',
+      en: 'Future Schools Research Institute',
     },
     credentialType: {
-      fa: 'گواهی‌نامه تخصصی مدیریتی',
+      fa: 'گواهینامه تخصصی مدیریتی',
       en: 'Executive Leadership Credential',
     },
     focus: {
-      fa: 'راهبری تحول‌گرا، مدارس داده‌محور، استانداردسازی فرآیندها و مدیریت استعدادها',
-      en: 'Transformational governance, data-informed school models, and talent management',
+      fa: 'راهبری مدارس تحول‌آفرین، استانداردهای اعتباربخشی، مدیریت هوشمند و ارتقای کیفیت',
+      en: 'Transformational school leadership, accreditation standards, and future-ready institutions',
     },
+  },
+  {
+    title: {
+      fa: 'اخلاق حرفه‌ای در مدیریت',
+      en: 'Professional Ethics in Educational Management',
+    },
+    issuer: {
+      fa: 'دکتر محسن طباطبایی',
+      en: 'Dr. Mohsen Tabatabaei',
+    },
+    credentialType: {
+      fa: 'گواهینامه تخصصی',
+      en: 'Professional Certification',
+    },
+    focus: {
+      fa: 'موازین اخلاق سازمانی، تعهد حرفه‌ای، ایجاد اعتماد پایدار میان ارکان مدرسه و اولیا',
+      en: 'Organizational ethics, professional integrity, and institutional stakeholder trust',
+    },
+  },
+  {
+    title: {
+      fa: 'کارگاه مهارت‌های مدیریت استرس',
+      en: 'Stress Management & Coping Strategies Workshop',
+    },
+    issuer: {
+      fa: 'دکتر مختاری',
+      en: 'Dr. Mokhtari',
+    },
+    credentialType: {
+      fa: 'گواهینامه کارگاهی تخصصی',
+      en: 'Specialized Workshop Certificate',
+    },
+    focus: {
+      fa: 'تکنیک‌های تنظیم هیجان، کنترل استرس شغلی کادر آموزشی و مدیریت اضطراب داوطلبان کنکور',
+      en: 'Emotional regulation, teacher occupational stress mitigation, and student exam anxiety',
+    },
+  },
+  {
+    title: {
+      fa: 'اصول و فنون مذاکره',
+      en: 'Principles & Techniques of Effective Negotiation',
+    },
+    issuer: {
+      fa: 'دکتر محسن طباطبایی',
+      en: 'Dr. Mohsen Tabatabaei',
+    },
+    credentialType: {
+      fa: 'گواهینامه تخصصی مدیریتی',
+      en: 'Executive Negotiation Credential',
+    },
+    focus: {
+      fa: 'مذاکره اقناعی با اولیا، تعامل راهبردی با بازرسان و مراجع بالادستی و حل تعارضات سازمانی',
+      en: 'Persuasive negotiation with parents, administrative authorities, and conflict mediation',
+    },
+  },
+  {
+    title: {
+      fa: 'فرزندپروری و ارتباط موثر با کودک',
+      en: 'Effective Parenting & Child Communication',
+    },
+    issuer: {
+      fa: 'دکتر معصومه موسوی',
+      en: 'Dr. Masoumeh Mousavi',
+    },
+    credentialType: {
+      fa: 'گواهینامه تخصصی روان‌شناختی',
+      en: 'Specialized Counseling Credential',
+    },
+    focus: {
+      fa: 'روان‌شناسی تعامل با نوجوانان و کودکان، مشاوره‌های حمایتی به اولیا و هماهنگی خانه و مدرسه',
+      en: 'Adolescent and child relational psychology, parent counseling, and home-school alignment',
+    },
+  },
+  {
+    title: {
+      fa: 'مدیریت استراتژیک',
+      en: 'Strategic Management & Organizational Direction',
+    },
+    issuer: {
+      fa: 'دکتر محسن طباطبایی',
+      en: 'Dr. Mohsen Tabatabaei',
+    },
+    credentialType: {
+      fa: 'گواهینامه تخصصی',
+      en: 'Strategic Leadership Certification',
+    },
+    focus: {
+      fa: 'تدوین مدل‌های استراتژیک، پایش KPI، تحلیل SWOT سازمانی و مدیریت توسعه پایدار مدارس',
+      en: 'Strategic model formulation, KPI tracking, organizational SWOT analysis, and sustainable growth',
+    },
+  },
+];
+
+export const skillsList: SkillItem[] = [
+  {
+    name: {
+      fa: 'برنامه‌ریزی راهبردی و تدوین سند عملیاتی آموزشی',
+      en: 'Strategic Planning & Educational Operational Plan (OP)',
+    },
+    category: 'leadership',
+    level: 98,
+    description: {
+      fa: 'تدوین سند عملیاتی سالانه (OP)، تنظیم تقویم اجرایی و همسوسازی اهداف آموزشی با اسناد بالادستی',
+      en: 'Formulating annual operational plans (OP), executive calendars, and aligning academic targets',
+    },
+    tags: ['سند عملیاتی OP', 'سند تحول بنیادین', 'برنامه‌ریزی راهبردی'],
+  },
+  {
+    name: {
+      fa: 'مدیریت و توانمندسازی سرمایه‌های انسانی',
+      en: 'Human Capital Leadership & Talent Development',
+    },
+    category: 'leadership',
+    level: 95,
+    description: {
+      fa: 'گزینش، استقرار و ارتقای شایستگی‌های حرفه‌ای کادر نخبه آموزشی و اداری و انضباط سازمانی',
+      en: 'Recruitment, onboarding, and professional development of elite pedagogical faculty and staff',
+    },
+    tags: ['گزینش کادر نخبه', 'توانمندسازی معلمان', 'انضباط سازمانی'],
+  },
+  {
+    name: {
+      fa: 'طراحی و پایش شاخص‌های کلیدی عملکرد (KPI)',
+      en: 'Design & Monitoring of Key Performance Indicators (KPI)',
+    },
+    category: 'analytics',
+    level: 94,
+    description: {
+      fa: 'پایش کمّی و کیفی پیشرفت تحصیلی دانش‌آموزان، عملکرد معلمان و رضایت‌مندی ذینفعان',
+      en: 'Quantitative and qualitative monitoring of student mastery, faculty performance, and satisfaction',
+    },
+    tags: ['پایش KPI', 'داشبورد مدیریتی', 'ارزیابی عملکرد'],
+  },
+  {
+    name: {
+      fa: 'روان‌سنجی و ارزیابی ابزارهای تشخیصی و تربیتی',
+      en: 'Psychometrics & Diagnostic Assessment Batteries',
+    },
+    category: 'psychometrics',
+    level: 99,
+    description: {
+      fa: 'تخصص ارشد در اجرای آزمون‌های هنجارشده، سنجش اضطراب، بهزیستی روانی (PMHQ) و ارزیابی ورودی',
+      en: 'Mastery in standardized norm-referenced testing, anxiety diagnostics, mental health (PMHQ), and intake batteries',
+    },
+    tags: ['روان‌سنجی ارشد', 'آزمون PMHQ', 'سنجش و اندازه‌گیری', 'آزمون ورودی'],
+  },
+  {
+    name: {
+      fa: 'حل مسئله سازمانی، تصمیم‌گیری و مدیریت بحران',
+      en: 'Organizational Problem Solving & Crisis Resolution',
+    },
+    category: 'leadership',
+    level: 96,
+    description: {
+      fa: 'مدیریت موقعیت‌های حساس مدرسه، میانجی‌گری تعارضات و اتخاذ تصمیمات فوری و اثربخش',
+      en: 'Managing high-stakes contingencies, mediating disputes, and executing rapid resilient decisions',
+    },
+    tags: ['مدیریت بحران', 'تصمیم‌گیری تحت فشار', 'حل تعارض سازمانی'],
+  },
+  {
+    name: {
+      fa: 'راهبری یکپارچه مجتمع‌های آموزشی چندمقطعی',
+      en: 'Unified Leadership of Multi-Tier Educational Campuses',
+    },
+    category: 'leadership',
+    level: 93,
+    description: {
+      fa: 'ایجاد پیوستگی آموزشی و تربیتی میان مقاطع دبستان، دوره اول و دوره دوم متوسطه دخترانه هما',
+      en: 'Establishing curricular and ethical continuity across elementary, junior high, and senior high tiers',
+    },
+    tags: ['مدارس دخترانه هما', 'پیوستگی مقاطع', 'راهبری مجتمع'],
+  },
+  {
+    name: {
+      fa: 'توسعه سازمانی و نظارت بر امور حقوقی مدارس',
+      en: 'Organizational Development & Legal School Governance',
+    },
+    category: 'leadership',
+    level: 95,
+    description: {
+      fa: 'نمایندگی حقوقی مؤسسه، اخذ موافقت اصولی و مجوزهای تأسیس از مراجع وزارت آموزش و پرورش',
+      en: 'Statutory institutional representation, founding charter procurement, and ministry licensing',
+    },
+    tags: ['موافقت اصولی تأسیس', 'نماینده حقوقی', 'مجوزهای آموزش‌وپرورش'],
+  },
+  {
+    name: {
+      fa: 'مذاکره اثربخش و مدیریت ارتباط با ذینفعان و اولیا',
+      en: 'Persuasive Negotiation & Stakeholder Engagement',
+    },
+    category: 'leadership',
+    level: 97,
+    description: {
+      fa: 'ارتباط همدلانه و متقاعدکننده با اولیای دانش‌آموزان، مراجع نظارتی و بازرسان منطقه ۵ با رضایت >۸۰٪',
+      en: 'Empathetic diplomacy sustaining >80% satisfaction rates across parent bodies and district auditors',
+    },
+    tags: ['رضایت اولیا >۸۰٪', 'ارتباط با ذینفعان', 'مذاکره اقناعی'],
+  },
+  {
+    name: {
+      fa: 'بهینه‌سازی و بهبود مستمر فرآیندهای آموزشی',
+      en: 'Continuous Process Improvement & Pedagogical Optimization',
+    },
+    category: 'analytics',
+    level: 92,
+    description: {
+      fa: 'شناسایی و حذف گلوگاه‌های آموزشی، تقویت هدایت تحصیلی و استقرار حلقه‌های بهبود مستمر',
+      en: 'Identifying operational bottlenecks, reinforcing academic counseling, and continuous feedback loops',
+    },
+    tags: ['بهبود مستمر فرآیندها', 'کایزن آموزشی', 'تضمین کیفیت'],
+  },
+  {
+    name: {
+      fa: 'تسلط بر اسناد بالادستی و مقررات آموزش و پرورش',
+      en: 'Mastery of Ministry of Education Directives & Regulations',
+    },
+    category: 'leadership',
+    level: 96,
+    description: {
+      fa: 'اشراف کامل بر سند تحول بنیادین، آئین‌نامه‌های اجرایی و انضباطی مدارس و بخشنامه‌های منطقه ۵',
+      en: 'Full command of national educational master charters, school disciplinary codes, and district circulars',
+    },
+    tags: ['سند تحول بنیادین', 'مقررات آموزش‌وپرورش', 'منطقه ۵ تهران'],
   },
 ];
 
@@ -739,50 +736,54 @@ export const academicPublication: PublicationItem = {
     en: 'Journal of Psychometrics (Peer-Reviewed Academic Quarterly)',
   },
   details: {
-    fa: 'دوره ۱۴، شماره ۵۳، تابستان ۱۴۰۴، صفحات ۱۶-۲۹',
-    en: 'Volume 14, Issue 53, Summer 2025 (1404), Pages 16-29',
+    fa: 'دوره ۱۴، شماره ۵۳، تابستان ۱۴۰۴، صفحات ۱۶–۲۹',
+    en: 'Volume 14, Issue 53, Summer 2025 (1404), Pages 16–29',
   },
-  year: '1404 (2025)',
+  year: '۱۴۰۴ (2025)',
   abstract: {
-    fa: 'این پژوهش به بررسی روایی سازه، پایایی بازآزمایی و همسانی درونی پرسشنامه سلامت روان مثبت (PMHQ) در نمونه‌های جامعه ایرانی پرداخته است. نتایج تحلیل عاملی تاییدی ساختار چندبعدی سلامت روان مثبت را تایید نموده و رابطه معنادار مثبت با شاخص‌های بهزیستی روان‌شناختی را به اثبات رسانده است. این ابزار به عنوان یک معیار هنجارشده در محیط‌های آموزشی و بالینی برای ارزیابی تاب‌آوری و سلامت روان دانش‌آموزان و دانشجویان قابل بهره‌برداری است.',
-    en: 'This empirical study examined construct validity, test-retest reliability, and internal consistency of the Positive Mental Health Questionnaire (PMHQ) in the Iranian population. Confirmatory factor analysis corroborated the multidimensional architecture of positive mental health, demonstrating statistically significant correlations with psychological well-being. The validated tool serves as a standardized measurement standard in educational and clinical frameworks.',
+    fa: 'این مقاله علمی-پژوهشی به بررسی دقیق ویژگی‌های روان‌سنجی، روایی سازه، ساختار عاملی تاییدی و پایایی پرسشنامه سلامت روان مثبت (PMHQ) در جامعه ایرانی پرداخته است. نتایج همبستگی معنادار مثبت میان ابعاد سلامت روان و بهزیستی روان‌شناختی را تایید کرده و این پرسشنامه را به عنوان ابزاری استاندارد، روا و پایا برای سنجش در مراکز آموزشی، دبیرستان‌ها و بالینی کشور معرفی می‌کند.',
+    en: 'This peer-reviewed empirical study investigated the psychometric properties, construct validity, confirmatory factor structure, and reliability of the Positive Mental Health Questionnaire (PMHQ) within the Iranian population. Findings demonstrated statistically significant positive correlations between positive mental health dimensions and psychological well-being, validating PMHQ as a standardized diagnostic instrument for educational institutions and high schools.',
   },
   keywords: [
-    'روان‌سنجی (Psychometrics)',
+    'روان‌سنجی',
     'سلامت روان مثبت (PMHQ)',
     'بهزیستی روان‌شناختی',
-    'تحلیل عاملی',
+    'تحلیل عاملی تاییدی',
     'اعتبارسنجی ابزار',
+    'جامعه ایرانی',
   ],
 };
 
 export const extracurricularActivities: ExtracurricularItem[] = [
   {
     title: {
-      fa: 'طراحی و اجرای کارگاه‌های رشد فردی و مهارت‌های زندگی دانش‌آموزی',
-      en: 'Design & Facilitation of Student Personal Growth & Life Skills Workshops',
-    },
-    period: {
-      fa: '۱۳۸۵ تا ۱۳۹۰',
-      en: '2006 - 2011',
-    },
-    description: {
-      fa: 'تدوین سرفصل‌های تربیتی، هدایت دوره‌های توانمندسازی رفتاری و ارتقای شایستگی‌های ارتباطی و شناختی دانش‌آموزان.',
-      en: 'Curriculum development and clinical facilitator leadership for student behavioral empowerment, interpersonal communication, and cognitive growth.',
-    },
-  },
-  {
-    title: {
-      fa: 'سنجش روان‌شناختی و توانمندسازی کودکان در معرض آسیب (مسئولیت اجتماعی)',
-      en: 'Psychological Assessment & Empowerment of At-Risk Children (Specialized CSR)',
+      fa: 'سنجش روان‌شناختی و توانمندسازی کودکان کار (مسئولیت اجتماعی تخصصی)',
+      en: 'Psychological Assessment & Empowerment of Working Children (Specialized CSR)',
     },
     period: {
       fa: 'مستمر و تخصصی',
-      en: 'Specialized Community Outreach',
+      en: 'Ongoing Specialized Practice',
     },
     description: {
       fa: 'اجرای آزمون‌های هنجارشده روان‌سنجی، ارزیابی وضعیت شناختی و پیاده‌سازی پروتکل‌های حمایتی، انطباقی و توانبخشی روانی.',
       en: 'Administering standardized psychometric tests, cognitive functioning diagnostics, and implementing adaptive supportive protocols.',
     },
+    category: {
+      fa: 'مسئولیت اجتماعی تخصصی',
+      en: 'Specialized CSR',
+    },
+  },
+];
+
+export const languageSkills = [
+  {
+    language: { fa: 'فارسی', en: 'Persian (Farsi)' },
+    level: { fa: 'زبان مادری / مسلط کامل', en: 'Native / Fully Fluent' },
+    percentage: 100,
+  },
+  {
+    language: { fa: 'انگلیسی', en: 'English' },
+    level: { fa: 'متوسط به بالا', en: 'Upper-Intermediate' },
+    percentage: 75,
   },
 ];

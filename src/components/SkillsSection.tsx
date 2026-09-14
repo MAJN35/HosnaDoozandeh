@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Language } from '../types';
 import { skillsList } from '../data/cvData';
 import {
-  Brain,
-  BarChart,
   Layers,
-  Sparkles,
-  Bot,
-  Scale,
-  Users,
+  Brain,
+  BarChart3,
   Compass,
+  Scale,
+  Sparkles,
   CheckCircle,
+  Users,
+  ShieldCheck,
+  Award,
 } from 'lucide-react';
 
 interface SkillsSectionProps {
@@ -19,193 +20,127 @@ interface SkillsSectionProps {
 
 export const SkillsSection: React.FC<SkillsSectionProps> = ({ lang }) => {
   const isFa = lang === 'fa';
+  const [filter, setFilter] = useState<'all' | 'leadership' | 'psychometrics' | 'analytics'>('all');
 
-  const skillCategories = [
-    {
-      id: 'psychometrics',
-      title: {
-        fa: 'روان‌سنجی، آزمون‌سازی و ارزیابی تشخیصی',
-        en: 'Psychometrics & Diagnostic Measurement',
-      },
-      icon: Brain,
-      color: 'blue',
-      items: skillsList.filter((s) => s.category === 'psychometrics'),
-    },
-    {
-      id: 'analytics',
-      title: {
-        fa: 'طراحی KPI و بهینه‌سازی فرآیندهای آموزشی',
-        en: 'KPI Architecture & Process Analytics',
-      },
-      icon: BarChart,
-      color: 'indigo',
-      items: skillsList.filter((s) => s.category === 'analytics'),
-    },
-    {
-      id: 'edtech',
-      title: {
-        fa: 'هوش مصنوعی و تحلیل داده‌های یادگیری',
-        en: 'AI in Education & Predictive Analytics',
-      },
-      icon: Bot,
-      color: 'emerald',
-      items: skillsList.filter((s) => s.category === 'edtech'),
-    },
-    {
-      id: 'leadership',
-      title: {
-        fa: 'راهبری راهبردی، منابع انسانی و حقوقی',
-        en: 'Strategic Leadership & Governance',
-      },
-      icon: Compass,
-      color: 'slate',
-      items: skillsList.filter((s) => s.category === 'leadership'),
-    },
+  const filterTabs = [
+    { id: 'all', label: { fa: 'کلیه شایستگی‌ها (۱۰ مهارت)', en: 'All Competencies (10 Skills)' } },
+    { id: 'leadership', label: { fa: 'راهبری و مدیریت استراتژیک', en: 'Strategic Leadership' } },
+    { id: 'psychometrics', label: { fa: 'روان‌سنجی و ابزارهای تشخیصی', en: 'Psychometrics & Testing' } },
+    { id: 'analytics', label: { fa: 'پایش KPI و بهبود مستمر', en: 'KPI & Quality Improvement' } },
   ];
 
+  const filteredSkills = filter === 'all'
+    ? skillsList
+    : skillsList.filter((s) => s.category === filter);
+
   return (
-    <section id="skills" className="py-16 sm:py-24 bg-slate-50/60 border-b border-slate-200/80">
+    <section id="skills" className="py-16 sm:py-24 bg-slate-50/70 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col items-start mb-12">
+        <div className="flex flex-col items-start mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-100/70 text-blue-800 text-xs font-bold uppercase tracking-wider mb-2">
             <Layers className="w-3.5 h-3.5" />
-            <span>{isFa ? 'شایستگی‌های تخصصی و مهارتی' : 'Core & Technical Competencies'}</span>
+            <span>{isFa ? 'مهارت‌ها و توانمندی‌ها' : 'Skills & Competencies'}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-            {isFa ? 'تسلط علمی، تجربی و ابزارهای تحلیلی' : 'Technical Skills & Functional Expertise'}
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
+            {isFa ? 'شایستگی‌های تخصصی در راهبری دبیرستان و روان‌سنجی' : 'Executive & Specialized Pedagogical Competencies'}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 max-w-2xl mt-1">
+          <p className="text-sm sm:text-base text-slate-600 max-w-2xl mt-1.5">
             {isFa
-              ? 'تلفیق دانش تخصصی روان‌سنجی، مدل‌سازی شاخص‌های عملکرد (KPI)، هوش مصنوعی آموزشی و مدیریت استراتژیک مدارس'
-              : 'Synthesizing psychometric assessment science, institutional KPI frameworks, learning analytics, and school governance.'}
+              ? '۱۰ توانمندی کلیدی احرازشده در برنامه‌ریزی راهبردی، ارزیابی روان‌سنجی، مدیریت بحران، امور حقوقی مدارس و نظارت بر فرآیندهای آموزشی'
+              : 'Core executive competencies spanning strategic school planning, psychometrics, crisis management, and legal governance.'}
           </p>
         </div>
 
-        {/* Categorized Skills Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {skillCategories.map((group) => {
-            const Icon = group.icon;
+        {/* Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2 mb-8">
+          {filterTabs.map((tab) => {
+            const isActive = filter === tab.id;
             return (
-              <div
-                key={group.id}
-                className="skeu-card p-6 sm:p-7 rounded-3xl flex flex-col justify-between"
+              <button
+                key={tab.id}
+                onClick={() => setFilter(tab.id as any)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150 cursor-pointer ${
+                  isActive
+                    ? 'skeu-button-primary text-white shadow-sm'
+                    : 'skeu-button-secondary text-slate-700 hover:text-blue-700'
+                }`}
+                id={`skill-filter-${tab.id}`}
               >
-                <div>
-                  {/* Category Header */}
-                  <div className="flex items-center gap-3 pb-4 mb-5 border-b border-slate-100">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-200/60">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-900">
-                      {group.title[lang]}
-                    </h3>
-                  </div>
-
-                  {/* Skills List within category */}
-                  <div className="space-y-6">
-                    {group.items.map((skill, sIdx) => (
-                      <div key={sIdx} className="space-y-2">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-bold text-slate-800">
-                            {skill.name[lang]}
-                          </span>
-                          <span className="font-mono text-xs font-bold text-blue-700">
-                            {skill.level}%
-                          </span>
-                        </div>
-
-                        {/* Tactile Skeuomorphic Progress Gauge */}
-                        <div className="w-full h-2.5 rounded-full bg-slate-200/80 p-0.5 shadow-inner">
-                          <div
-                            className="h-full rounded-full bg-linear-to-r from-blue-600 to-indigo-600 shadow-xs transition-all duration-700"
-                            style={{ width: `${skill.level}%` }}
-                          />
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-xs text-slate-500 leading-snug">
-                          {skill.description[lang]}
-                        </p>
-
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {skill.tags.map((tag, tIdx) => (
-                            <span
-                              key={tIdx}
-                              className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200/50"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+                {tab.label[lang]}
+              </button>
             );
           })}
         </div>
 
-        {/* Supplementary Highlights: Languages & Legal Compliance */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          {/* Language Proficiency */}
-          <div className="skeu-card p-5 rounded-2xl flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 border border-amber-200/70 flex items-center justify-center shrink-0">
-              <Sparkles className="w-6 h-6" />
+        {/* Skills Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filteredSkills.map((skill, idx) => (
+            <div
+              key={idx}
+              className="skeu-card p-5 sm:p-6 rounded-2xl flex flex-col justify-between border border-slate-200/90 hover:border-blue-300 transition-all duration-200 hover:-translate-y-0.5"
+            >
+              <div>
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 font-bold text-xs flex items-center justify-center border border-blue-200/70 shrink-0">
+                      {idx + 1}
+                    </span>
+                    <h3 className="text-base font-bold text-slate-900 leading-snug">
+                      {skill.name[lang]}
+                    </h3>
+                  </div>
+
+                  <span className="text-xs font-mono font-bold text-blue-700 px-2 py-0.5 rounded bg-blue-50 shrink-0">
+                    {skill.level}٪
+                  </span>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                  {skill.description[lang]}
+                </p>
+              </div>
+
+              {/* Progress Bar & Tags */}
+              <div className="mt-4 pt-3 border-t border-slate-100 space-y-2.5">
+                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                  <div
+                    className="bg-linear-to-r from-blue-600 to-indigo-600 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${skill.level}%` }}
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {skill.tags.map((tag, tIdx) => (
+                    <span
+                      key={tIdx}
+                      className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-600"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {isFa ? 'تسلط زبانی' : 'Language'}
-              </span>
-              <h4 className="text-sm font-bold text-slate-900 mt-0.5">
-                {isFa ? 'زبان انگلیسی: متوسط به بالا' : 'English: Upper-Intermediate'}
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {isFa ? 'مکاتبات آکادمیک و متون تخصصی' : 'Professional & academic literacy'}
-              </p>
-            </div>
+          ))}
+        </div>
+
+        {/* High School Management Core Competencies Summary Bar */}
+        <div className="mt-10 p-5 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-2 text-slate-700">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span className="font-semibold">
+              {isFa
+                ? 'دارای موافقت اصولی رسمی، تسلط کامل بر اسناد بالادستی و سند تحول بنیادین آموزش و پرورش'
+                : 'Formally accredited founding charter holder, fully proficient with national educational transformation charters.'}
+            </span>
           </div>
 
-          {/* Ministry of Education Compliance */}
-          <div className="skeu-card p-5 rounded-2xl flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 border border-blue-200/70 flex items-center justify-center shrink-0">
-              <Scale className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {isFa ? 'مقررات و اسناد بالادستی' : 'Regulatory'}
-              </span>
-              <h4 className="text-sm font-bold text-slate-900 mt-0.5">
-                {isFa ? 'تسلط بر قوانین آموزش و پرورش' : 'Ministry of Education Compliance'}
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {isFa ? 'نظارت حقوقی، موافقت اصولی و بازرسی' : 'Full legal statutory proficiency'}
-              </p>
-            </div>
+          <div className="flex items-center gap-2 text-blue-800 font-bold shrink-0">
+            <Award className="w-4 h-4 text-amber-600" />
+            <span>{isFa ? 'منطقه ۵ آموزش و پرورش تهران' : 'District 5 Tehran'}</span>
           </div>
-
-          {/* Crisis & Human Capital */}
-          <div className="skeu-card p-5 rounded-2xl flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/70 flex items-center justify-center shrink-0">
-              <Users className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {isFa ? 'سرمایه انسانی' : 'Human Capital'}
-              </span>
-              <h4 className="text-sm font-bold text-slate-900 mt-0.5">
-                {isFa ? 'گزینش و پرورش کادر نخبه' : 'Elite Faculty Recruitment'}
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {isFa ? 'ارتقای شایستگی‌های حرفه‌ای معلمان' : 'Teacher empowerment & 360 review'}
-              </p>
-            </div>
-          </div>
-
         </div>
 
       </div>

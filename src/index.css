@@ -2,7 +2,9 @@
 
 @layer base {
   body {
-    font-family: 'Vazirmatn', 'Vazir', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Vazirmatn', 'Vazir', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #E8F0F8;
+    color: #243B5D;
   }
   
   [dir="rtl"] {
@@ -14,125 +16,155 @@
   }
 }
 
-/* Modern Skeuomorphic Button Styles */
-.skeu-button-primary {
-  background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 45%, #1E40AF 100%);
+/* Soft Neumorphism System (#E8F0F8 background, #EDF4FA primary surface, #E5EEF7 secondary) */
+
+/* Raised Panels */
+.neu-panel {
+  background: #EDF4FA;
+  border-radius: 36px;
   box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    0 3px 6px rgba(30, 64, 175, 0.25);
-  border: 1px solid #1E3A8A;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    -12px -12px 30px rgba(255, 255, 255, 0.95),
+    12px 14px 32px rgba(175, 195, 222, 0.42),
+    inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.65);
 }
 
-.skeu-button-primary:hover {
-  background: linear-gradient(180deg, #3B82F6 0%, #2563EB 45%, #1D4ED8 100%);
+.neu-panel-soft {
+  background: #EDF4FA;
+  border-radius: 28px;
   box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.12),
-    0 5px 12px rgba(30, 64, 175, 0.35);
-  transform: translateY(-0.5px);
+    -8px -8px 22px rgba(255, 255, 255, 0.92),
+    8px 10px 24px rgba(175, 195, 222, 0.38),
+    inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-.skeu-button-primary:active {
-  background: linear-gradient(180deg, #1E40AF 0%, #1D4ED8 100%);
+/* Floating Interactive Card */
+.neu-card {
+  background: #EDF4FA;
+  border-radius: 28px;
   box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.4),
-    inset 0 1px 1px rgba(0, 0, 0, 0.3),
-    0 1px 1px rgba(0, 0, 0, 0.08);
+    -7px -7px 20px rgba(255, 255, 255, 0.95),
+    7px 8px 22px rgba(175, 195, 222, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  transition: all 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.neu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    -10px -10px 26px rgba(255, 255, 255, 1),
+    10px 12px 28px rgba(165, 188, 216, 0.48),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+/* Tactile Raised Physical Buttons */
+.neu-button {
+  background: #EDF4FA;
+  color: #243B5D;
+  box-shadow: 
+    -4px -4px 12px rgba(255, 255, 255, 0.95),
+    4px 5px 14px rgba(175, 195, 222, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.neu-button:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 
+    -6px -6px 16px rgba(255, 255, 255, 1),
+    6px 7px 18px rgba(168, 190, 218, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
+}
+
+.neu-button:active {
   transform: translateY(1px);
+  box-shadow: 
+    inset 3px 3px 6px rgba(170, 190, 218, 0.48),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.95);
 }
 
-.skeu-button-dark {
-  background: linear-gradient(180deg, #334155 0%, #1E293B 50%, #0F172A 100%);
+/* Primary Darker Slate Button */
+.neu-button-primary {
+  background: linear-gradient(145deg, #2A4367, #1E3352);
+  color: #F0F6FC;
   box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-    0 1px 2px rgba(0, 0, 0, 0.12),
-    0 4px 8px rgba(15, 23, 42, 0.25);
-  border: 1px solid #0F172A;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    -4px -4px 14px rgba(255, 255, 255, 0.9),
+    5px 6px 18px rgba(36, 59, 93, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.skeu-button-dark:hover {
-  background: linear-gradient(180deg, #475569 0%, #334155 50%, #1E293B 100%);
+.neu-button-primary:hover {
+  transform: translateY(-1.5px);
   box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-    0 2px 4px rgba(0, 0, 0, 0.15),
-    0 6px 14px rgba(15, 23, 42, 0.3);
-  transform: translateY(-0.5px);
+    -5px -5px 16px rgba(255, 255, 255, 0.95),
+    7px 9px 22px rgba(36, 59, 93, 0.42),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35);
 }
 
-.skeu-button-dark:active {
-  background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.5),
-    0 1px 1px rgba(0, 0, 0, 0.1);
+.neu-button-primary:active {
   transform: translateY(1px);
-}
-
-.skeu-button-secondary {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 55%, #EDF2F7 100%);
   box-shadow: 
-    inset 0 1px 0 #FFFFFF,
-    inset 0 -1px 0 rgba(0, 0, 0, 0.06),
-    0 1px 2px rgba(0, 0, 0, 0.05),
-    0 3px 6px rgba(0, 0, 0, 0.04);
-  border: 1px solid #CBD5E1;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    inset 3px 3px 7px rgba(15, 26, 42, 0.6),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.15);
 }
 
-.skeu-button-secondary:hover {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 55%, #E2E8F0 100%);
+/* Recessed / Sunken Controls (Inputs, Textareas, Sunken Wells) */
+.neu-recessed {
+  background: #E5EEF7;
   box-shadow: 
-    inset 0 1px 0 #FFFFFF,
-    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
-    0 2px 4px rgba(0, 0, 0, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.06);
-  border-color: #94A3B8;
-  transform: translateY(-0.5px);
+    inset 3px 3px 7px rgba(170, 192, 218, 0.48),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(215, 228, 242, 0.6);
+  color: #243B5D;
 }
 
-.skeu-button-secondary:active {
-  background: linear-gradient(180deg, #E2E8F0 0%, #F1F5F9 100%);
+.neu-recessed:focus {
+  outline: none;
+  border-color: rgba(143, 168, 200, 0.8);
   box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.12),
-    0 1px 1px rgba(0, 0, 0, 0.05);
-  transform: translateY(1px);
+    inset 4px 4px 8px rgba(160, 185, 214, 0.55),
+    inset -3px -3px 7px rgba(255, 255, 255, 1);
 }
 
-.skeu-toggle-track {
-  background: linear-gradient(180deg, #E2E8F0 0%, #CBD5E1 100%);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.08);
-}
-
-.skeu-toggle-thumb {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 80%, #F1F5F9 100%);
+/* Circular Raised Dial (Clock-like element for Portrait and Main Badges) */
+.neu-dial {
+  background: linear-gradient(145deg, #F2F7FC, #E6EFF8);
   box-shadow: 
-    inset 0 1px 0 #FFFFFF,
-    0 1px 2px rgba(0, 0, 0, 0.12),
-    0 2px 5px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+    -16px -16px 36px rgba(255, 255, 255, 0.98),
+    16px 18px 38px rgba(168, 190, 216, 0.48),
+    inset 0 2px 3px rgba(255, 255, 255, 0.95);
+  border: 6px solid #EDF4FA;
+  border-radius: 9999px;
 }
 
-.skeu-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+.neu-circle-node {
+  background: #EDF4FA;
   box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 4px 12px rgba(15, 23, 42, 0.03);
+    -3px -3px 8px rgba(255, 255, 255, 0.95),
+    3px 4px 10px rgba(175, 195, 222, 0.42),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 9999px;
 }
 
-.skeu-inset-panel {
-  background: #F8FAFC;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid #E2E8F0;
+/* Frosted Translucent Badge / Pill */
+.neu-pill {
+  background: rgba(237, 244, 250, 0.85);
+  box-shadow: 
+    -3px -3px 8px rgba(255, 255, 255, 0.9),
+    3px 4px 10px rgba(175, 195, 222, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* Print Stylesheet for CV Download / Print */
+/* Print Stylesheet */
 @media print {
   body {
     background: white !important;
@@ -150,10 +182,6 @@
     max-width: 100% !important;
     box-shadow: none !important;
     border: none !important;
-  }
-  .page-break-avoid {
-    break-inside: avoid;
-    page-break-inside: avoid;
   }
 }
 

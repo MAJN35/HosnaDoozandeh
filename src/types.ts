@@ -151,5 +151,42 @@ export interface ExtracurricularItem {
     fa: string;
     en: string;
   };
+  category?: {
+    fa: string;
+    en: string;
+  };
 }
 
+export interface ManagerialAchievement {
+  id: string;
+  title: {
+    fa: string;
+    en: string;
+  };
+  description: {
+    fa: string;
+    en: string;
+  };
+  metric?: string;
+  badge?: {
+    fa: string;
+    en: string;
+  };
+}
+
+export interface LeadershipPillar {
+  id: string;
+  title: {
+    fa: string;
+    en: string;
+  };
+  subtitle: {
+    fa: string;
+    en: string;
+  };
+  description: {
+    fa: string;
+    en: string;
+  };
+  iconName: string;
+}

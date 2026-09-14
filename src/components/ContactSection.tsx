@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
 import { Language } from '../types';
 import { personalInfo } from '../data/cvData';
-import { SkeuButton } from './SkeuButton';
-import {
-  Mail,
-  MapPin,
-  Send,
-  CheckCircle2,
-  Copy,
-  Check,
-  MessageSquare,
-  Clock,
-  Building2,
-  Sparkles,
-} from 'lucide-react';
+import { Mail, MapPin, Globe, Send, CheckCircle2, Copy, Check } from 'lucide-react';
 
 interface ContactSectionProps {
   lang: Language;
@@ -25,328 +13,255 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    organization: '',
     subject: '',
     message: '',
   });
 
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(personalInfo.contact.email);
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      setStatus('error');
-      return;
-    }
+    if (!formData.name || !formData.email || !formData.message) return;
 
     setStatus('submitting');
-    // Simulate swift modern processing
     setTimeout(() => {
       setStatus('success');
-    }, 800);
-  };
-
-  const handleSendViaEmailClient = () => {
-    const mailtoUrl = `mailto:${personalInfo.contact.email}?subject=${encodeURIComponent(
-      formData.subject || 'Inquiry from Portfolio'
-    )}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nOrganization: ${formData.organization}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    )}`;
-    window.location.href = mailtoUrl;
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }, 700);
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-24 bg-[#F8FAFC] border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      
+      {/* Large Floating Contact Panel */}
+      <div className="neu-panel p-8 sm:p-12 lg:p-16">
         
-        {/* Section Header */}
-        <div className="flex flex-col items-start mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-100/70 text-blue-800 text-xs font-bold uppercase tracking-wider mb-2">
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>{isFa ? 'ارتباط و همکاری' : 'Get in Touch'}</span>
+        {/* Header Content */}
+        <div className="max-w-2xl mx-auto text-center mb-12 sm:mb-16 space-y-3">
+          <div className="neu-pill px-4 py-1.5 rounded-full inline-flex items-center gap-2 text-xs font-normal text-[#71839A]">
+            <span className="w-2 h-2 rounded-full bg-[#8FA8C8]" />
+            <span>{isFa ? 'ارتباط مستقیم' : 'Direct Communication'}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-            {isFa ? 'تماس با حسنا دوزنده' : 'Contact & Professional Networking'}
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-[#243B5D] tracking-tight">
+            {isFa ? 'در ارتباط باشیم' : 'Let’s Connect'}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 max-w-2xl mt-1">
+
+          <p className="text-sm sm:text-base font-light text-[#71839A] leading-relaxed">
             {isFa
-              ? 'جهت مشاوره امور آموزشی و روان‌سنجی، همکاری‌های سازمانی یا ارسال پیام مستقیم از طریق فرم یا راه‌های ارتباطی زیر اقدام نمایید.'
-              : 'For educational advisory, psychometric consultations, institutional partnerships, or direct inquiries.'}
+              ? 'برای گفت‌وگو درباره آموزش، مدیریت مدرسه و آینده نسل جدید، خوشحال می‌شوم در ارتباط باشیم.'
+              : 'For conversations regarding education, school leadership, and nurturing the next generation, I would be glad to connect.'}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Contact Grid: Form + Info Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
           
-          {/* Direct Contact Cards (5 Cols) */}
-          <div className="lg:col-span-5 space-y-5">
+          {/* Recessed Neumorphic Form Controls (7 cols) */}
+          <div className="lg:col-span-7">
+            {status === 'success' ? (
+              <div className="neu-card p-8 sm:p-10 text-center flex flex-col items-center justify-center space-y-4">
+                <div className="w-14 h-14 rounded-full neu-button flex items-center justify-center text-emerald-600">
+                  <CheckCircle2 className="w-7 h-7" />
+                </div>
+                <h3 className="text-xl font-normal text-[#243B5D]">
+                  {isFa ? 'پیام شما با موفقیت ثبت شد' : 'Message Sent Successfully'}
+                </h3>
+                <p className="text-xs sm:text-sm font-light text-[#71839A] max-w-md">
+                  {isFa
+                    ? 'سپاس از پیام شما. در اسرع وقت پاسخگوی شما از طریق ایمیل خواهم بود.'
+                    : 'Thank you for reaching out. I will respond to your inquiry via email shortly.'}
+                </p>
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="neu-button px-6 py-2.5 rounded-full text-xs font-normal text-[#243B5D] mt-2 cursor-pointer"
+                >
+                  {isFa ? 'ارسال پیام جدید' : 'Send Another Message'}
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  
+                  {/* Name Input */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-light text-[#71839A] block">
+                      {isFa ? 'نام و نام خانوادگی' : 'Full Name'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder={isFa ? 'مثال: زهرا مرادی' : 'e.g. Zahra Moradi'}
+                      className="w-full px-4 py-3 rounded-2xl neu-recessed text-sm font-light placeholder:text-[#71839A]/40 transition-all duration-200"
+                    />
+                  </div>
+
+                  {/* Email Input */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-light text-[#71839A] block">
+                      {isFa ? 'پست الکترونیکی' : 'Email Address'}
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      dir="ltr"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="your.name@example.com"
+                      className="w-full px-4 py-3 rounded-2xl neu-recessed text-sm font-light placeholder:text-[#71839A]/40 transition-all duration-200"
+                    />
+                  </div>
+
+                </div>
+
+                {/* Subject / Topic Input */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-light text-[#71839A] block">
+                    {isFa ? 'موضوع گفت‌وگو' : 'Subject of Conversation'}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    placeholder={
+                      isFa
+                        ? 'راهبری مدرسه، سنجش و هدایت تحصیلی، جلسات اولیا...'
+                        : 'School Governance, Psychometrics & Guidance...'
+                    }
+                    className="w-full px-4 py-3 rounded-2xl neu-recessed text-sm font-light placeholder:text-[#71839A]/40 transition-all duration-200"
+                  />
+                </div>
+
+                {/* Message Textarea */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-light text-[#71839A] block">
+                    {isFa ? 'متن پیام' : 'Your Message'}
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder={
+                      isFa
+                        ? 'دیدگاه، پرسش یا پیشنهاد همکاری خود را بنویسید...'
+                        : 'Write your perspective, inquiry, or collaboration proposal...'
+                    }
+                    className="w-full px-4 py-3 rounded-2xl neu-recessed text-sm font-light placeholder:text-[#71839A]/40 transition-all duration-200 resize-none"
+                  />
+                </div>
+
+                {/* Raised Physical Submit Button */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={status === 'submitting'}
+                    className="neu-button-primary px-8 py-3.5 rounded-full text-sm font-light inline-flex items-center gap-2 cursor-pointer shadow-md"
+                  >
+                    <Send className="w-4 h-4 opacity-90" />
+                    <span>
+                      {status === 'submitting'
+                        ? isFa ? 'در حال ثبت...' : 'Sending...'
+                        : isFa ? 'ارسال پیام' : 'Send Message'}
+                    </span>
+                  </button>
+                </div>
+
+              </form>
+            )}
+          </div>
+
+          {/* Contact Direct Cards (5 cols) */}
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-5">
             
-            {/* Direct Email Card */}
-            <div className="skeu-card p-5 rounded-2xl flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3.5">
-                <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-200/80 shrink-0">
-                  <Mail className="w-5 h-5" />
+            {/* Email Card */}
+            <div className="neu-card p-6 flex items-start justify-between group">
+              <div className="flex items-start gap-4">
+                <div className="w-11 h-11 rounded-2xl neu-button flex items-center justify-center text-[#243B5D] shrink-0">
+                  <Mail className="w-5 h-5 stroke-[1.4]" />
                 </div>
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                    {isFa ? 'پست الکترونیکی رسمی' : 'Official Email Address'}
-                  </span>
+                  <div className="text-xs font-light text-[#71839A]">
+                    {isFa ? 'پست الکترونیکی رسمی' : 'Official Email'}
+                  </div>
                   <a
                     href={`mailto:${personalInfo.contact.email}`}
-                    className="block text-sm font-bold text-slate-900 hover:text-blue-700 transition-colors"
+                    className="text-sm font-normal text-[#243B5D] hover:underline font-mono mt-0.5 block"
+                    dir="ltr"
                   >
                     {personalInfo.contact.email}
                   </a>
                 </div>
               </div>
+
               <button
-                onClick={() => handleCopy(personalInfo.contact.email)}
-                className="skeu-button-secondary p-2 rounded-xl text-slate-600 cursor-pointer"
-                title={isFa ? 'کپی ایمیل' : 'Copy Email'}
-                id="copy-email-btn"
+                onClick={handleCopyEmail}
+                className="neu-button p-2 rounded-xl text-[#71839A] hover:text-[#243B5D] cursor-pointer"
+                title={isFa ? 'کپی آدرس ایمیل' : 'Copy Email'}
+                aria-label="Copy Email"
               >
                 {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
 
-            {/* Location Card */}
-            <div className="skeu-card p-5 rounded-2xl flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-200/80 shrink-0">
-                <MapPin className="w-5 h-5" />
+            {/* Official Website Card */}
+            <div className="neu-card p-6 flex items-center gap-4">
+              <div className="w-11 h-11 rounded-2xl neu-button flex items-center justify-center text-[#243B5D] shrink-0">
+                <Globe className="w-5 h-5 stroke-[1.4]" />
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                  {isFa ? 'موقعیت اداری و منطقه فعالیت' : 'Administrative Location'}
-                </span>
-                <p className="text-sm font-bold text-slate-900">
-                  {personalInfo.contact.location[lang]}
-                </p>
-                <p className="text-xs text-slate-500">
-                  {isFa ? 'آموزش و پرورش منطقه ۵ تهران | مجتمع آموزشی هما' : 'District 5 Education Administration | Homa Complex'}
-                </p>
-              </div>
-            </div>
-
-            {/* Consultation & Advisory Card */}
-            <div className="skeu-card p-6 rounded-2xl space-y-3.5">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
-                <Building2 className="w-4 h-4 text-blue-600" />
-                <span>{isFa ? 'حوزه‌های مشاوره و ارزیابی سازمانی' : 'Areas of Consultation'}</span>
-              </div>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 shrink-0" />
-                  <span>
-                    {isFa
-                      ? 'تأسیس، توسعه ساختار و اخذ مجوزهای مدارس و مراکز آموزشی'
-                      : 'School founding, campus expansion & educational regulatory compliance'}
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 shrink-0" />
-                  <span>
-                    {isFa
-                      ? 'طراحی آزمون‌های روان‌سنجی ورودی، سنجش استعداد و سلامت روانی'
-                      : 'Psychometric entrance batteries, talent diagnostics & mental well-being'}
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 shrink-0" />
-                  <span>
-                    {isFa
-                      ? 'تدوین برنامه سالانه عملیاتی (OP) و ارزیابی KPI کادر آموزشی'
-                      : 'Operational planning (OP) & institutional teacher KPI monitoring'}
-                  </span>
-                </li>
-              </ul>
-              <div className="pt-2 border-t border-slate-100 flex items-center gap-2 text-[11px] text-slate-400">
-                <Clock className="w-3.5 h-3.5" />
-                <span>
-                  {isFa
-                    ? 'پاسخ‌گویی به مکاتبات در روزهای کاری اداری'
-                    : 'Responses provided within normal business days'}
-                </span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Interactive Contact Form (7 Cols) */}
-          <div className="lg:col-span-7">
-            <div className="skeu-card p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm relative">
-              
-              {status === 'success' ? (
-                <div className="py-10 text-center space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-xs border border-emerald-200">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-black text-slate-900">
-                    {isFa ? 'پیام شما با موفقیت ثبت شد' : 'Message Received Successfully'}
-                  </h3>
-                  <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-                    {isFa
-                      ? 'از برقراری ارتباط شما سپاسگزاریم. پیام شما دریافت شد و در اسرع وقت بررسی خواهد شد.'
-                      : 'Thank you for reaching out. Your inquiry has been noted and will be reviewed shortly.'}
-                  </p>
-
-                  <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
-                    <SkeuButton
-                      variant="primary"
-                      size="md"
-                      onClick={handleSendViaEmailClient}
-                    >
-                      {isFa ? 'ارسال رونوشت از طریق ایمیل شما' : 'Send via Local Mail Client'}
-                    </SkeuButton>
-                    <SkeuButton
-                      variant="secondary"
-                      size="md"
-                      onClick={() => {
-                        setStatus('idle');
-                        setFormData({ name: '', email: '', organization: '', subject: '', message: '' });
-                      }}
-                    >
-                      {isFa ? 'ارسال پیام جدید' : 'Send Another Message'}
-                    </SkeuButton>
-                  </div>
+                <div className="text-xs font-light text-[#71839A]">
+                  {isFa ? 'وب‌سایت اختصاصی' : 'Official Domain'}
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    
-                    {/* Name */}
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5" htmlFor="contact-name">
-                        {isFa ? 'نام و نام خانوادگی *' : 'Full Name *'}
-                      </label>
-                      <input
-                        type="text"
-                        id="contact-name"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder={isFa ? 'مثال: دکتر سمیعی' : 'e.g., Dr. Samiei'}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 transition-colors shadow-inner"
-                      />
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5" htmlFor="contact-email">
-                        {isFa ? 'آدرس ایمیل *' : 'Email Address *'}
-                      </label>
-                      <input
-                        type="email"
-                        id="contact-email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="yourname@example.com"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 transition-colors shadow-inner"
-                        dir="ltr"
-                      />
-                    </div>
-
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    
-                    {/* Organization / Affiliation */}
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5" htmlFor="contact-org">
-                        {isFa ? 'سازمان / مدرسه / دانشگاه' : 'Organization / Institution'}
-                      </label>
-                      <input
-                        type="text"
-                        id="contact-org"
-                        value={formData.organization}
-                        onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                        placeholder={isFa ? 'نام مجموعه' : 'Institution name'}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 transition-colors shadow-inner"
-                      />
-                    </div>
-
-                    {/* Subject */}
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5" htmlFor="contact-subject">
-                        {isFa ? 'موضوع پیام' : 'Subject'}
-                      </label>
-                      <input
-                        type="text"
-                        id="contact-subject"
-                        value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        placeholder={isFa ? 'همکاری آموزشی / مشاوره' : 'Educational Consultation'}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 transition-colors shadow-inner"
-                      />
-                    </div>
-
-                  </div>
-
-                  {/* Message */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5" htmlFor="contact-message">
-                      {isFa ? 'متن پیام *' : 'Your Message *'}
-                    </label>
-                    <textarea
-                      id="contact-message"
-                      rows={5}
-                      required
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder={
-                        isFa
-                          ? 'شرح درخواست یا پیام خود را اینجا بنویسید...'
-                          : 'Please describe your inquiry or proposal...'
-                      }
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 transition-colors shadow-inner resize-y"
-                    />
-                  </div>
-
-                  {status === 'error' && (
-                    <p className="text-xs font-bold text-rose-600">
-                      {isFa ? 'لطفاً تمامی فیلدهای ستاره‌دار را تکمیل نمایید.' : 'Please fill in all required fields.'}
-                    </p>
-                  )}
-
-                  {/* Submit and Action Buttons */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-3">
-                    <SkeuButton
-                      type="submit"
-                      variant="primary"
-                      size="lg"
-                      icon={<Send className="w-4 h-4" />}
-                      disabled={status === 'submitting'}
-                      id="submit-contact-form-btn"
-                    >
-                      {status === 'submitting'
-                        ? (isFa ? 'در حال ارسال...' : 'Sending...')
-                        : (isFa ? 'ارسال پیام' : 'Send Message')}
-                    </SkeuButton>
-
-                    <button
-                      type="button"
-                      onClick={handleSendViaEmailClient}
-                      className="text-xs font-semibold text-slate-600 hover:text-blue-700 transition-colors flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Mail className="w-3.5 h-3.5 text-blue-600" />
-                      <span>{isFa ? 'ارسال مستقیم با نرم‌افزار ایمیل' : 'Open in Default Mail Client'}</span>
-                    </button>
-                  </div>
-                </form>
-              )}
-
+                <a
+                  href={personalInfo.contact.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-normal text-[#243B5D] hover:underline font-mono mt-0.5 block"
+                  dir="ltr"
+                >
+                  {personalInfo.contact.website}
+                </a>
+              </div>
             </div>
+
+            {/* District Location Card */}
+            <div className="neu-card p-6 flex items-center gap-4">
+              <div className="w-11 h-11 rounded-2xl neu-button flex items-center justify-center text-[#243B5D] shrink-0">
+                <MapPin className="w-5 h-5 stroke-[1.4]" />
+              </div>
+              <div>
+                <div className="text-xs font-light text-[#71839A]">
+                  {isFa ? 'محل استقرار و فعالیت' : 'Office Location'}
+                </div>
+                <div className="text-sm font-normal text-[#243B5D] mt-0.5">
+                  {isFa ? 'تهران، منطقه ۵ • مجتمع مدارس هما' : 'Tehran, District 5 • Homa Schools Complex'}
+                </div>
+              </div>
+            </div>
+
+            {/* Human Leadership Note */}
+            <div className="neu-panel-soft p-5 text-xs font-light text-[#71839A] leading-relaxed">
+              {isFa
+                ? 'پاسخگویی به مکاتبات آموزشی و درخواست‌های هماهنگی جلسات در روزهای کاری صورت می‌پذیرد.'
+                : 'Educational correspondence and meeting appointments are addressed during working days.'}
+            </div>
+
           </div>
 
         </div>
 
       </div>
+
     </section>
   );
 };
