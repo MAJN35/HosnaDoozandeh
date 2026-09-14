@@ -300,6 +300,30 @@ export interface GalleryItemContent {
     en: string;
   };
   imageUrl: string;
+  videoUrl?: string;
+  span?: string;
+  aspect?: string;
+}
+
+export interface VideoItemContent {
+  id: string;
+  title: {
+    fa: string;
+    en: string;
+  };
+  category: {
+    fa: string;
+    en: string;
+  };
+  description: {
+    fa: string;
+    en: string;
+  };
+  videoUrl: string;
+  thumbnailUrl: string;
+  duration?: string;
+  date?: string;
+  featured?: boolean;
 }
 
 export interface TestimonialItemContent {
@@ -355,6 +379,7 @@ export interface SiteContent {
   achievements: AchievementItemContent[];
   publication: PublicationContent;
   gallery: GalleryItemContent[];
+  videos: VideoItemContent[];
   testimonials: TestimonialItemContent[];
   contact: ContactSectionContent;
 }

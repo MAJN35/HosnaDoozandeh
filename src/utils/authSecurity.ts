@@ -28,10 +28,7 @@ export interface StoredAuthConfig {
   updatedAt: string;
 }
 
-// Default pre-computed SHA-256 hash for 'admin' with salt 'douzandeh_secure_salt_2026':
-// 'admin:douzandeh_secure_salt_2026'
-// Default pre-computed SHA-256 hash for 'homa1404' with salt 'douzandeh_secure_salt_2026':
-// 'homa1404:douzandeh_secure_salt_2026'
+// Default pre-computed cryptographically salted SHA-256 hashes
 const DEFAULT_USERNAME_HASH = '1fa722a5c48bdfb1b8aa404f2f45ea0f22d9df8dfef2a8740aa1296c096dbcae';
 const DEFAULT_PASSWORD_HASH = '626d7f4fcaeec69c6f2df4cf0ca58a649d10e828453ea13c19f5df40713bdf2d';
 
@@ -171,14 +168,11 @@ export async function verifyCredentials(username: string, password: string): Pro
       return true;
     }
   } else {
-    // Default mode: check SHA-256 hash against default salt OR legacy admin/homa1404
+    // Default mode: verify against pre-computed cryptographically salted SHA-256 hash
     const inputUserHash = await sha256Hash(inputUserClean, DEFAULT_SALT);
     const inputPassHash = await sha256Hash(inputPassClean, DEFAULT_SALT);
 
-    if (
-      (inputUserHash === DEFAULT_USERNAME_HASH && inputPassHash === DEFAULT_PASSWORD_HASH) ||
-      (inputUserClean === 'admin' && inputPassClean === 'homa1404')
-    ) {
+    if (inputUserHash === DEFAULT_USERNAME_HASH && inputPassHash === DEFAULT_PASSWORD_HASH) {
       clearFailedAttempts();
       return true;
     }

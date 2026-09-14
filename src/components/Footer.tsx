@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Language } from '../types';
 import { useSiteContent } from '../context/ContentContext';
-import { ArrowUp, Mail, FileDown, Lock } from 'lucide-react';
+import { ArrowUp, Mail, FileDown } from 'lucide-react';
 
 interface FooterProps {
   lang: Language;
@@ -14,17 +14,32 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenResumeModal, onOpenA
   const isFa = lang === 'fa';
   const { hero, contact } = content;
 
+  // Secret stealth click counter for owner convenience
+  const clickCountRef = useRef(0);
+  const clickTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleAdminClick = () => {
-    if (onOpenAdmin) {
-      onOpenAdmin();
-    } else {
-      window.location.hash = '#admin';
-      setActiveView('admin');
+  const handleStealthTrigger = () => {
+    clickCountRef.current += 1;
+    if (clickTimerRef.current) {
+      clearTimeout(clickTimerRef.current);
     }
+    if (clickCountRef.current >= 5) {
+      clickCountRef.current = 0;
+      if (onOpenAdmin) {
+        onOpenAdmin();
+      } else {
+        window.location.hash = '#admin';
+        setActiveView('admin');
+      }
+      return;
+    }
+    clickTimerRef.current = setTimeout(() => {
+      clickCountRef.current = 0;
+    }, 2000);
   };
 
   return (
@@ -36,7 +51,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenResumeModal, onOpenA
           <div className="w-11 h-11 rounded-full overflow-hidden neu-circle-node p-0.5 shrink-0">
             <img
               src={hero?.photoUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80'}
-              alt={hero?.name?.[lang] || hero?.name?.fa || ''}
+              alt={`${hero?.name?.[lang] || hero?.name?.fa || 'حسنا دوزنده'} - ${hero?.role?.[lang] || hero?.role?.fa || 'مدیر دبیرستان دخترانه هما'}`}
               className="w-full h-full object-cover rounded-full object-top"
               onError={(e) => {
                 (e.target as HTMLElement).style.display = 'none';
@@ -58,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenResumeModal, onOpenA
           </div>
         </div>
 
-        {/* Action Controls: Resume Modal, Email, Admin & Back to top */}
+        {/* Action Controls: Resume Modal, Email & Back to top (NO visible admin button) */}
         <div className="flex items-center gap-2.5">
           <button
             onClick={onOpenResumeModal}
@@ -78,15 +93,6 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenResumeModal, onOpenA
           </a>
 
           <button
-            onClick={handleAdminClick}
-            className="neu-button p-2.5 rounded-full text-[#71839A] hover:text-[#243B5D] cursor-pointer"
-            aria-label="Admin Page"
-            title={isFa ? 'ویرایش و مدیریت محتوا' : 'Content Admin Editor'}
-          >
-            <Lock className="w-4 h-4" />
-          </button>
-
-          <button
             onClick={scrollToTop}
             className="neu-button p-2.5 rounded-full text-[#71839A] hover:text-[#243B5D] cursor-pointer"
             aria-label={isFa ? 'بازگشت به ابتدای صفحه' : 'Back to top'}
@@ -98,8 +104,8 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenResumeModal, onOpenA
       </div>
 
       {/* Domain & Copyright Subtitle */}
-      <div className="mt-6 text-center text-xs font-light text-[#71839A] flex flex-col sm:flex-row items-center justify-center gap-2">
-        <span>
+      <div className="mt-6 text-center text-xs font-light text-[#71839A] flex flex-col sm:flex-row items-center justify-center gap-2 select-none">
+        <span onClick={handleStealthTrigger} className="cursor-default">
           {isFa
             ? 'تمامی حقوق محفوظ است © ۱۴۰۴ حسنا دوزنده'
             : 'All rights reserved © 2026 Hosna Doozandeh'}

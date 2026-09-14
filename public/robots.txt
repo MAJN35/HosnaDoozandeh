@@ -1,0 +1,14 @@
+# robots.txt for douzandeh.ir
+User-agent: *
+Allow: /
+Disallow: /#admin
+Disallow: /#panel
+Disallow: /#secret
+
+# Googlebot specific directives
+User-agent: Googlebot
+Allow: /
+Allow: /profile.jpg
+Allow: /favicon.svg
+
+Sitemap: https://douzandeh.ir/sitemap.xml

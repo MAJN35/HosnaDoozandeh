@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://douzandeh.ir/</loc>
+    <lastmod>2026-09-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://douzandeh.ir/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://douzandeh.ir/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://douzandeh.ir/" />
+    <image:image>
+      <image:loc>https://douzandeh.ir/profile.jpg</image:loc>
+      <image:title>حسنا دوزنده - مدیر دبیرستان دخترانه هما</image:title>
+      <image:caption>حسنا دوزنده، مدیر دبیرستان دخترانه هما (دوره دوم) و متخصص روان‌سنجی در منطقه ۵ تهران</image:caption>
+    </image:image>
+  </url>
+</urlset>

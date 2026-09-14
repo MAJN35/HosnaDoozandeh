@@ -24,9 +24,16 @@ import {
   ShieldAlert,
   FileCode,
   Lock,
+  Tv,
+  Film,
+  Play,
+  ArrowUp,
+  ArrowDown,
+  ExternalLink,
 } from 'lucide-react';
 import { useSiteContent } from '../../context/ContentContext';
-import { Language, SiteContent, ExperienceItem, GalleryItemContent, TestimonialItemContent } from '../../types';
+import { Language, SiteContent, ExperienceItem, GalleryItemContent, TestimonialItemContent, VideoItemContent } from '../../types';
+import { parseVideoUrl, VIDEO_THUMBNAIL_PRESETS, SAMPLE_VIDEO_PRESETS } from '../../utils/videoHelper';
 
 interface AdminDashboardProps {
   lang: Language;
@@ -39,6 +46,7 @@ type TabType =
   | 'experiences'
   | 'achievements'
   | 'gallery'
+  | 'videos'
   | 'testimonials'
   | 'contact'
   | 'security'
@@ -231,6 +239,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
     });
   };
 
+  const updateGalleryVideoUrl = (index: number, url: string) => {
+    setDraft((prev) => {
+      const gallery = [...prev.gallery];
+      gallery[index] = {
+        ...gallery[index],
+        videoUrl: url,
+      };
+      return { ...prev, gallery };
+    });
+  };
+
+  // Video preview in admin
+  const [previewingVideoId, setPreviewingVideoId] = useState<string | null>(null);
+
   const addGalleryItem = () => {
     const newItem: GalleryItemContent = {
       id: `gallery-${Date.now()}`,
@@ -250,6 +272,77 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
       ...prev,
       gallery: prev.gallery.filter((g) => g.id !== id),
     }));
+  };
+
+  const addVideoItem = () => {
+    const newVideo: VideoItemContent = {
+      id: `video-${Date.now()}`,
+      title: {
+        fa: 'عنوان ویدیوی جدید',
+        en: 'New Educational Video Title',
+      },
+      category: {
+        fa: 'مستند و رویداد آموزشی',
+        en: 'Educational Media',
+      },
+      description: {
+        fa: 'توضیحات مختصر پیرامون این ویدیو، سخنرانی یا کارگاه آموزشی دبیرستان هما.',
+        en: 'Brief description of this video and educational insights.',
+      },
+      videoUrl: '',
+      thumbnailUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
+      duration: '۰۵:۰۰',
+      date: '۱۴۰۴',
+      featured: false,
+    };
+    setDraft((prev) => ({
+      ...prev,
+      videos: [...(prev.videos || []), newVideo],
+    }));
+  };
+
+  const removeVideoItem = (id: string) => {
+    setDraft((prev) => ({
+      ...prev,
+      videos: (prev.videos || []).filter((v) => v.id !== id),
+    }));
+  };
+
+  const updateVideoField = (index: number, field: 'title' | 'category' | 'description', subLang: 'fa' | 'en', value: string) => {
+    setDraft((prev) => {
+      const vids = [...(prev.videos || [])];
+      vids[index] = {
+        ...vids[index],
+        [field]: {
+          ...vids[index][field],
+          [subLang]: value,
+        },
+      };
+      return { ...prev, videos: vids };
+    });
+  };
+
+  const updateVideoSimpleField = (index: number, field: 'videoUrl' | 'thumbnailUrl' | 'duration' | 'date', value: string) => {
+    setDraft((prev) => {
+      const vids = [...(prev.videos || [])];
+      vids[index] = {
+        ...vids[index],
+        [field]: value,
+      };
+      return { ...prev, videos: vids };
+    });
+  };
+
+  const moveVideo = (index: number, direction: 'up' | 'down') => {
+    setDraft((prev) => {
+      const vids = [...(prev.videos || [])];
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= vids.length) return prev;
+      const temp = vids[index];
+      vids[index] = vids[targetIndex];
+      vids[targetIndex] = temp;
+      return { ...prev, videos: vids };
+    });
   };
 
   const updateTestimonial = (index: number, field: 'quote' | 'author' | 'role' | 'institution', subLang: 'fa' | 'en', value: string) => {
@@ -272,6 +365,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
     { id: 'experiences', label: { fa: 'سوابق و خط زمانی', en: 'Journey & Timeline' }, icon: Briefcase },
     { id: 'achievements', label: { fa: 'دستاوردها و مقالات', en: 'Achievements & Research' }, icon: Award },
     { id: 'gallery', label: { fa: 'نگارخانه و فضاها', en: 'Gallery & Spaces' }, icon: ImageIcon },
+    { id: 'videos', label: { fa: 'ویدیوها و رسانه‌ها', en: 'Videos & Media' }, icon: Tv },
     { id: 'testimonials', label: { fa: 'دیدگاه‌ها و اولیا', en: 'Testimonials' }, icon: MessageSquareQuote },
     { id: 'contact', label: { fa: 'اطلاعات تماس', en: 'Contact Details' }, icon: Mail },
     { id: 'security', label: { fa: 'امنیت و تغییر رمز', en: 'Security & Password' }, icon: KeyRound },
@@ -927,6 +1021,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                     </div>
 
                     <div>
+                      <label className="block text-[11px] text-[#71839A] mb-1">
+                        {isFa ? 'آدرس ویدیوی اختیاری (آپارات / یوتیوب / MP4 / خالی)' : 'Optional Video URL (Aparat / YouTube / MP4)'}
+                      </label>
+                      <input
+                        type="text"
+                        value={item.videoUrl || ''}
+                        placeholder={isFa ? 'اختیاری - در صورت تمایل لینک ویدیو را وارد فرمایید' : 'Optional video URL'}
+                        onChange={(e) => updateGalleryVideoUrl(idx, e.target.value)}
+                        className="w-full neu-recessed px-3 py-1.5 rounded-xl text-xs font-mono font-light text-[#243B5D]"
+                      />
+                    </div>
+
+                    <div>
                       <label className="block text-[11px] text-[#71839A] mb-1">{isFa ? 'عنوان فعالیت' : 'Title'}</label>
                       <input
                         type="text"
@@ -957,6 +1064,350 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB: VIDEOS & MEDIA */}
+          {activeTab === 'videos' && (
+            <div className="space-y-6">
+              <div className="border-b border-white/60 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-base font-normal text-[#243B5D]">
+                    {isFa ? 'مدیریت ویدیوها و رسانه‌ها (آپارات، یوتیوب، فایل مستقیم و پلی‌هولدر)' : 'Video URLs & Media Management'}
+                  </h2>
+                  <p className="text-xs text-[#71839A] font-light mt-0.5">
+                    {isFa
+                      ? 'لینک‌های ویدیوی آپارات، یوتیوب، ویمو، یا فایل‌های مستقیم MP4 را وارد کنید؛ همچنین می‌توانید از پلی‌هولدرها استفاده نمایید.'
+                      : 'Configure video URLs from Aparat, YouTube, Vimeo, direct MP4 files, or elegant placeholders.'}
+                  </p>
+                </div>
+                <button
+                  onClick={addVideoItem}
+                  className="neu-button px-3 py-1.5 rounded-xl text-xs font-light flex items-center gap-1.5 text-[#3D5A80] cursor-pointer shrink-0 self-start sm:self-auto"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>{isFa ? 'افزودن ویدیوی جدید' : 'Add New Video'}</span>
+                </button>
+              </div>
+
+              {/* Instructions Callout */}
+              <div className="p-4 rounded-2xl neu-panel-soft bg-[#E5EEF7]/50 border border-white/80 text-xs text-[#526987] space-y-2">
+                <div className="flex items-center gap-2 font-normal text-[#243B5D]">
+                  <Tv className="w-4 h-4 text-[#3D5A80]" />
+                  <span>{isFa ? 'راهنمای درج لینک و پلی‌هولدر ویدیو:' : 'Video URL & Placeholder Guide:'}</span>
+                </div>
+                <ul className="list-disc list-inside space-y-1 text-[11px] font-light leading-relaxed">
+                  <li>
+                    <strong>{isFa ? 'آپارات (Aparat):' : 'Aparat:'}</strong>{' '}
+                    {isFa
+                      ? 'لینک صفحه ویدیو در آپارات (مانند: https://www.aparat.com/v/XXXXX) به صورت خودکار به پخش‌کننده تبدیل می‌شود.'
+                      : 'Paste any Aparat video page URL; it is automatically parsed into a responsive player.'}
+                  </li>
+                  <li>
+                    <strong>{isFa ? 'یوتیوب (YouTube):' : 'YouTube:'}</strong>{' '}
+                    {isFa
+                      ? 'لینک‌های یوتیوب (مانند: https://youtube.com/watch?v=XXXXX یا youtu.be/XXXXX) پشتیبانی می‌شوند.'
+                      : 'Standard YouTube watch or share URLs are automatically embedded.'}
+                  </li>
+                  <li>
+                    <strong>{isFa ? 'فایل مستقیم (Direct MP4):' : 'Direct MP4:'}</strong>{' '}
+                    {isFa
+                      ? 'آدرس مستقیم فایل ویدیو با پسوند mp4 یا webm را وارد کنید.'
+                      : 'Direct links ending with .mp4 or .webm will use the native HTML5 player.'}
+                  </li>
+                  <li>
+                    <strong>{isFa ? 'پلی‌هولدر (Placeholder):' : 'Placeholder:'}</strong>{' '}
+                    {isFa
+                      ? 'اگر هنوز ویدیویی آپلود نکرده‌اید، کادر آدرس ویدیو را خالی بگذارید تا پلی‌هولدر تعاملی و شکیل با پوستر انتخابی نمایش داده شود.'
+                      : 'Leave URL blank or with placeholder keyword to display the interactive placeholder with poster art.'}
+                  </li>
+                </ul>
+              </div>
+
+              {/* Video Items List */}
+              <div className="space-y-6">
+                {(draft.videos || []).map((video, idx) => {
+                  const parsed = parseVideoUrl(video.videoUrl);
+                  const isPreviewing = previewingVideoId === video.id;
+
+                  return (
+                    <div key={video.id} className="p-4 sm:p-5 rounded-2xl neu-panel-soft space-y-4">
+                      {/* Top Header of the Video Card */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/60">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded-full neu-dial flex items-center justify-center text-xs font-semibold text-[#3D5A80]">
+                            {idx + 1}
+                          </span>
+                          <span className="text-xs font-normal text-[#243B5D]">
+                            {video.title?.fa || (isFa ? `ویدیوی شماره ${idx + 1}` : `Video #${idx + 1}`)}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/70 border border-white/80 text-[#526987] font-light">
+                            {parsed.platformName}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5">
+                          {/* Move Up / Down */}
+                          <button
+                            onClick={() => moveVideo(idx, 'up')}
+                            disabled={idx === 0}
+                            className="neu-button p-1.5 rounded-lg text-[#71839A] disabled:opacity-30 cursor-pointer"
+                            title={isFa ? 'انتقال به بالا' : 'Move Up'}
+                          >
+                            <ArrowUp className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => moveVideo(idx, 'down')}
+                            disabled={idx === (draft.videos || []).length - 1}
+                            className="neu-button p-1.5 rounded-lg text-[#71839A] disabled:opacity-30 cursor-pointer"
+                            title={isFa ? 'انتقال به پایین' : 'Move Down'}
+                          >
+                            <ArrowDown className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Live Preview Toggle */}
+                          <button
+                            onClick={() => setPreviewingVideoId(isPreviewing ? null : video.id)}
+                            className={`neu-button px-2.5 py-1.5 rounded-lg text-xs font-light flex items-center gap-1 cursor-pointer transition-colors ${
+                              isPreviewing ? 'text-blue-600 bg-blue-50/50' : 'text-[#3D5A80]'
+                            }`}
+                          >
+                            <Play className="w-3.5 h-3.5" />
+                            <span>{isPreviewing ? (isFa ? 'بستن پیش‌نمایش' : 'Close Preview') : (isFa ? 'پیش‌نمایش زنده' : 'Live Preview')}</span>
+                          </button>
+
+                          {/* Delete Video */}
+                          <button
+                            onClick={() => removeVideoItem(video.id)}
+                            className="text-red-500 hover:text-red-700 p-1.5 rounded-lg cursor-pointer transition-colors"
+                            title={isFa ? 'حذف ویدیو' : 'Delete Video'}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Live Inline Player Preview if opened */}
+                      {isPreviewing && (
+                        <div className="p-3 rounded-2xl neu-recessed bg-black/5 space-y-2">
+                          <div className="flex items-center justify-between text-[11px] text-[#71839A]">
+                            <span>{isFa ? 'پیش‌نمایش نحوه پخش در سایت:' : 'Live Site Player Preview:'}</span>
+                            <span className="font-mono text-[10px]">{parsed.platformName}</span>
+                          </div>
+                          <div className="w-full aspect-video max-w-xl mx-auto rounded-xl overflow-hidden bg-black flex items-center justify-center relative shadow-md">
+                            {parsed.type === 'aparat' || parsed.type === 'youtube' || parsed.type === 'vimeo' ? (
+                              <iframe
+                                src={parsed.embedUrl}
+                                title={video.title?.fa || 'Video Preview'}
+                                className="w-full h-full border-0"
+                                allowFullScreen
+                              />
+                            ) : parsed.type === 'direct' && !parsed.isPlaceholder ? (
+                              <video
+                                controls
+                                className="w-full h-full object-contain"
+                                poster={video.thumbnailUrl}
+                                src={parsed.embedUrl}
+                              />
+                            ) : (
+                              <div className="p-6 text-center text-white bg-gradient-to-br from-[#1B3252] to-[#3D5A80] w-full h-full flex flex-col items-center justify-center space-y-2">
+                                <Play className="w-8 h-8 opacity-80" />
+                                <div className="text-xs font-normal">
+                                  {isFa ? 'پلی‌هولدر فعال (آماده دریافت لینک واقعی)' : 'Active Video Placeholder'}
+                                </div>
+                                <div className="text-[10px] text-white/70 max-w-xs">
+                                  {video.videoUrl ? video.videoUrl : (isFa ? 'هنوز لینکی ثبت نشده است' : 'No URL entered')}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Video URL Input & Presets */}
+                      <div className="space-y-2">
+                        <label className="block text-[11px] font-normal text-[#243B5D]">
+                          {isFa ? 'آدرس اینترنتی ویدیو (Video URL):' : 'Video URL:'}
+                        </label>
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <input
+                            type="text"
+                            value={video.videoUrl || ''}
+                            placeholder={isFa ? 'مثال: https://www.aparat.com/v/XXXXX یا لینک مستقیم MP4 یا خالی بگذارید' : 'e.g. https://www.aparat.com/v/XXXXX or direct MP4 URL'}
+                            onChange={(e) => updateVideoSimpleField(idx, 'videoUrl', e.target.value)}
+                            className="flex-1 neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D] font-mono"
+                          />
+                        </div>
+
+                        {/* Quick Presets for Video URL */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                          <span className="text-[10px] text-[#71839A]">{isFa ? 'نمونه‌های آماده:' : 'Quick Presets:'}</span>
+                          <button
+                            type="button"
+                            onClick={() => updateVideoSimpleField(idx, 'videoUrl', 'https://www.aparat.com/v/sample_homa_documentary')}
+                            className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#3D5A80] hover:text-[#243B5D] cursor-pointer"
+                          >
+                            {isFa ? 'نمونه آپارات (Aparat)' : 'Aparat Demo'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateVideoSimpleField(idx, 'videoUrl', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')}
+                            className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#3D5A80] hover:text-[#243B5D] cursor-pointer"
+                          >
+                            {isFa ? 'نمونه MP4 مستقیم' : 'Direct MP4'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateVideoSimpleField(idx, 'videoUrl', '')}
+                            className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#71839A] hover:text-[#243B5D] cursor-pointer"
+                          >
+                            {isFa ? 'حالت پلی‌هولدر (خالی)' : 'Placeholder (Empty)'}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Thumbnail URL & Poster Presets */}
+                      <div className="space-y-2">
+                        <label className="block text-[11px] font-normal text-[#243B5D]">
+                          {isFa ? 'تصویر پوستر و پیش‌نمایش (Thumbnail URL):' : 'Thumbnail Poster URL:'}
+                        </label>
+                        <div className="flex flex-col sm:flex-row gap-3 items-center">
+                          <input
+                            type="text"
+                            value={video.thumbnailUrl || ''}
+                            onChange={(e) => updateVideoSimpleField(idx, 'thumbnailUrl', e.target.value)}
+                            className="flex-1 w-full neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D]"
+                          />
+                          {video.thumbnailUrl && (
+                            <div className="w-16 h-10 rounded-lg overflow-hidden shrink-0 border border-white/80 shadow-sm">
+                              <img src={video.thumbnailUrl} alt="Thumbnail preview" className="w-full h-full object-cover" />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Preset Thumbnail Buttons */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                          <span className="text-[10px] text-[#71839A]">{isFa ? 'پوسترهای پیشنهادی:' : 'Suggested Posters:'}</span>
+                          {VIDEO_THUMBNAIL_PRESETS.map((preset, pIdx) => (
+                            <button
+                              key={pIdx}
+                              type="button"
+                              onClick={() => updateVideoSimpleField(idx, 'thumbnailUrl', preset.url)}
+                              className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#3D5A80] hover:text-[#243B5D] cursor-pointer"
+                            >
+                              {preset.label[isFa ? 'fa' : 'en']}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Duration & Date */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'مدت زمان ویدیو (مثال: ۰۵:۴۵)' : 'Duration (e.g. 05:45)'}
+                          </label>
+                          <input
+                            type="text"
+                            value={video.duration || ''}
+                            onChange={(e) => updateVideoSimpleField(idx, 'duration', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-1.5 rounded-xl text-xs font-light text-[#243B5D]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'سال یا تاریخ ثبت (مثال: ۱۴۰۴)' : 'Date or Year (e.g. 2026)'}
+                          </label>
+                          <input
+                            type="text"
+                            value={video.date || ''}
+                            onChange={(e) => updateVideoSimpleField(idx, 'date', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-1.5 rounded-xl text-xs font-light text-[#243B5D]"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Bilingual Titles */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'عنوان ویدیو (فارسی)' : 'Video Title (Persian)'}
+                          </label>
+                          <input
+                            type="text"
+                            value={video.title?.fa || ''}
+                            onChange={(e) => updateVideoField(idx, 'title', 'fa', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'عنوان ویدیو (انگلیسی)' : 'Video Title (English)'}
+                          </label>
+                          <input
+                            type="text"
+                            value={video.title?.en || ''}
+                            onChange={(e) => updateVideoField(idx, 'title', 'en', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D] text-left ltr"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Bilingual Categories */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'دسته‌بندی یا موضوع (فارسی)' : 'Category (Persian)'}
+                          </label>
+                          <input
+                            type="text"
+                            value={video.category?.fa || ''}
+                            onChange={(e) => updateVideoField(idx, 'category', 'fa', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-1.5 rounded-xl text-xs font-light text-[#243B5D]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'دسته‌بندی یا موضوع (انگلیسی)' : 'Category (English)'}
+                          </label>
+                          <input
+                            type="text"
+                            value={video.category?.en || ''}
+                            onChange={(e) => updateVideoField(idx, 'category', 'en', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-1.5 rounded-xl text-xs font-light text-[#243B5D] text-left ltr"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Bilingual Descriptions */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'شرح و خلاصه محتوا (فارسی)' : 'Summary Description (Persian)'}
+                          </label>
+                          <textarea
+                            rows={2}
+                            value={video.description?.fa || ''}
+                            onChange={(e) => updateVideoField(idx, 'description', 'fa', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] text-[#71839A] mb-1">
+                            {isFa ? 'شرح و خلاصه محتوا (انگلیسی)' : 'Summary Description (English)'}
+                          </label>
+                          <textarea
+                            rows={2}
+                            value={video.description?.en || ''}
+                            onChange={(e) => updateVideoField(idx, 'description', 'en', e.target.value)}
+                            className="w-full neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D] text-left ltr"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -1175,7 +1626,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                       <span>
                         {authStatus.isCustomized
                           ? isFa ? 'رمز عبور سفارشی اختصاصی (فعال)' : 'Custom Encrypted Password (Active)'
-                          : isFa ? 'استفاده از مقادیر پیش‌فرض اولیه (admin / homa1404)' : 'Default Initial Credentials (admin / homa1404)'}
+                          : isFa ? 'استفاده از مقادیر پیش‌فرض اولیه سیستمی' : 'Default System Credentials'}
                       </span>
                     </div>
                   </div>
@@ -1184,9 +1635,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                 {authStatus.isCustomized && (
                   <button
                     onClick={() => {
-                      if (window.confirm(isFa ? 'رمز عبور به مقادیر اولیه (admin / homa1404) بازگردد؟' : 'Reset to default?')) {
+                      if (window.confirm(isFa ? 'آیا از بازنشانی رمز عبور به حالت پیش‌فرض اولیه اطمینان دارید؟' : 'Reset to default credentials?')) {
                         resetCredentials();
-                        setSecuritySuccess(isFa ? 'رمز عبور به حالت پیش‌فرض بازگردانده شد.' : 'Reset to default credentials.');
+                        setSecuritySuccess(isFa ? 'رمز عبور به حالت پیش‌فرض اولیه بازگردانده شد.' : 'Reset to default credentials.');
                       }
                     }}
                     className="neu-button px-3.5 py-2 rounded-xl text-xs font-light text-amber-700 hover:text-amber-800 cursor-pointer shrink-0"

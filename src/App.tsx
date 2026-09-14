@@ -13,6 +13,7 @@ import { PhilosophySection } from './components/PhilosophySection';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
 import { AchievementsSection } from './components/AchievementsSection';
 import { GallerySection } from './components/GallerySection';
+import { VideosSection } from './components/VideosSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -97,6 +98,9 @@ function MainSite() {
 
         {/* Gallery & Activities (Asymmetric Editorial Layout) */}
         <GallerySection lang={lang} />
+
+        {/* Video Keynotes, Documentaries & Psychometrics Media */}
+        <VideosSection lang={lang} />
 
         {/* Testimonials (Translucent Floating Quotes) */}
         <TestimonialsSection lang={lang} />

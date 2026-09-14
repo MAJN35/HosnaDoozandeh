@@ -94,6 +94,10 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
               ...(parsed.publication?.footerNote || parsed.publication?.field || {}),
             },
           },
+          videos:
+            parsed.videos && Array.isArray(parsed.videos) && parsed.videos.length > 0
+              ? parsed.videos
+              : defaultSiteContent.videos,
           contact: {
             ...defaultSiteContent.contact,
             ...(parsed.contact || {}),
@@ -128,10 +132,15 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return { isCustomized: config.isCustomized, updatedAt: config.updatedAt };
   });
 
+  const SECRET_ADMIN_HASHES = ['#admin', '#panel', '#manage', '#login', '#secret', '#douzandeh-admin'];
+
   // View State ('public' or 'admin')
   const [activeView, setActiveView] = useState<'public' | 'admin'>(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#admin') {
-      return 'admin';
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.toLowerCase();
+      if (SECRET_ADMIN_HASHES.includes(hash)) {
+        return 'admin';
+      }
     }
     return 'public';
   });
@@ -146,17 +155,32 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }, 3500);
   };
 
-  // Sync hash changes
+  // Sync hash changes and secret keyboard shortcut (Ctrl+Shift+A or Alt+A)
   useEffect(() => {
     const handleHashChange = () => {
-      if (window.location.hash === '#admin') {
+      const hash = window.location.hash.toLowerCase();
+      if (SECRET_ADMIN_HASHES.includes(hash)) {
         setActiveView('admin');
-      } else if (window.location.hash === '' || window.location.hash === '#') {
+      } else if (hash === '' || hash === '#') {
         setActiveView('public');
       }
     };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Secret key combination: Ctrl+Shift+A or Alt+A opens admin
+      if ((e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) || (e.altKey && (e.key === 'A' || e.key === 'a'))) {
+        e.preventDefault();
+        window.location.hash = '#admin';
+        setActiveView('admin');
+      }
+    };
+
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const updateContent = (newContent: SiteContent) => {

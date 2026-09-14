@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Language } from '../types';
 import { useSiteContent } from '../context/ContentContext';
-import { FileDown, Globe, Menu, X, Lock } from 'lucide-react';
+import { FileDown, Globe, Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   lang: Language;
@@ -15,9 +15,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   lang,
   onToggleLang,
   onOpenResumeModal,
-  onOpenAdmin,
 }) => {
-  const { content, setActiveView } = useSiteContent();
+  const { content } = useSiteContent();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isFa = lang === 'fa';
 
@@ -27,17 +26,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     { href: '#journey', label: { fa: 'مسیر حرفه‌ای', en: 'Professional Journey' } },
     { href: '#achievements', label: { fa: 'دستاوردها', en: 'Achievements' } },
     { href: '#gallery', label: { fa: 'فعالیت‌ها', en: 'Activities' } },
+    { href: '#videos', label: { fa: 'ویدیوها', en: 'Videos' } },
     { href: '#contact', label: { fa: 'تماس', en: 'Contact' } },
   ];
-
-  const handleAdminClick = () => {
-    if (onOpenAdmin) {
-      onOpenAdmin();
-    } else {
-      window.location.hash = '#admin';
-      setActiveView('admin');
-    }
-  };
 
   return (
     <motion.header
@@ -86,20 +77,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </nav>
 
-        {/* Action Buttons: Admin, Language Switch & Official Resume Modal */}
+        {/* Action Buttons: Language Switch & Official Resume Modal */}
         <div className="flex items-center gap-2 sm:gap-2.5">
-          {/* Admin Page Lock Button */}
-          <button
-            onClick={handleAdminClick}
-            className="neu-button p-2 sm:px-2.5 sm:py-1.5 rounded-full text-xs font-normal text-[#71839A] hover:text-[#243B5D] flex items-center gap-1.5 cursor-pointer transition-colors"
-            title={isFa ? 'ورود به پنل مدیریت محتوا' : 'Admin Content Editor'}
-            id="nav-admin-btn"
-            aria-label="Admin Page"
-          >
-            <Lock className="w-3.5 h-3.5" />
-            <span className="hidden xl:inline text-[11px] font-light">{isFa ? 'مدیریت' : 'Admin'}</span>
-          </button>
-
           {/* Language Toggle */}
           <button
             onClick={onToggleLang}
@@ -158,41 +137,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
 
-            <div className="mt-4 pt-4 border-t border-white/60 flex flex-col gap-2.5">
-              <div className="flex items-center justify-between gap-3">
-                <button
-                  onClick={() => {
-                    onToggleLang();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="neu-button flex-1 py-2 rounded-full text-xs font-normal text-[#243B5D] flex items-center justify-center gap-1.5"
-                >
-                  <Globe className="w-3.5 h-3.5 text-[#71839A]" />
-                  <span>{isFa ? 'English Version' : 'نسخه فارسی'}</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    onOpenResumeModal();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="neu-button-primary flex-1 py-2 rounded-full text-xs font-light flex items-center justify-center gap-1.5"
-                >
-                  <FileDown className="w-3.5 h-3.5" />
-                  <span>{isFa ? 'دریافت رزومه' : 'Official CV'}</span>
-                </button>
-              </div>
-
-              {/* Mobile Admin Link */}
+            <div className="mt-4 pt-4 border-t border-white/60 flex items-center justify-between gap-3">
               <button
                 onClick={() => {
+                  onToggleLang();
                   setMobileMenuOpen(false);
-                  handleAdminClick();
                 }}
-                className="neu-button w-full py-2 rounded-full text-xs font-light text-[#526987] flex items-center justify-center gap-2"
+                className="neu-button flex-1 py-2 rounded-full text-xs font-normal text-[#243B5D] flex items-center justify-center gap-1.5"
               >
-                <Lock className="w-3.5 h-3.5 text-[#71839A]" />
-                <span>{isFa ? 'ورود به پنل مدیریت محتوا' : 'Admin Content Editor'}</span>
+                <Globe className="w-3.5 h-3.5 text-[#71839A]" />
+                <span>{isFa ? 'English Version' : 'نسخه فارسی'}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  onOpenResumeModal();
+                  setMobileMenuOpen(false);
+                }}
+                className="neu-button-primary flex-1 py-2 rounded-full text-xs font-light flex items-center justify-center gap-1.5"
+              >
+                <FileDown className="w-3.5 h-3.5" />
+                <span>{isFa ? 'دریافت رزومه' : 'Official CV'}</span>
               </button>
             </div>
           </motion.div>

@@ -123,7 +123,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenResumeModal }) => {
                   <div className="w-full h-full rounded-full overflow-hidden relative shadow-inner bg-[#E5EEF7]">
                     <img
                       src={photoUrl}
-                      alt={nameText}
+                      alt={`${nameText} - ${roleText} (${specialtyText})`}
                       className="w-full h-full object-cover object-top filter brightness-[1.02] contrast-[0.98] transition-transform duration-700 hover:scale-105"
                       onError={(e) => {
                         const target = e.target as HTMLElement;

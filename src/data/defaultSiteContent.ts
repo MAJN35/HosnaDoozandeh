@@ -230,6 +230,68 @@ export const defaultSiteContent: SiteContent = {
       imageUrl: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1000&q=80',
     },
   ],
+  videos: [
+    {
+      id: 'video-homa-intro',
+      title: {
+        fa: 'مستند معرفی دبیرستان دخترانه هما و رویکرد روان‌سنجی',
+        en: 'Homa Girls’ High School: Talent Discovery & Psychometrics',
+      },
+      category: {
+        fa: 'مستند آموزشی و معرفی مدرسه',
+        en: 'Institutional Documentary',
+      },
+      description: {
+        fa: 'مروری بر رویکرد نوین مدیریت دبیرستان دخترانه هما (دوره دوم) در تلفیق سنجش و اندازه‌گیری شناختی با آمادگی کنکور و هدایت تحصیلی.',
+        en: 'A visual journey exploring the modern educational paradigm at Homa Girls’ High School, integrating psychometrics and holistic learning.',
+      },
+      videoUrl: 'https://www.aparat.com/v/sample_homa_documentary',
+      thumbnailUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
+      duration: '۰۵:۴۵',
+      date: '۱۴۰۴',
+      featured: true,
+    },
+    {
+      id: 'video-exam-anxiety',
+      title: {
+        fa: 'سخنرانی حسنا دوزنده: مدیریت اضطراب کنکور و هدایت تحصیلی',
+        en: 'Keynote: Mitigating High-Stakes Exam Anxiety & Academic Guidance',
+      },
+      category: {
+        fa: 'سخنرانی و مشاوره تخصصی',
+        en: 'Academic Keynote',
+      },
+      description: {
+        fa: 'نشست راهبردی با اولیا و دانش‌آموزان پایه دوازدهم پیرامون روش‌های کاهش اضطراب آزمون‌های نهایی، تنظیم ساعت خواب و انتخاب رشته دانشگاهی.',
+        en: 'Strategic keynote for senior students and parents on emotional regulation, sleep hygiene, and evidence-based study pacing.',
+      },
+      videoUrl: 'https://www.aparat.com/v/sample_guidance_lecture',
+      thumbnailUrl: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80',
+      duration: '۰۸:۲۰',
+      date: '۱۴۰۳',
+      featured: true,
+    },
+    {
+      id: 'video-faculty-workshop',
+      title: {
+        fa: 'کارگاه سنجش و اندازه‌گیری آموزشی برای کادر دبیران',
+        en: 'Faculty Workshop: Modern Psychometric Assessment in the Classroom',
+      },
+      category: {
+        fa: 'توانمندسازی همکاران',
+        en: 'Teacher Empowerment Workshop',
+      },
+      description: {
+        fa: 'اصول تحلیل سؤالات تستی و تشریحی بر پایه نظریه کلاسیک آزمون (CTT) جهت ارتقای روایی و پایایی امتحانات کلاسی دبیرستان هما.',
+        en: 'Foundations of test item analysis based on Classical Test Theory to maximize validity and pedagogical feedback in secondary education.',
+      },
+      videoUrl: 'https://www.aparat.com/v/sample_faculty_workshop',
+      thumbnailUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80',
+      duration: '۰۶:۱۵',
+      date: '۱۴۰۳',
+      featured: false,
+    },
+  ],
   testimonials: [
     {
       id: 'parent-council',

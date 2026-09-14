@@ -11,9 +11,9 @@ interface AdminLoginProps {
 }
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ lang, onBackToSite }) => {
-  const { login, authStatus } = useSiteContent();
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('homa1404');
+  const { login } = useSiteContent();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,18 +60,14 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ lang, onBackToSite }) =>
           setLockoutSec(result.remainingSeconds || 900);
           setError(
             isFa
-              ? `تعداد تلاش‌های ناموفق بیش از حد مجاز بود. جهت امنیت حساب، پنل موقتاً مسدود شد.`
+              ? 'تعداد تلاش‌های ناموفق بیش از حد مجاز بود. جهت امنیت حساب، پنل موقتاً مسدود شد.'
               : 'Too many failed attempts. Login locked temporarily for security.'
           );
         } else {
           setError(
-            authStatus.isCustomized
-              ? isFa
-                ? 'نام کاربری یا کلمه عبور اختصاصی واردشده نادرست است.'
-                : 'Invalid custom credentials.'
-              : isFa
-                ? 'نام کاربری یا کلمه عبور نادرست است (پیش‌فرض: admin / homa1404).'
-                : 'Invalid credentials (default: admin / homa1404).'
+            isFa
+              ? 'نام کاربری یا کلمه عبور واردشده نادرست است.'
+              : 'Invalid username or password.'
           );
         }
       }
@@ -79,12 +75,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ lang, onBackToSite }) =>
       setIsSubmitting(false);
       setError(isFa ? 'خطای ناشناخته در تأیید هویت' : 'Authentication error occurred');
     }
-  };
-
-  const handleQuickDemo = () => {
-    setUsername('admin');
-    setPassword('homa1404');
-    setError(null);
   };
 
   return (
@@ -144,16 +134,17 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ lang, onBackToSite }) =>
             {/* Username Field */}
             <div className="space-y-1.5">
               <label className="text-xs font-light text-[#71839A] block">
-                {isFa ? 'نام کاربری (مدیر)' : 'Username'}
+                {isFa ? 'نام کاربری مدیر' : 'Username'}
               </label>
               <div className="relative">
                 <input
                   type="text"
                   required
+                  autoFocus
                   disabled={lockoutSec > 0 || isSubmitting}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="admin"
+                  placeholder={isFa ? 'نام کاربری خود را وارد کنید' : 'Enter username'}
                   dir="ltr"
                   className="w-full pl-10 pr-4 py-3 rounded-2xl neu-recessed text-sm font-mono text-[#243B5D] placeholder:text-[#71839A]/40 transition-all duration-200"
                 />
@@ -216,7 +207,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ lang, onBackToSite }) =>
               <Lock className="w-4 h-4 opacity-90" />
               <span>
                 {isSubmitting
-                  ? isFa ? 'در حال بررسی رمزنگاری...' : 'Verifying...'
+                  ? isFa ? 'در حال بررسی...' : 'Verifying...'
                   : lockoutSec > 0
                     ? isFa ? 'حالت قفل موقت' : 'Temporarily Locked'
                     : isFa ? 'ورود به پنل' : 'Sign In'}
@@ -226,38 +217,19 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ lang, onBackToSite }) =>
 
           {/* Security Status Info Box */}
           <div className="mt-6 pt-5 border-t border-white/60">
-            <div className="flex items-center justify-between text-xs mb-2">
+            <div className="flex items-center justify-between text-xs">
               <span className="text-[#71839A] font-light flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#3D5A80]" />
                 {isFa ? 'امنیت ورود:' : 'Security:'}
               </span>
-              <span className="font-mono text-[11px] px-2 py-0.5 rounded-full neu-pill text-[#243B5D]">
-                {authStatus.isCustomized
-                  ? isFa ? 'رمزنگاری SHA-256 سفارشی' : 'Custom SHA-256'
-                  : isFa ? 'پیش‌فرض اولیه' : 'Default Credentials'}
+              <span className="font-mono text-[11px] px-2.5 py-0.5 rounded-full neu-pill text-[#243B5D]">
+                {isFa ? 'حفاظت رمزنگاری SHA-256 و ضدنفوذ' : 'SHA-256 Protected'}
               </span>
             </div>
-
-            {!authStatus.isCustomized && (
-              <div className="neu-panel-soft p-3 text-[11px] font-light text-[#71839A] leading-relaxed flex items-center justify-between">
-                <span>
-                  {isFa
-                    ? 'مقادیر آزمایشی: نام کاربری admin و کلمه عبور homa1404'
-                    : 'Initial: username admin, password homa1404'}
-                </span>
-                <button
-                  type="button"
-                  onClick={handleQuickDemo}
-                  className="text-[#3D5A80] hover:underline shrink-0 font-normal cursor-pointer ml-2"
-                >
-                  {isFa ? 'تکمیل خودکار' : 'Autofill'}
-                </button>
-              </div>
-            )}
           </div>
 
           {/* Back to Public Site */}
-          <div className="mt-4 text-center">
+          <div className="mt-5 text-center">
             <button
               onClick={onBackToSite}
               className="neu-button px-5 py-2 rounded-full text-xs font-normal text-[#71839A] hover:text-[#243B5D] inline-flex items-center gap-1.5 cursor-pointer"
