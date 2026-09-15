@@ -30,10 +30,27 @@ import {
   ArrowUp,
   ArrowDown,
   ExternalLink,
+  GitBranch,
+  GitCommit,
+  UploadCloud,
+  HelpCircle,
+  AlertCircle,
+  Loader2,
+  RefreshCw,
 } from 'lucide-react';
 import { useSiteContent } from '../../context/ContentContext';
 import { Language, SiteContent, ExperienceItem, GalleryItemContent, TestimonialItemContent, VideoItemContent } from '../../types';
 import { parseVideoUrl, VIDEO_THUMBNAIL_PRESETS, SAMPLE_VIDEO_PRESETS } from '../../utils/videoHelper';
+import {
+  getStoredGitHubConfig,
+  saveStoredGitHubConfig,
+  pushContentToGitHub,
+  generateDefaultSiteContentCode,
+  generateAuthConfigCode,
+  GitHubSyncConfig,
+  CommitStepProgress,
+} from '../../utils/githubSync';
+import { getStoredAuthConfig } from '../../utils/authSecurity';
 
 interface AdminDashboardProps {
   lang: Language;
@@ -59,6 +76,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
     resetContent,
     logout,
     toastMessage,
+    showToast,
     changeCredentials,
     resetCredentials,
     authStatus,
@@ -77,8 +95,75 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
   const [securitySuccess, setSecuritySuccess] = useState<string | null>(null);
   const [isChangingPass, setIsChangingPass] = useState(false);
   const [copiedExport, setCopiedExport] = useState(false);
+  const [copiedAuthConfig, setCopiedAuthConfig] = useState(false);
+
+  // GitHub Sync State
+  const [githubConfig, setGithubConfig] = useState<GitHubSyncConfig>(getStoredGitHubConfig);
+  const [isSyncingGitHub, setIsSyncingGitHub] = useState(false);
+  const [syncProgress, setSyncProgress] = useState<CommitStepProgress | null>(null);
+  const [showToken, setShowToken] = useState(false);
+  const [showTokenGuide, setShowTokenGuide] = useState(false);
 
   const isFa = lang === 'fa';
+
+  const updateGithubField = (field: keyof GitHubSyncConfig, value: string) => {
+    setGithubConfig((prev) => {
+      const updated = { ...prev, [field]: value };
+      saveStoredGitHubConfig(updated);
+      return updated;
+    });
+  };
+
+  const handleSyncToGitHub = async () => {
+    if (!githubConfig.token.trim()) {
+      setActiveTab('export');
+      showToast(
+        isFa
+          ? 'لطفاً ابتدا توکن شخصی گیت‌هاب (Personal Access Token) را وارد فرمایید.'
+          : 'Please enter your GitHub Personal Access Token first.'
+      );
+      return;
+    }
+
+    setIsSyncingGitHub(true);
+    setSyncProgress({
+      step: 'checking_token',
+      message: isFa
+        ? 'در حال برقراری ارتباط با مخزن گیت‌هاب و بررسی دسترسی...'
+        : 'Connecting to repository and checking permissions...',
+    });
+
+    try {
+      // Save locally first
+      updateContent(draft);
+      const authConf = getStoredAuthConfig();
+
+      await pushContentToGitHub(
+        githubConfig,
+        draft,
+        authConf.isCustomized ? authConf : undefined,
+        (progress) => setSyncProgress(progress)
+      );
+
+      showToast(
+        isFa
+          ? 'تغییرات با موفقیت در مخزن گیت‌هاب ثبت شد!'
+          : 'Successfully pushed changes to GitHub repository!'
+      );
+    } catch (err: any) {
+      setSyncProgress({
+        step: 'error',
+        message:
+          err.message ||
+          (isFa ? 'خطا در ثبت تغییرات در مخزن گیت‌هاب' : 'Failed to commit to GitHub repository'),
+      });
+      showToast(
+        err.message || (isFa ? 'خطا در همگام‌سازی با گیت‌هاب' : 'Failed to sync with GitHub')
+      );
+    } finally {
+      setIsSyncingGitHub(false);
+    }
+  };
 
   const handleSave = () => {
     setIsSaving(true);
@@ -369,7 +454,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
     { id: 'testimonials', label: { fa: 'دیدگاه‌ها و اولیا', en: 'Testimonials' }, icon: MessageSquareQuote },
     { id: 'contact', label: { fa: 'اطلاعات تماس', en: 'Contact Details' }, icon: Mail },
     { id: 'security', label: { fa: 'امنیت و تغییر رمز', en: 'Security & Password' }, icon: KeyRound },
-    { id: 'export', label: { fa: 'خروجی گیت‌هاب', en: 'Export for GitHub' }, icon: FileCode },
+    { id: 'export', label: { fa: 'همگام‌سازی با مخزن گیت‌هاب', en: 'GitHub Sync & Export' }, icon: GitBranch },
   ];
 
   return (
@@ -414,6 +499,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
           {/* Quick Header Actions */}
           <div className="flex items-center gap-2 w-full md:w-auto justify-end">
             <button
+              onClick={() => setActiveTab('export')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-all ${
+                activeTab === 'export'
+                  ? 'neu-button-primary text-white shadow-md'
+                  : 'neu-button text-[#243B5D] hover:text-[#1E3A8A] border border-[#3D5A80]/20'
+              }`}
+              title={isFa ? 'همگام‌سازی با مخزن گیت‌هاب و تنظیم توکن' : 'GitHub Sync & Token'}
+            >
+              <GitBranch className="w-3.5 h-3.5 text-[#3D5A80]" />
+              <span>{isFa ? 'همگام‌سازی با گیت‌هاب' : 'GitHub Sync'}</span>
+            </button>
+
+            <button
               onClick={onBackToSite}
               className="neu-button px-3.5 py-2 rounded-xl text-xs font-light flex items-center gap-1.5 cursor-pointer text-[#455A75] hover:text-[#243B5D]"
             >
@@ -427,7 +525,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
               className="neu-button-primary px-4 py-2 rounded-xl text-xs font-light flex items-center gap-1.5 cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
-              <span>{isSaving ? (isFa ? 'در حال ذخیره...' : 'Saving...') : isFa ? 'ذخیره تغییرات' : 'Save Changes'}</span>
+              <span>{isSaving ? (isFa ? 'در حال ذخیره...' : 'Saving...') : isFa ? 'ذخیره محلی' : 'Save Local'}</span>
             </button>
 
             <button
@@ -441,11 +539,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
           </div>
         </header>
 
+        {/* Global Alert for GitHub Sync if token is not set yet */}
+        {!githubConfig.token && (
+          <div className="neu-panel p-4 mb-5 border-r-4 border-r-[#3D5A80] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#E4EFF9]/80">
+            <div className="flex items-center gap-2.5 text-xs text-[#243B5D]">
+              <GitBranch className="w-4 h-4 text-[#3D5A80] shrink-0" />
+              <span>
+                {isFa
+                  ? '💡 برای اعمال دائمی تغییرات محتوا و رمز عبور روی دامنه اصلی (douzandeh.ir)، توکن گیت‌هاب خود را ثبت نمایید:'
+                  : '💡 To permanently deploy changes to douzandeh.ir, configure your GitHub token:'}
+              </span>
+            </div>
+            <button
+              onClick={() => setActiveTab('export')}
+              className="px-3.5 py-1.5 rounded-xl bg-[#2A4367] text-white text-xs font-normal hover:bg-[#1E3352] transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer shadow-sm"
+            >
+              <KeyRound className="w-3.5 h-3.5" />
+              <span>{isFa ? 'ورود به بخش همگام‌سازی و ثبت توکن' : 'Enter GitHub Token'}</span>
+            </button>
+          </div>
+        )}
+
         {/* Tab Selection Navigation */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 scrollbar-thin">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
+            const isExport = tab.id === 'export';
             return (
               <button
                 key={tab.id}
@@ -453,11 +573,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                 className={`px-4 py-2.5 rounded-2xl text-xs font-normal shrink-0 flex items-center gap-2 cursor-pointer transition-all ${
                   isActive
                     ? 'neu-button-primary text-white font-medium shadow-md'
+                    : isExport
+                    ? 'neu-button text-[#1E3A8A] font-medium border border-[#3D5A80]/30 hover:text-[#243B5D]'
                     : 'neu-button text-[#526987] hover:text-[#243B5D]'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label[lang]}</span>
+                {isExport && (
+                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#3D5A80]/15 text-[#243B5D] font-mono">
+                    GitHub
+                  </span>
+                )}
               </button>
             );
           })}
@@ -1679,8 +1806,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                     setIsChangingPass(false);
                     setSecuritySuccess(
                       isFa
-                        ? 'نام کاربری و کلمه عبور جدید با موفقیت هش و ذخیره شد! از این پس با این مشخصات وارد شوید.'
-                        : 'Credentials updated and cryptographically hashed successfully!'
+                        ? 'نام کاربری و کلمه عبور جدید با موفقیت هش و ذخیره شد! جهت اعمال آن در مخزن گیت‌هاب برای همه دستگاه‌ها، به تب «همگام‌سازی با مخزن گیت‌هاب» مراجعه کرده یا دکمه ارسال را بزنید.'
+                        : 'Credentials updated and cryptographically hashed successfully! To push this to GitHub for all devices, use the GitHub Sync tab.'
                     );
                     setNewPasswordInput('');
                     setConfirmPasswordInput('');
@@ -1792,96 +1919,354 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                       ? '۲. سیستم همچنین مجهز به مکانیزم قفل خودکار پس از ۵ تلاش ناموفق (Brute-force Throttling) است تا امکان حدس خودکار رمز وجود نداشته باشد.'
                       : '2. The login interface is protected against brute-force attacks with an automatic 15-minute lockout after 5 consecutive failures.'}
                   </p>
-                  <p>
-                    {isFa
-                      ? '۳. توجه فرمایید: تغییراتی که از طریق این پنل ایجاد می‌کنید در حافظه مرورگر ذخیره می‌شود. برای اینکه تغییرات به صورت دائمی برای همه بازدیدکنندگان وب‌سایت در گیت‌هاب اعمال شود، از تب «خروجی گیت‌هاب» فایل داده‌ها را دانلود و در پوشه پروژه ذخیره نمایید.'
-                      : '3. Edits saved via this panel persist in browser storage. To make changes live for ALL visitors worldwide on GitHub, use the "Export for GitHub" tab to download and commit the updated file.'}
-                  </p>
+                  <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-[#3D5A80]/10 border border-[#3D5A80]/20">
+                    <p className="text-xs text-[#243B5D]">
+                      {isFa
+                        ? '۳. برای اینکه رمز عبور جدید یا تغییرات متون در مخزن گیت‌هاب ثبت شده و روی همه گوشی‌ها و کامپیوترها فعال شود:'
+                        : '3. To commit this new password or site changes into GitHub so they work across all devices:'}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('export')}
+                      className="px-3.5 py-1.5 rounded-lg bg-[#243B5D] text-white text-xs font-normal hover:bg-[#1A2C46] flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm"
+                    >
+                      <GitBranch className="w-3.5 h-3.5" />
+                      <span>{isFa ? 'رفتن به همگام‌سازی با گیت‌هاب' : 'Go to GitHub Sync'}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* TAB 9: EXPORT FOR GITHUB */}
+          {/* TAB 9: GITHUB SYNC & EXPORT */}
           {activeTab === 'export' && (
             <div className="space-y-6">
               <div className="border-b border-white/60 pb-3">
-                <h2 className="text-base font-normal text-[#243B5D]">
-                  {isFa ? 'خروجی کد و انتشار دائمی در گیت‌هاب' : 'Export Code for GitHub Deployment'}
-                </h2>
-                <p className="text-xs text-[#71839A] font-light mt-0.5">
+                <div className="flex items-center gap-2 text-base font-normal text-[#243B5D]">
+                  <GitBranch className="w-5 h-5 text-[#3D5A80]" />
+                  <h2>{isFa ? 'همگام‌سازی مستقیم با مخزن گیت‌هاب (GitHub)' : 'GitHub Repository Sync & Live Deployment'}</h2>
+                </div>
+                <p className="text-xs text-[#71839A] font-light mt-1 leading-relaxed">
                   {isFa
-                    ? 'دانلود مستقیم فایل داده‌های ویرایش‌شده برای قرار دادن در مخزن گیت‌هاب و نمایش همگانی به همه بازدیدکنندگان'
-                    : 'Download or copy the modified content file to commit into your GitHub repository for global visitors'}
+                    ? 'از آنجایی که سایت روی گیت‌هاب پیجز (GitHub Pages) مستقر است، برای آنکه تغییرات متن‌ها، مشخصات و رمز عبور روی تمام رایانه‌ها، موبایل‌ها و برای همه بازدیدکنندگان اعمال شود، باید تغییرات در مخزن گیت‌هاب ثبت گردند.'
+                    : 'Because the site runs on GitHub Pages, changes must be committed to your repository so visitors on all devices see your latest updates.'}
                 </p>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  onClick={() => {
-                    const code = `import { SiteContent } from '../types';\nimport { personalInfo, experiences } from './cvData';\n\nexport const defaultSiteContent: SiteContent = ${JSON.stringify(
-                      draft,
-                      null,
-                      2
-                    )};\n`;
-                    const blob = new Blob([code], { type: 'text/typescript;charset=utf-8' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'defaultSiteContent.ts';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                  }}
-                  className="neu-button-primary px-5 py-2.5 rounded-xl text-xs font-light flex items-center gap-2 cursor-pointer shadow-md"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>{isFa ? 'دانلود فایل defaultSiteContent.ts' : 'Download defaultSiteContent.ts'}</span>
-                </button>
+              {/* SECTION 1: ONE-CLICK AUTOMATIC SYNC */}
+              <div className="neu-card p-6 space-y-5 border border-white/80">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl neu-dial flex items-center justify-center text-[#3D5A80]">
+                      <UploadCloud className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium text-[#243B5D]">
+                        {isFa ? 'روش اول: ارسال و انتشار خودکار با یک کلیک (توصیه شده)' : 'Method 1: One-Click Direct Repository Push (Recommended)'}
+                      </h3>
+                      <p className="text-[11px] text-[#71839A] font-light">
+                        {isFa
+                          ? 'تغییرات مستقیماً در مخزن گیت‌هاب شما کامیت شده و سایت douzandeh.ir ظرف چند ثانیه خودکار بازسازی می‌شود'
+                          : 'Pushes code directly via GitHub API and triggers automatic rebuild on douzandeh.ir'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-                <button
-                  onClick={() => {
-                    const code = `import { SiteContent } from '../types';\nimport { personalInfo, experiences } from './cvData';\n\nexport const defaultSiteContent: SiteContent = ${JSON.stringify(
-                      draft,
-                      null,
-                      2
-                    )};\n`;
-                    navigator.clipboard.writeText(code);
-                    setCopiedExport(true);
-                    setTimeout(() => setCopiedExport(false), 2500);
-                  }}
-                  className="neu-button px-5 py-2.5 rounded-xl text-xs font-normal text-[#243B5D] flex items-center gap-2 cursor-pointer"
-                >
-                  {copiedExport ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-[#71839A]" />}
-                  <span>{copiedExport ? (isFa ? 'کد کپی شد!' : 'Code Copied!') : isFa ? 'کپی تمام کد' : 'Copy All Code'}</span>
-                </button>
+                {/* Repository Configuration */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-medium text-[#455A75] mb-1">
+                      {isFa ? 'نام کاربری گیت‌هاب (Owner)' : 'GitHub Owner'}
+                    </label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      value={githubConfig.owner}
+                      onChange={(e) => updateGithubField('owner', e.target.value)}
+                      placeholder="MAJN35"
+                      className="w-full neu-recessed px-3 py-2 rounded-xl text-xs font-mono text-[#243B5D]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-medium text-[#455A75] mb-1">
+                      {isFa ? 'نام مخزن (Repository)' : 'Repository Name'}
+                    </label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      value={githubConfig.repo}
+                      onChange={(e) => updateGithubField('repo', e.target.value)}
+                      placeholder="HosnaDoozandeh"
+                      className="w-full neu-recessed px-3 py-2 rounded-xl text-xs font-mono text-[#243B5D]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-medium text-[#455A75] mb-1">
+                      {isFa ? 'شاخه هدف (Branch)' : 'Target Branch'}
+                    </label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      value={githubConfig.branch}
+                      onChange={(e) => updateGithubField('branch', e.target.value)}
+                      placeholder="main"
+                      className="w-full neu-recessed px-3 py-2 rounded-xl text-xs font-mono text-[#243B5D]"
+                    />
+                  </div>
+                </div>
+
+                {/* GitHub Personal Access Token (PAT) Input */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-medium text-[#455A75] flex items-center gap-1.5">
+                      <KeyRound className="w-3.5 h-3.5 text-[#3D5A80]" />
+                      <span>{isFa ? 'توکن شخصی دسترسی گیت‌هاب (Personal Access Token - PAT)' : 'GitHub Personal Access Token'}</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowTokenGuide(!showTokenGuide)}
+                      className="text-[11px] text-[#3D5A80] hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <HelpCircle className="w-3 h-3" />
+                      <span>{isFa ? 'چگونه توکن بسازم؟ (راهنما)' : 'How to get a token?'}</span>
+                    </button>
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      type={showToken ? 'text' : 'password'}
+                      dir="ltr"
+                      value={githubConfig.token}
+                      onChange={(e) => updateGithubField('token', e.target.value)}
+                      placeholder="ghp_... یا github_pat_..."
+                      className="w-full neu-recessed pl-3 pr-20 py-2.5 rounded-xl text-xs font-mono text-[#243B5D]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowToken(!showToken)}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] font-light text-[#526987] hover:text-[#243B5D] px-2 py-1 rounded neu-button cursor-pointer"
+                    >
+                      {showToken ? (isFa ? 'مخفی' : 'Hide') : (isFa ? 'نمایش' : 'Show')}
+                    </button>
+                  </div>
+
+                  <p className="text-[10px] text-[#71839A] font-light">
+                    {isFa
+                      ? '🔒 امنیت شما: توکن تنها در حافظه مرورگر شخصی شما (Local Storage) نگهداری شده و هرگز به سرور دیگری ارسال نمی‌شود؛ بلکه مستقیماً به API رسمی GitHub متصل می‌گردد.'
+                      : '🔒 Security: Token is stored solely in your browser local storage and communicated strictly with api.github.com.'}
+                  </p>
+                </div>
+
+                {/* Collapsible Token Creation Guide */}
+                {showTokenGuide && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="p-4 rounded-2xl bg-[#E2ECF7]/80 border border-white space-y-2.5 text-xs text-[#354D6D] font-light"
+                  >
+                    <div className="font-medium text-[#243B5D] flex items-center gap-1.5">
+                      <HelpCircle className="w-4 h-4 text-[#3D5A80]" />
+                      <span>{isFa ? 'راهنمای ساخت توکن شخصی گیت‌هاب در ۴ گام ساده:' : 'How to generate a GitHub Token in 4 steps:'}</span>
+                    </div>
+                    <ol className="list-decimal list-inside space-y-1.5 leading-relaxed text-[11px]">
+                      <li>
+                        {isFa ? 'وارد حساب گیت‌هاب خود شده و صفحه ساخت توکن را باز کنید:' : 'Open GitHub tokens page:'}{' '}
+                        <a
+                          href="https://github.com/settings/tokens?type=beta"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-mono text-[#1E3A8A] underline inline-flex items-center gap-0.5"
+                        >
+                          github.com/settings/tokens
+                          <ExternalLink className="w-2.5 h-2.5" />
+                        </a>
+                      </li>
+                      <li>
+                        {isFa
+                          ? 'روی دکمه Generate new token کلیک کنید و نامی مانند douzandeh-site برای آن بگذارید.'
+                          : 'Click "Generate new token" and name it e.g. douzandeh-site.'}
+                      </li>
+                      <li>
+                        {isFa
+                          ? 'در بخش Repository access مخزن HosnaDoozandeh را انتخاب نموده و در بخش Permissions، گزینه Contents را روی Read and write بگذارید.'
+                          : 'Under Repository access select HosnaDoozandeh, and set Permissions > Contents to Read and write.'}
+                      </li>
+                      <li>
+                        {isFa
+                          ? 'دکمه Generate token را بزنید و توکن ساخته‌شده را کپی نموده و در کادر بالا قرار دهید.'
+                          : 'Click Generate token, copy the token and paste it in the box above.'}
+                      </li>
+                    </ol>
+                  </motion.div>
+                )}
+
+                {/* Action Trigger Button */}
+                <div className="pt-2 flex flex-wrap items-center gap-3">
+                  <button
+                    onClick={handleSyncToGitHub}
+                    disabled={isSyncingGitHub}
+                    className="neu-button-primary px-6 py-2.5 rounded-xl text-xs font-medium flex items-center gap-2 cursor-pointer shadow-md"
+                  >
+                    {isSyncingGitHub ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>{isFa ? 'در حال ثبت و ارسال به گیت‌هاب...' : 'Pushing to GitHub...'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <UploadCloud className="w-4 h-4" />
+                        <span>{isFa ? 'ارسال و همگام‌سازی مستقیم با مخزن گیت‌هاب' : 'Sync & Push to GitHub Repository'}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Live Sync Progress / Status Card */}
+                {syncProgress && (
+                  <div
+                    className={`p-4 rounded-2xl border text-xs leading-relaxed transition-all ${
+                      syncProgress.step === 'success'
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-800'
+                        : syncProgress.step === 'error'
+                        ? 'bg-red-500/10 border-red-500/30 text-red-800'
+                        : 'bg-blue-500/10 border-blue-500/30 text-blue-800'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2.5">
+                      {syncProgress.step === 'success' ? (
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                      ) : syncProgress.step === 'error' ? (
+                        <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                      ) : (
+                        <Loader2 className="w-5 h-5 text-blue-600 animate-spin shrink-0 mt-0.5" />
+                      )}
+                      <div className="space-y-2 flex-1">
+                        <p className="font-medium">{syncProgress.message}</p>
+
+                        {syncProgress.step === 'success' && (
+                          <div className="pt-2 flex flex-wrap items-center gap-3">
+                            {syncProgress.commitUrl && (
+                              <a
+                                href={syncProgress.commitUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-[11px] font-light flex items-center gap-1.5 hover:bg-emerald-700 shadow-sm"
+                              >
+                                <GitCommit className="w-3.5 h-3.5" />
+                                <span>{isFa ? 'مشاهده کامیت در گیت‌هاب' : 'View Commit on GitHub'}</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
+                            {syncProgress.actionsUrl && (
+                              <a
+                                href={syncProgress.actionsUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-3 py-1.5 rounded-xl bg-white/90 text-[#243B5D] text-[11px] font-light flex items-center gap-1.5 hover:bg-white shadow-sm border border-emerald-600/30"
+                              >
+                                <RefreshCw className="w-3.5 h-3.5 text-[#3D5A80]" />
+                                <span>{isFa ? 'مشاهده پیشرفت استقرار در GitHub Actions' : 'View GitHub Actions Build'}</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Instructions */}
-              <div className="neu-panel-soft p-5 space-y-3">
-                <div className="text-xs font-normal text-[#243B5D] flex items-center gap-2">
+              {/* SECTION 2: MANUAL EXPORT AS CODE FILES */}
+              <div className="neu-card p-6 space-y-4 border border-white/80">
+                <div className="flex items-center gap-2 text-sm font-normal text-[#243B5D]">
                   <FileCode className="w-4 h-4 text-[#3D5A80]" />
-                  <span>{isFa ? 'راهنمای ۳ مرحله‌ای انتشار در گیت‌هاب:' : '3-Step GitHub Deployment Guide:'}</span>
+                  <h3>{isFa ? 'روش دوم: دانلود دستی فایل‌های کد' : 'Method 2: Manual Code File Download'}</h3>
                 </div>
-                <ol className="text-xs font-light text-[#71839A] leading-relaxed space-y-2 list-decimal list-inside">
-                  <li>
-                    {isFa
-                      ? 'دکمه «دانلود فایل defaultSiteContent.ts» را در بالا بزنید.'
-                      : 'Click "Download defaultSiteContent.ts" above.'}
-                  </li>
-                  <li>
-                    {isFa
-                      ? 'فایل دانلود شده را در پروژه خود در مسیر src/data/defaultSiteContent.ts جایگزین نمایید.'
-                      : 'Replace the existing file in your repository at src/data/defaultSiteContent.ts.'}
-                  </li>
-                  <li>
-                    {isFa
-                      ? 'تغییرات را با دستورات git add . و git commit و git push به مخزن گیت‌هاب خود ارسال کنید تا همه کاربران زنده تغییرات شما را مشاهده نمایند.'
-                      : 'Commit and push to GitHub (git add . && git commit -m "Update site content" && git push). All visitors will see your changes!'}
-                  </li>
-                </ol>
+                <p className="text-xs text-[#71839A] font-light leading-relaxed">
+                  {isFa
+                    ? 'در صورتی که ترجیح می‌دهید فایل‌ها را با دستورات Git در ترمینال سیستم خود ثبت کنید، فایل‌های زیر را دانلود و در پوشه پروژه جایگزین نمایید:'
+                    : 'If you prefer pushing via Git terminal on your machine, download these files and replace them in your project directory:'}
+                </p>
+
+                {/* Manual Download Buttons */}
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <button
+                    onClick={() => {
+                      const code = generateDefaultSiteContentCode(draft);
+                      const blob = new Blob([code], { type: 'text/typescript;charset=utf-8' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = 'defaultSiteContent.ts';
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="neu-button px-4 py-2 rounded-xl text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-4 h-4 text-[#3D5A80]" />
+                    <span>{isFa ? 'دانلود defaultSiteContent.ts' : 'Download defaultSiteContent.ts'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const code = generateDefaultSiteContentCode(draft);
+                      navigator.clipboard.writeText(code);
+                      setCopiedExport(true);
+                      setTimeout(() => setCopiedExport(false), 2500);
+                    }}
+                    className="neu-button px-4 py-2 rounded-xl text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+                  >
+                    {copiedExport ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-[#71839A]" />}
+                    <span>{copiedExport ? (isFa ? 'کپی شد!' : 'Copied!') : isFa ? 'کپی کد محتوا' : 'Copy Content Code'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const authConf = getStoredAuthConfig();
+                      const code = generateAuthConfigCode(authConf);
+                      const blob = new Blob([code], { type: 'text/typescript;charset=utf-8' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = 'authConfig.ts';
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="neu-button px-4 py-2 rounded-xl text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-4 h-4 text-[#3D5A80]" />
+                    <span>{isFa ? 'دانلود authConfig.ts (رمز عبور)' : 'Download authConfig.ts (Pass)'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const authConf = getStoredAuthConfig();
+                      const code = generateAuthConfigCode(authConf);
+                      navigator.clipboard.writeText(code);
+                      setCopiedAuthConfig(true);
+                      setTimeout(() => setCopiedAuthConfig(false), 2500);
+                    }}
+                    className="neu-button px-4 py-2 rounded-xl text-xs font-normal text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+                  >
+                    {copiedAuthConfig ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-[#71839A]" />}
+                    <span>{copiedAuthConfig ? (isFa ? 'کپی شد!' : 'Copied!') : isFa ? 'کپی کد احراز هویت' : 'Copy Auth Code'}</span>
+                  </button>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-black/5 font-mono text-[11px] text-[#243B5D] leading-relaxed ltr text-left">
+                  git add src/data/defaultSiteContent.ts src/data/authConfig.ts<br />
+                  git commit -m "chore: update site content and credentials"<br />
+                  git push origin main
+                </div>
               </div>
             </div>
           )}
@@ -1907,17 +2292,36 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                 className="neu-button px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
               >
                 <Eye className="w-3.5 h-3.5" />
-                <span>{isFa ? 'مشاهده پیش‌نمایش سایت' : 'Preview Site'}</span>
+                <span>{isFa ? 'پیش‌نمایش سایت' : 'Preview Site'}</span>
               </button>
 
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="neu-button-primary px-5 py-2 rounded-xl text-xs font-light flex items-center gap-2 cursor-pointer shadow-md"
+                className="neu-button px-4 py-2 rounded-xl text-xs font-light text-[#243B5D] flex items-center gap-1.5 cursor-pointer"
+                title={isFa ? 'ذخیره در مرورگر این سیستم' : 'Save locally in this browser'}
               >
-                <Save className="w-4 h-4" />
-                <span className="font-medium">
-                  {isSaving ? (isFa ? 'در حال ذخیره‌سازی...' : 'Saving...') : isFa ? 'ذخیره نهایی تغییرات' : 'Save All Changes'}
+                <Save className="w-3.5 h-3.5 text-[#3D5A80]" />
+                <span className="font-normal">
+                  {isSaving ? (isFa ? 'در حال ذخیره...' : 'Saving...') : isFa ? 'ذخیره محلی' : 'Save Local'}
+                </span>
+              </button>
+
+              <button
+                onClick={handleSyncToGitHub}
+                disabled={isSyncingGitHub}
+                className="neu-button-primary px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-md"
+                title={isFa ? 'ارسال و استقرار زنده در مخزن گیت‌هاب' : 'Push to GitHub Repository for all visitors'}
+              >
+                {isSyncingGitHub ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
+                ) : (
+                  <GitBranch className="w-3.5 h-3.5 text-white" />
+                )}
+                <span>
+                  {isSyncingGitHub
+                    ? (isFa ? 'در حال ارسال...' : 'Syncing...')
+                    : (isFa ? 'ارسال به مخزن گیت‌هاب' : 'Push to GitHub')}
                 </span>
               </button>
             </div>
