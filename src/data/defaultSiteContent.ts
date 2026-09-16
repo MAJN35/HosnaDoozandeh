@@ -447,54 +447,6 @@ export const defaultSiteContent: SiteContent = {
   },
   "gallery": [
     {
-      "id": "mentorship-session",
-      "title": {
-        "fa": "مشاوره و سنجش روان‌شناختی فردی",
-        "en": "Individual Cognitive Counseling"
-      },
-      "category": {
-        "fa": "هدایت تحصیلی و روان‌سنجی",
-        "en": "Psychometrics & Pacing"
-      },
-      "description": {
-        "fa": "جلسات تحلیل آزمون‌های هنجارشده و پایش سلامت روان دانش‌آموزان در آستانه امتحانات و کنکور سراسری.",
-        "en": "Structured sessions analyzing standardized cognitive diagnostics and supporting adolescent well-being."
-      },
-      "imageUrl": "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      "id": "faculty-council",
-      "title": {
-        "fa": "شورای معلمان و راهبری کیفیت آموزشی",
-        "en": "Faculty Council & Pedagogy Strategy"
-      },
-      "category": {
-        "fa": "توانمندسازی همکاران",
-        "en": "Teacher Empowerment"
-      },
-      "description": {
-        "fa": "هم‌اندیشی هفتگی پیرامون روش‌های نوین تدریس و تطبیق با تقویم امتحانات نهایی.",
-        "en": "Weekly deliberations on modern instructional practices and aligning syllabus pacing."
-      },
-      "imageUrl": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      "id": "science-lab",
-      "title": {
-        "fa": "فضاهای یادگیری پژوهش‌محور و کارگاهی",
-        "en": "Inquiry-Based Scientific Learning"
-      },
-      "category": {
-        "fa": "فضای آموزشی دبیرستان",
-        "en": "High School Environment"
-      },
-      "description": {
-        "fa": "تقویت روحیه پژوهش، کار تیمی و کشف علمی در آزمایشگاه‌ها و کارگاه‌های دبیرستان.",
-        "en": "Promoting teamwork, empirical exploration, and creative scientific discovery."
-      },
-      "imageUrl": "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&w=800&q=80"
-    },
-    {
       "id": "social-responsibility",
       "title": {
         "fa": "مسئولیت اجتماعی: توانمندسازی کودکان کار",
@@ -508,7 +460,7 @@ export const defaultSiteContent: SiteContent = {
         "fa": "اجرای آزمون‌های هنجارشده روان‌سنجی، ارزیابی وضعیت شناختی و پیاده‌سازی پروتکل‌های حمایتی.",
         "en": "Administering standardized psychometric tests and cognitive support protocols for underprivileged children."
       },
-      "imageUrl": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1000&q=80",
+      "imageUrl": "https://uploadkon.ir/uploads/ee1016_26Screenshot-2026-09-16-180327.png",
       "videoUrl": "https://aparat.com/v/ieqx9ye"
     }
   ],
