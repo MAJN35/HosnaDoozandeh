@@ -513,43 +513,23 @@ export const defaultSiteContent: SiteContent = {
   ],
   "videos": [
     {
-      "id": "video-homa-intro",
-      "title": {
-        "fa": "مستند معرفی دبیرستان دخترانه هما و رویکرد روان‌سنجی",
-        "en": "Homa Girls’ High School: Talent Discovery & Psychometrics"
-      },
-      "category": {
-        "fa": "مستند آموزشی و معرفی مدرسه",
-        "en": "Institutional Documentary"
-      },
-      "description": {
-        "fa": "مروری بر رویکرد نوین مدیریت دبیرستان دخترانه هما (دوره دوم) در تلفیق سنجش و اندازه‌گیری شناختی با آمادگی کنکور و هدایت تحصیلی.",
-        "en": "A visual journey exploring the modern educational paradigm at Homa Girls’ High School, integrating psychometrics and holistic learning."
-      },
-      "videoUrl": "https://www.aparat.com/v/sample_homa_documentary",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
-      "duration": "۰۵:۴۵",
-      "date": "۱۴۰۴",
-      "featured": true
-    },
-    {
       "id": "video-exam-anxiety",
       "title": {
-        "fa": "سخنرانی حسنا دوزنده: مدیریت اضطراب کنکور و هدایت تحصیلی",
-        "en": "Keynote: Mitigating High-Stakes Exam Anxiety & Academic Guidance"
+        "fa": "پیام صمیمی مدیریت دبیرستان دخترانه دوره دوم هما به مناسبت روز معلم",
+        "en": "A heartfelt message from the principal of Homa Girls' High School (Upper Secondary) on the occasion of Teachers' Day."
       },
       "category": {
-        "fa": "سخنرانی و مشاوره تخصصی",
-        "en": "Academic Keynote"
+        "fa": "پیام تبریک",
+        "en": "A heartfelt message"
       },
       "description": {
-        "fa": "نشست راهبردی با اولیا و دانش‌آموزان پایه دوازدهم پیرامون روش‌های کاهش اضطراب آزمون‌های نهایی، تنظیم ساعت خواب و انتخاب رشته دانشگاهی.",
-        "en": "Strategic keynote for senior students and parents on emotional regulation, sleep hygiene, and evidence-based study pacing."
+        "fa": "✨روزتان مبارک ای مروجان آگاهی...✨ دبیرستان دخترانه غیردولتی هما دوره دوم",
+        "en": "✨Happy Day to you, promoters of awareness...✨ Homa Non-Governmental Girls' High School (Upper Secondary)"
       },
-      "videoUrl": "https://www.aparat.com/v/6r9IR",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80",
-      "duration": "۰۸:۲۰",
-      "date": "۱۴۰۳",
+      "videoUrl": "https://aparat.com/v/ieqx9ye",
+      "thumbnailUrl": "",
+      "duration": "01:09",
+      "date": "1405",
       "featured": true
     }
   ],
