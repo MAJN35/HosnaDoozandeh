@@ -528,7 +528,7 @@ export const defaultSiteContent: SiteContent = {
         "en": "✨Happy Day to you, promoters of awareness...✨ Homa Non-Governmental Girls' High School (Upper Secondary)"
       },
       "videoUrl": "https://aparat.com/v/ieqx9ye",
-      "thumbnailUrl": "",
+      "thumbnailUrl": "https://uploadkon.ir/uploads/ee1016_26Screenshot-2026-09-16-180327.png",
       "duration": "01:09",
       "date": "1405",
       "featured": true
