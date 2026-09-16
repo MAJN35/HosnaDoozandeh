@@ -508,7 +508,8 @@ export const defaultSiteContent: SiteContent = {
         "fa": "اجرای آزمون‌های هنجارشده روان‌سنجی، ارزیابی وضعیت شناختی و پیاده‌سازی پروتکل‌های حمایتی.",
         "en": "Administering standardized psychometric tests and cognitive support protocols for underprivileged children."
       },
-      "imageUrl": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1000&q=80"
+      "imageUrl": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1000&q=80",
+      "videoUrl": "https://aparat.com/v/ieqx9ye"
     }
   ],
   "videos": [
