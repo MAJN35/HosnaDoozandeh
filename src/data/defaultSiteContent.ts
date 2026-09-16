@@ -219,7 +219,7 @@ export const defaultSiteContent: SiteContent = {
     {
       "id": "board-member-deputy-ceo",
       "role": {
-        "fa": "عضو هیئت مدیره موظف و قائم مقام مدیر عامل",
+        "fa": "عضو هیئت مدیره موظف ",
         "en": "Full-Time Executive Board Member & Deputy CEO"
       },
       "organization": {
@@ -254,7 +254,7 @@ export const defaultSiteContent: SiteContent = {
     {
       "id": "principal-boys-elementary",
       "role": {
-        "fa": "مدیر دبستان پسرانه هما",
+        "fa": "مدیر دبستان پسرانه هما و قائم مقام مدیر عامل",
         "en": "Principal, Homa Boys’ Elementary School"
       },
       "organization": {
