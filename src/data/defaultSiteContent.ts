@@ -482,7 +482,7 @@ export const defaultSiteContent: SiteContent = {
       "videoUrl": "https://aparat.com/v/abf1203",
       "thumbnailUrl": "https://uploadkon.ir/uploads/ee1016_26Screenshot-2026-09-16-180327.png",
       "duration": "",
-      "date": "1405",
+      "date": "1403",
       "featured": true
     }
   ],
