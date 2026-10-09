@@ -57,6 +57,7 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       id="videos"
+      aria-label={isFa ? 'ویدیوها و سخنرانی‌های حسنا دوزنده' : 'Videos & Keynotes by Hosna Doozandeh'}
       className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto"
     >
       {/* Section Header */}
@@ -70,7 +71,7 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
         </h2>
         <p className="text-sm sm:text-base font-light text-[#71839A] leading-relaxed">
           {isFa
-            ? 'گزیده‌ای از مستندات معرفی دبیرستان دخترانه هما، سمینارهای هدایت تحصیلی و کارگاه‌های سنجش و روان‌سنجی'
+            ? 'گزیده‌ای از مستندات معرفی دبیرستان دخترانه هما، سمینارهای هدایت تحصیلی و کارگاه‌های سنجش و روان‌سنجی حسنا دوزنده'
             : 'Explore video recordings of school activities, parent consultation keynotes, and psychometric workshops'}
         </p>
       </div>
@@ -84,8 +85,10 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
           const description = video.description?.[lang] || video.description?.fa || '';
 
           return (
-            <motion.div
+            <motion.article
               key={video.id || idx}
+              itemScope
+              itemType="https://schema.org/VideoObject"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
@@ -97,20 +100,48 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
               }}
               className="neu-card p-3.5 sm:p-4 group flex flex-col justify-between cursor-pointer relative overflow-hidden transition-all duration-300"
             >
-              {/* Thumbnail Container */}
-              <div className="w-full aspect-video rounded-2xl overflow-hidden relative shadow-inner bg-[#D6E4F0] flex items-center justify-center">
-                <img
-                  src={video.thumbnailUrl || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'}
-                  alt={title}
-                  className="w-full h-full object-cover filter brightness-[0.98] contrast-[0.98] transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
+              {/* Automatic Preview / Thumbnail Container derived strictly from the Video URL */}
+              <div className="w-full aspect-video rounded-2xl overflow-hidden relative shadow-inner bg-gradient-to-br from-[#1B3252] via-[#243B5D] to-[#3D5A80] flex items-center justify-center">
+                {parsed.autoThumbnailUrl ? (
+                  <img
+                    src={parsed.autoThumbnailUrl}
+                    alt={`${title} - حسنا دوزنده`}
+                    itemProp="thumbnailUrl"
+                    className="w-full h-full object-cover filter brightness-[0.98] contrast-[0.98] transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                ) : !parsed.isPlaceholder &&
+                  (parsed.type === 'aparat' || parsed.type === 'youtube' || parsed.type === 'vimeo') &&
+                  parsed.previewEmbedUrl ? (
+                  <iframe
+                    src={parsed.previewEmbedUrl}
+                    title={`${title} - حسنا دوزنده`}
+                    className="w-full h-full border-0 pointer-events-none select-none scale-[1.01]"
+                    loading="lazy"
+                    tabIndex={-1}
+                  />
+                ) : !parsed.isPlaceholder && parsed.type === 'direct' ? (
+                  <video
+                    src={`${parsed.embedUrl}#t=0.5`}
+                    preload="metadata"
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover pointer-events-none"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center p-4 text-white/80 select-none">
+                    <Film className="w-10 h-10 mb-2 opacity-40" />
+                    <span className="text-[11px] font-light opacity-75 line-clamp-1 px-4 text-center">
+                      {title}
+                    </span>
+                  </div>
+                )}
 
-                {/* Dark Vignette Overlay on Hover */}
-                <div className="absolute inset-0 bg-[#1B3252]/25 group-hover:bg-[#1B3252]/40 transition-colors duration-300" />
+                {/* Clickable Transparent Overlay + Subtle Hover Vignette */}
+                <div className="absolute inset-0 z-10 bg-[#1B3252]/15 group-hover:bg-[#1B3252]/35 transition-colors duration-300" />
 
                 {/* Soft Neumorphic Play Button in Center */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full neu-dial flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-xl">
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full neu-button-primary flex items-center justify-center text-white">
                       <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-white rtl:translate-x-[-1px] ltr:translate-x-[1px]" />
@@ -120,7 +151,7 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
 
                 {/* Duration Badge */}
                 {video.duration && (
-                  <div className="absolute bottom-2.5 rtl:right-2.5 ltr:left-2.5 neu-pill px-2.5 py-1 rounded-full text-[11px] font-mono text-[#243B5D] bg-white/80 backdrop-blur-sm flex items-center gap-1">
+                  <div className="absolute bottom-2.5 rtl:right-2.5 ltr:left-2.5 z-20 neu-pill px-2.5 py-1 rounded-full text-[11px] font-mono text-[#243B5D] bg-white/80 backdrop-blur-sm flex items-center gap-1">
                     <Clock className="w-3 h-3 text-[#3D5A80]" />
                     <span>{video.duration}</span>
                   </div>
@@ -128,13 +159,13 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
 
                 {/* Category Pill Top Left/Right */}
                 {category && (
-                  <div className="absolute top-2.5 rtl:right-2.5 ltr:left-2.5 neu-pill px-3 py-1 rounded-full text-[11px] font-light text-[#243B5D] bg-white/85 backdrop-blur-sm">
+                  <div className="absolute top-2.5 rtl:right-2.5 ltr:left-2.5 z-20 neu-pill px-3 py-1 rounded-full text-[11px] font-light text-[#243B5D] bg-white/85 backdrop-blur-sm">
                     {category}
                   </div>
                 )}
 
                 {/* Platform Badge (Aparat / YouTube / Placeholder) */}
-                <div className="absolute top-2.5 rtl:left-2.5 ltr:right-2.5 px-2 py-0.5 rounded-full text-[10px] font-light bg-[#1B3252]/70 text-white backdrop-blur-sm">
+                <div className="absolute top-2.5 rtl:left-2.5 ltr:right-2.5 z-20 px-2 py-0.5 rounded-full text-[10px] font-light bg-[#1B3252]/70 text-white backdrop-blur-sm">
                   {parsed.platformName}
                 </div>
               </div>
@@ -142,10 +173,16 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
               {/* Video Info */}
               <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-base sm:text-lg font-normal text-[#243B5D] mb-1.5 leading-snug line-clamp-2 group-hover:text-[#3D5A80] transition-colors">
+                  <h3
+                    itemProp="name"
+                    className="text-base sm:text-lg font-normal text-[#243B5D] mb-1.5 leading-snug line-clamp-2 group-hover:text-[#3D5A80] transition-colors"
+                  >
                     {title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-light text-[#71839A] leading-relaxed line-clamp-2">
+                  <p
+                    itemProp="description"
+                    className="text-xs sm:text-sm font-light text-[#71839A] leading-relaxed line-clamp-2"
+                  >
                     {description}
                   </p>
                 </div>
@@ -153,7 +190,7 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
                 <div className="mt-4 pt-3 border-t border-white/60 flex items-center justify-between text-xs text-[#71839A] font-light">
                   <span className="flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-[#3D5A80]" />
-                    <span>{video.date || (isFa ? '۱۴۰۴' : '2026')}</span>
+                    <span itemProp="uploadDate">{video.date || (isFa ? '۱۴۰۴' : '2026')}</span>
                   </span>
 
                   <span className="text-[#3D5A80] group-hover:underline flex items-center gap-1 text-[11px] font-normal">
@@ -162,7 +199,7 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </motion.article>
           );
         })}
       </div>
@@ -242,7 +279,7 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
                     controls
                     autoPlay
                     className="w-full h-full object-contain"
-                    poster={activeVideo.thumbnailUrl}
+                    poster={parsedActiveVideo.autoThumbnailUrl || undefined}
                     src={parsedActiveVideo.embedUrl}
                   >
                     {isFa ? 'مرورگر شما از پخش این فرمت ویدیو پشتیبانی نمی‌کند.' : 'Your browser does not support video playback.'}
@@ -293,7 +330,6 @@ export const VideosSection: React.FC<VideosSectionProps> = ({ lang }) => {
                         controls
                         autoPlay
                         className="w-full h-full object-contain"
-                        poster={activeVideo.thumbnailUrl}
                         src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                       />
                     )}

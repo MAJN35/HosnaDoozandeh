@@ -40,7 +40,7 @@ import {
 } from 'lucide-react';
 import { useSiteContent } from '../../context/ContentContext';
 import { Language, SiteContent, ExperienceItem, GalleryItemContent, TestimonialItemContent, VideoItemContent } from '../../types';
-import { parseVideoUrl, VIDEO_THUMBNAIL_PRESETS, SAMPLE_VIDEO_PRESETS } from '../../utils/videoHelper';
+import { parseVideoUrl } from '../../utils/videoHelper';
 import {
   getStoredGitHubConfig,
   saveStoredGitHubConfig,
@@ -375,7 +375,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
         en: 'Brief description of this video and educational insights.',
       },
       videoUrl: '',
-      thumbnailUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
       duration: '۰۵:۰۰',
       date: '۱۴۰۴',
       featured: false,
@@ -407,7 +406,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
     });
   };
 
-  const updateVideoSimpleField = (index: number, field: 'videoUrl' | 'thumbnailUrl' | 'duration' | 'date', value: string) => {
+  const updateVideoSimpleField = (index: number, field: 'videoUrl' | 'duration' | 'date', value: string) => {
     setDraft((prev) => {
       const vids = [...(prev.videos || [])];
       vids[index] = {
@@ -1244,10 +1243,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                       : 'Direct links ending with .mp4 or .webm will use the native HTML5 player.'}
                   </li>
                   <li>
-                    <strong>{isFa ? 'پلی‌هولدر (Placeholder):' : 'Placeholder:'}</strong>{' '}
+                    <strong>{isFa ? 'پوستر و پیش‌نمایش خودکار:' : 'Automatic Preview:'}</strong>{' '}
                     {isFa
-                      ? 'اگر هنوز ویدیویی آپلود نکرده‌اید، کادر آدرس ویدیو را خالی بگذارید تا پلی‌هولدر تعاملی و شکیل با پوستر انتخابی نمایش داده شود.'
-                      : 'Leave URL blank or with placeholder keyword to display the interactive placeholder with poster art.'}
+                      ? 'نیازی به وارد کردن آدرس تصویر (Thumbnail) نیست؛ پیش‌نمایش هر کلیپ به صورت خودکار از همان لینک ویدیو (آپارات، یوتیوب یا فایل ویدیو) استخراج و نمایش داده می‌شود.'
+                      : 'No manual Thumbnail URL is needed; the video preview is automatically derived from the clip URL itself.'}
                   </li>
                 </ul>
               </div>
@@ -1334,7 +1333,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                               <video
                                 controls
                                 className="w-full h-full object-contain"
-                                poster={video.thumbnailUrl}
+                                poster={parsed.autoThumbnailUrl || undefined}
                                 src={parsed.embedUrl}
                               />
                             ) : (
@@ -1361,71 +1360,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBackToSi
                           <input
                             type="text"
                             value={video.videoUrl || ''}
-                            placeholder={isFa ? 'مثال: https://www.aparat.com/v/XXXXX یا لینک مستقیم MP4 یا خالی بگذارید' : 'e.g. https://www.aparat.com/v/XXXXX or direct MP4 URL'}
+                            placeholder={isFa ? 'مثال: https://www.aparat.com/v/XXXXX یا لینک مستقیم MP4' : 'e.g. https://www.aparat.com/v/XXXXX or direct MP4 URL'}
                             onChange={(e) => updateVideoSimpleField(idx, 'videoUrl', e.target.value)}
                             className="flex-1 neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D] font-mono"
                           />
-                        </div>
-
-                        {/* Quick Presets for Video URL */}
-                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                          <span className="text-[10px] text-[#71839A]">{isFa ? 'نمونه‌های آماده:' : 'Quick Presets:'}</span>
-                          <button
-                            type="button"
-                            onClick={() => updateVideoSimpleField(idx, 'videoUrl', 'https://www.aparat.com/v/sample_homa_documentary')}
-                            className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#3D5A80] hover:text-[#243B5D] cursor-pointer"
-                          >
-                            {isFa ? 'نمونه آپارات (Aparat)' : 'Aparat Demo'}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => updateVideoSimpleField(idx, 'videoUrl', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')}
-                            className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#3D5A80] hover:text-[#243B5D] cursor-pointer"
-                          >
-                            {isFa ? 'نمونه MP4 مستقیم' : 'Direct MP4'}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => updateVideoSimpleField(idx, 'videoUrl', '')}
-                            className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#71839A] hover:text-[#243B5D] cursor-pointer"
-                          >
-                            {isFa ? 'حالت پلی‌هولدر (خالی)' : 'Placeholder (Empty)'}
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Thumbnail URL & Poster Presets */}
-                      <div className="space-y-2">
-                        <label className="block text-[11px] font-normal text-[#243B5D]">
-                          {isFa ? 'تصویر پوستر و پیش‌نمایش (Thumbnail URL):' : 'Thumbnail Poster URL:'}
-                        </label>
-                        <div className="flex flex-col sm:flex-row gap-3 items-center">
-                          <input
-                            type="text"
-                            value={video.thumbnailUrl || ''}
-                            onChange={(e) => updateVideoSimpleField(idx, 'thumbnailUrl', e.target.value)}
-                            className="flex-1 w-full neu-recessed px-3.5 py-2 rounded-xl text-xs font-light text-[#243B5D]"
-                          />
-                          {video.thumbnailUrl && (
-                            <div className="w-16 h-10 rounded-lg overflow-hidden shrink-0 border border-white/80 shadow-sm">
-                              <img src={video.thumbnailUrl} alt="Thumbnail preview" className="w-full h-full object-cover" />
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Preset Thumbnail Buttons */}
-                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                          <span className="text-[10px] text-[#71839A]">{isFa ? 'پوسترهای پیشنهادی:' : 'Suggested Posters:'}</span>
-                          {VIDEO_THUMBNAIL_PRESETS.map((preset, pIdx) => (
-                            <button
-                              key={pIdx}
-                              type="button"
-                              onClick={() => updateVideoSimpleField(idx, 'thumbnailUrl', preset.url)}
-                              className="neu-pill px-2.5 py-1 rounded-full text-[10px] text-[#3D5A80] hover:text-[#243B5D] cursor-pointer"
-                            >
-                              {preset.label[isFa ? 'fa' : 'en']}
-                            </button>
-                          ))}
                         </div>
                       </div>
 

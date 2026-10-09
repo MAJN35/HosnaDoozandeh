@@ -61,6 +61,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-8">
         {gallery.map((item, idx) => {
           const hasVideo = Boolean(item.videoUrl);
+          const parsedItemVideo = hasVideo ? parseVideoUrl(item.videoUrl) : null;
+          const displayImageUrl = item.imageUrl || parsedItemVideo?.autoThumbnailUrl || '';
 
           return (
             <motion.div
@@ -77,14 +79,24 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang }) => {
                 hasVideo ? 'cursor-pointer' : ''
               }`}
             >
-              {/* Image Container with Soft Large Radius and Zero Harsh Borders */}
+              {/* Image / Video Container with Soft Large Radius and Zero Harsh Borders */}
               <div className={`w-full ${item.aspect || 'aspect-16/9'} rounded-[24px] overflow-hidden relative shadow-inner bg-[#E5EEF7]`}>
-                <img
-                  src={item.imageUrl}
-                  alt={item.title?.[lang] || item.title?.fa || ''}
-                  className="w-full h-full object-cover filter brightness-[1.01] contrast-[0.98] transition-transform duration-700 group-hover:scale-103"
-                  loading="lazy"
-                />
+                {displayImageUrl ? (
+                  <img
+                    src={displayImageUrl}
+                    alt={`${item.title?.[lang] || item.title?.fa || ''} - حسنا دوزنده`}
+                    className="w-full h-full object-cover filter brightness-[1.01] contrast-[0.98] transition-transform duration-700 group-hover:scale-103"
+                    loading="lazy"
+                  />
+                ) : parsedItemVideo && !parsedItemVideo.isPlaceholder && parsedItemVideo.previewEmbedUrl ? (
+                  <iframe
+                    src={parsedItemVideo.previewEmbedUrl}
+                    title={item.title?.[lang] || item.title?.fa || ''}
+                    className="w-full h-full border-0 pointer-events-none select-none"
+                    loading="lazy"
+                    tabIndex={-1}
+                  />
+                ) : null}
 
                 {/* Play Button Indicator if item has a video URL */}
                 {hasVideo && (

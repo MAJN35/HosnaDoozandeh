@@ -469,38 +469,36 @@ export const defaultSiteContent: SiteContent = {
       "id": "video-exam-anxiety",
       "title": {
         "fa": "🏆 افتخار جهانی دبستان پسرانه هما",
-        "en": "A heartfelt message from the principal of Homa Girls' High School (Upper Secondary) on the occasion of Teachers' Day."
+        "en": "Global WRO Championship Achievement – Homa Boys' Elementary School"
       },
       "category": {
-        "fa": "پیام تبریک",
-        "en": "A heartfelt message"
+        "fa": "افتخارآفرینی بین‌المللی",
+        "en": "Global Achievement"
       },
       "description": {
         "fa": "✨🥇 کسب مقام نخست مسابقات جهانی WRO توسط دانش‌آموز پرافتخار هما، سروش آقایی\n\n🌟 افتخار هما، آینده‌ساز ایران 🇮🇷",
-        "en": "✨Happy Day to you, promoters of awareness...✨ Homa Non-Governmental Girls' High School (Upper Secondary)"
+        "en": "✨🥇 First Place Winner at the World Robot Olympiad (WRO) by Homa's proud student, Soroush Aghaei."
       },
       "videoUrl": "https://aparat.com/v/abf1203",
-      "thumbnailUrl": "https://uploadkon.ir/uploads/ee1016_26Screenshot-2026-09-16-180327.png",
       "duration": "",
-      "date": "1403",
+      "date": "۱۴۰۳",
       "featured": true
     },
     {
       "id": "video-1791577668633",
       "title": {
-        "fa": "عنوان ویدیوی جدیدنخستین همایش ملی سنجش کلاسی | دانشگاه علامه طباطبایی",
-        "en": "New Educational Video Title"
+        "fa": "نخستین همایش ملی سنجش کلاسی | دانشگاه علامه طباطبایی",
+        "en": "1st National Conference on Classroom Assessment | Allameh Tabataba'i University"
       },
       "category": {
-        "fa": "",
-        "en": "Educational Media"
+        "fa": "همایش علمی و سنجش",
+        "en": "Academic Conference"
       },
       "description": {
-        "fa": "توضینخستین همایش ملی سنجش کلاسی در دانشگاه علامه طباطبایی با محوریت ارتقای کیفیت ارزشیابی و بهبود فرایند یاددهی ـ یادگیری.حات مختصر پیرامون این ویدیو، سخنرانی یا کارگاه آموزشی دبیرستان هما.",
-        "en": "Brief description of this video and educational insights."
+        "fa": "نخستین همایش ملی سنجش کلاسی در دانشگاه علامه طباطبایی با محوریت ارتقای کیفیت ارزشیابی و بهبود فرایند یاددهی ـ یادگیری.",
+        "en": "The First National Conference on Classroom Assessment at Allameh Tabataba'i University, focusing on enhancing evaluation quality and teaching-learning processes."
       },
       "videoUrl": "https://aparat.com/v/dwt485q",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
       "duration": "۰۵:۰۰",
       "date": "۱۴۰۴",
       "featured": false
@@ -509,20 +507,19 @@ export const defaultSiteContent: SiteContent = {
       "id": "video-1791578726118",
       "title": {
         "fa": "گرامیداشت روز معلم ۱۴۰۵ | دبیرستان دخترانه دوره دوم هما",
-        "en": "New Educational Video Title"
+        "en": "Teachers' Day Commemoration | Homa Girls' Senior High School"
       },
       "category": {
         "fa": "مستند و رویداد آموزشی",
-        "en": "Educational Media"
+        "en": "Educational Documentary"
       },
       "description": {
         "fa": "روایتی از پاسداشت مقام معلم و قدردانی از تلاش‌های ارزشمند همکاران فرهیخته دبیرستان دخترانه دوره دوم هما در روز معلم ۱۴۰۵.",
-        "en": "Brief description of this video and educational insights."
+        "en": "A tribute celebrating the dedication and scholarly excellence of the esteemed faculty at Homa Girls' Senior High School on Teachers' Day."
       },
       "videoUrl": "https://www.aparat.com/v/ieqx9ye",
-      "thumbnailUrl": "",
       "duration": "۰۵:۰۰",
-      "date": "۱۴۰۴",
+      "date": "۱۴۰۵",
       "featured": false
     }
   ],

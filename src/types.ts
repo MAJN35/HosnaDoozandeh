@@ -320,7 +320,7 @@ export interface VideoItemContent {
     en: string;
   };
   videoUrl: string;
-  thumbnailUrl: string;
+  thumbnailUrl?: string;
   duration?: string;
   date?: string;
   featured?: boolean;

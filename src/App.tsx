@@ -18,6 +18,7 @@ import { TestimonialsSection } from './components/TestimonialsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { ResumeModal } from './components/ResumeModal';
+import { SeoManager } from './components/SeoManager';
 import { AdminLogin } from './components/Admin/AdminLogin';
 import { AdminDashboard } from './components/Admin/AdminDashboard';
 
@@ -25,16 +26,6 @@ function MainSite() {
   const [lang, setLang] = useState<Language>('fa');
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const { activeView, isAdminLoggedIn, setActiveView } = useSiteContent();
-
-  useEffect(() => {
-    // Synchronize HTML direction and language
-    document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
-    document.title =
-      lang === 'fa'
-        ? 'حسنا دوزنده - مدیر دبیرستان دخترانه هما | وب‌سایت رسمی'
-        : 'Hosna Doozandeh - Principal, Homa Girls’ High School | Official Website';
-  }, [lang]);
 
   const toggleLanguage = () => {
     setLang((prev) => (prev === 'fa' ? 'en' : 'fa'));
@@ -65,6 +56,9 @@ function MainSite() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#E8F0F8] text-[#243B5D] selection:bg-[#D5E3F0] selection:text-[#1B3252] transition-colors duration-300 relative">
+      {/* Dynamic SEO & Structured Data Manager */}
+      <SeoManager lang={lang} />
+
       {/* Scroll Progress Bar at very top */}
       <ProgressBar lang={lang} />
 

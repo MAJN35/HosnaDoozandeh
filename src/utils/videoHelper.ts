@@ -1,5 +1,5 @@
 /**
- * Utility helpers for video URL parsing, embedding, and placeholders
+ * Utility helpers for video URL parsing, embedding, and automatic preview/thumbnail extraction
  * Supports Aparat (آپارات), YouTube, Vimeo, direct MP4, and interactive placeholders.
  */
 
@@ -8,13 +8,36 @@ export type VideoType = 'aparat' | 'youtube' | 'vimeo' | 'direct' | 'placeholder
 export interface ParsedVideo {
   type: VideoType;
   embedUrl: string;
+  previewEmbedUrl: string;
+  autoThumbnailUrl: string | null;
   isPlaceholder: boolean;
   originalUrl: string;
   platformName: string;
 }
 
 /**
- * Extracts video ID and returns appropriate embed URL
+ * Extracts any explicit thumbnail/poster parameter if embedded inside the URL query string
+ */
+function extractQueryThumbnail(urlStr: string): string | null {
+  try {
+    const u = new URL(urlStr);
+    const param =
+      u.searchParams.get('thumbnail') ||
+      u.searchParams.get('thumb') ||
+      u.searchParams.get('poster') ||
+      u.searchParams.get('image');
+    if (param && /^https?:\/\//i.test(param)) {
+      return param;
+    }
+  } catch {
+    // Ignore invalid URL objects
+  }
+  return null;
+}
+
+/**
+ * Extracts video ID and returns appropriate embed URL, non-autoplay preview URL,
+ * and automatic thumbnail URL if the video URL provides one.
  */
 export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
   const cleanUrl = (url || '').trim();
@@ -23,11 +46,15 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
     return {
       type: 'placeholder',
       embedUrl: '',
+      previewEmbedUrl: '',
+      autoThumbnailUrl: null,
       isPlaceholder: true,
       originalUrl: cleanUrl,
       platformName: 'پیش‌نمایش ویدیو (Placeholder)',
     };
   }
+
+  const queryThumb = extractQueryThumbnail(cleanUrl);
 
   // 1. Aparat (آپارات)
   // Formats: https://www.aparat.com/v/abcd123, https://aparat.com/v/abcd123, embed links
@@ -37,6 +64,8 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
     return {
       type: 'aparat',
       embedUrl: `https://www.aparat.com/video/video/embed/videohash/${hash}/vt/frame?autoplay=true`,
+      previewEmbedUrl: `https://www.aparat.com/video/video/embed/videohash/${hash}/vt/frame`,
+      autoThumbnailUrl: queryThumb,
       isPlaceholder: false,
       originalUrl: cleanUrl,
       platformName: 'آپارات (Aparat)',
@@ -53,6 +82,8 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
     return {
       type: 'youtube',
       embedUrl: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`,
+      previewEmbedUrl: `https://www.youtube-nocookie.com/embed/${id}?rel=0&controls=0`,
+      autoThumbnailUrl: queryThumb || `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
       isPlaceholder: false,
       originalUrl: cleanUrl,
       platformName: 'یوتیوب (YouTube)',
@@ -66,6 +97,8 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
     return {
       type: 'vimeo',
       embedUrl: `https://player.vimeo.com/video/${id}?autoplay=1`,
+      previewEmbedUrl: `https://player.vimeo.com/video/${id}`,
+      autoThumbnailUrl: queryThumb || `https://vumbnail.com/${id}.jpg`,
       isPlaceholder: false,
       originalUrl: cleanUrl,
       platformName: 'ویمو (Vimeo)',
@@ -77,6 +110,8 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
     return {
       type: 'direct',
       embedUrl: cleanUrl,
+      previewEmbedUrl: cleanUrl,
+      autoThumbnailUrl: queryThumb,
       isPlaceholder: false,
       originalUrl: cleanUrl,
       platformName: 'فایل مستقیم ویدیو (MP4/WebM)',
@@ -88,6 +123,8 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
     return {
       type: 'direct',
       embedUrl: cleanUrl,
+      previewEmbedUrl: cleanUrl,
+      autoThumbnailUrl: queryThumb,
       isPlaceholder: false,
       originalUrl: cleanUrl,
       platformName: 'لینک اینترنتی ویدیو',
@@ -97,6 +134,8 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
   return {
     type: 'placeholder',
     embedUrl: '',
+    previewEmbedUrl: '',
+    autoThumbnailUrl: null,
     isPlaceholder: true,
     originalUrl: cleanUrl,
     platformName: 'پیش‌نمایش ویدیو',
@@ -104,34 +143,12 @@ export function parseVideoUrl(url: string | undefined | null): ParsedVideo {
 }
 
 /**
- * Curated preset video thumbnails
- */
-export const VIDEO_THUMBNAIL_PRESETS = [
-  {
-    label: { fa: 'مستند و فضای مدرسه', en: 'High School Environment' },
-    url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    label: { fa: 'سخنرانی و سمینار آموزشی', en: 'Academic Keynote & Speech' },
-    url: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    label: { fa: 'کارگاه روان‌سنجی و معلمان', en: 'Psychometrics Workshop' },
-    url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    label: { fa: 'مشاوره و هدایت تحصیلی فردی', en: 'Mentorship & Counseling' },
-    url: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1200&q=80',
-  },
-];
-
-/**
  * Sample video links for convenient testing in admin panel
  */
 export const SAMPLE_VIDEO_PRESETS = [
   {
     label: 'لینک نمونه آپارات (Aparat)',
-    url: 'https://www.aparat.com/v/v123456',
+    url: 'https://www.aparat.com/v/ieqx9ye',
   },
   {
     label: 'لینک نمونه ویدیو مستقیم (Direct MP4)',

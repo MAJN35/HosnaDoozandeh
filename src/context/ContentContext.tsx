@@ -32,7 +32,7 @@ interface ContentContextType {
   showToast: (msg: string) => void;
 }
 
-const STORAGE_KEY = 'douzandeh_portfolio_content_v2';
+const STORAGE_KEY = 'douzandeh_portfolio_content_v3';
 const AUTH_KEY = 'douzandeh_portfolio_admin_auth';
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
@@ -96,7 +96,7 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
           },
           videos:
             parsed.videos && Array.isArray(parsed.videos) && parsed.videos.length > 0
-              ? parsed.videos
+              ? parsed.videos.map(({ thumbnailUrl, ...rest }: any) => rest)
               : defaultSiteContent.videos,
           contact: {
             ...defaultSiteContent.contact,
