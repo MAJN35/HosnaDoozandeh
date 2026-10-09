@@ -479,7 +479,7 @@ export const defaultSiteContent: SiteContent = {
         "fa": "✨روزتان مبارک ای مروجان آگاهی...✨ دبیرستان دخترانه غیردولتی هما دوره دوم",
         "en": "✨Happy Day to you, promoters of awareness...✨ Homa Non-Governmental Girls' High School (Upper Secondary)"
       },
-      "videoUrl": "https://aparat.com/v/ieqx9ye",
+      "videoUrl": "https://aparat.com/v/abf1203",
       "thumbnailUrl": "https://uploadkon.ir/uploads/ee1016_26Screenshot-2026-09-16-180327.png",
       "duration": "01:09",
       "date": "1405",
