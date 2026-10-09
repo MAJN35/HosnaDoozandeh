@@ -484,6 +484,26 @@ export const defaultSiteContent: SiteContent = {
       "duration": "",
       "date": "1403",
       "featured": true
+    },
+    {
+      "id": "video-1791577668633",
+      "title": {
+        "fa": "عنوان ویدیوی جدیدنخستین همایش ملی سنجش کلاسی | دانشگاه علامه طباطبایی",
+        "en": "New Educational Video Title"
+      },
+      "category": {
+        "fa": "",
+        "en": "Educational Media"
+      },
+      "description": {
+        "fa": "توضینخستین همایش ملی سنجش کلاسی در دانشگاه علامه طباطبایی با محوریت ارتقای کیفیت ارزشیابی و بهبود فرایند یاددهی ـ یادگیری.حات مختصر پیرامون این ویدیو، سخنرانی یا کارگاه آموزشی دبیرستان هما.",
+        "en": "Brief description of this video and educational insights."
+      },
+      "videoUrl": "https://aparat.com/v/dwt485q",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+      "duration": "۰۵:۰۰",
+      "date": "۱۴۰۴",
+      "featured": false
     }
   ],
   "testimonials": [
