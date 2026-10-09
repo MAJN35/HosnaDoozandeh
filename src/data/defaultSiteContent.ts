@@ -504,6 +504,26 @@ export const defaultSiteContent: SiteContent = {
       "duration": "۰۵:۰۰",
       "date": "۱۴۰۴",
       "featured": false
+    },
+    {
+      "id": "video-1791578726118",
+      "title": {
+        "fa": "گرامیداشت روز معلم ۱۴۰۵ | دبیرستان دخترانه دوره دوم هما",
+        "en": "New Educational Video Title"
+      },
+      "category": {
+        "fa": "مستند و رویداد آموزشی",
+        "en": "Educational Media"
+      },
+      "description": {
+        "fa": "روایتی از پاسداشت مقام معلم و قدردانی از تلاش‌های ارزشمند همکاران فرهیخته دبیرستان دخترانه دوره دوم هما در روز معلم ۱۴۰۵.",
+        "en": "Brief description of this video and educational insights."
+      },
+      "videoUrl": "https://www.aparat.com/v/ieqx9ye",
+      "thumbnailUrl": "",
+      "duration": "۰۵:۰۰",
+      "date": "۱۴۰۴",
+      "featured": false
     }
   ],
   "testimonials": [
