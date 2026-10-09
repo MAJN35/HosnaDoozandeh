@@ -468,7 +468,7 @@ export const defaultSiteContent: SiteContent = {
     {
       "id": "video-exam-anxiety",
       "title": {
-        "fa": "پیام صمیمی مدیریت دبیرستان دخترانه دوره دوم هما به مناسبت روز معلم",
+        "fa": "🏆 افتخار جهانی دبستان پسرانه هما",
         "en": "A heartfelt message from the principal of Homa Girls' High School (Upper Secondary) on the occasion of Teachers' Day."
       },
       "category": {
@@ -476,12 +476,12 @@ export const defaultSiteContent: SiteContent = {
         "en": "A heartfelt message"
       },
       "description": {
-        "fa": "✨روزتان مبارک ای مروجان آگاهی...✨ دبیرستان دخترانه غیردولتی هما دوره دوم",
+        "fa": "✨🥇 کسب مقام نخست مسابقات جهانی WRO توسط دانش‌آموز پرافتخار هما، سروش آقایی\n\n🌟 افتخار هما، آینده‌ساز ایران 🇮🇷",
         "en": "✨Happy Day to you, promoters of awareness...✨ Homa Non-Governmental Girls' High School (Upper Secondary)"
       },
       "videoUrl": "https://aparat.com/v/abf1203",
       "thumbnailUrl": "https://uploadkon.ir/uploads/ee1016_26Screenshot-2026-09-16-180327.png",
-      "duration": "01:09",
+      "duration": "",
       "date": "1405",
       "featured": true
     }
