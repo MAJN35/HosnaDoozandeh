@@ -498,7 +498,7 @@ export const defaultSiteContent: SiteContent = {
         "en": "Eng. M. Rezaei"
       },
       "role": {
-        "fa": "اولیا و مربیان دبیرستان",
+        "fa": "اولیا دبیرستان",
         "en": "Member, Parent-Teacher Association"
       },
       "institution": {
