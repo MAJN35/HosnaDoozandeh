@@ -498,7 +498,7 @@ export const defaultSiteContent: SiteContent = {
         "en": "Eng. M. Rezaei"
       },
       "role": {
-        "fa": "عضو انجمن اولیا و مربیان دبیرستان",
+        "fa": "اولیا و مربیان دبیرستان",
         "en": "Member, Parent-Teacher Association"
       },
       "institution": {
@@ -517,7 +517,7 @@ export const defaultSiteContent: SiteContent = {
         "en": "Dr. S. Taheri"
       },
       "role": {
-        "fa": "دبیر دوره دوم و سرگروه آموزشی",
+        "fa": "دبیر ",
         "en": "Senior Faculty & Department Chair"
       },
       "institution": {
